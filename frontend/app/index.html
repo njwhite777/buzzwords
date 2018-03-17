@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+  </head>
+  <body ng-app="frontendApp">
+    <!--[if lte IE 8]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <div  ng-controller="MainCtrl" ng-cloak flex style="height:100%">
+      <div layout="column">
+        <md-toolbar class="md-hue-2">
+          <div class="md-toolbar-tools">
+          <md-button class="md-icon-button" aria-label="Settings" ng-disabled="false" ng-click="toggleLeftDrawer()">
+            <i class="material-icons md-light">menu</i>
+          </md-button>
+          <h2 flex md-truncate>Configure</h2>
+          </div>
+        </md-toolbar>
+      </div>
+      <section style="height:100%" >
+        <md-sidenav
+          class="md-sidenav-left"
+          md-component-id="left"
+          md-is-locked-open="$mdMedia('gt-md')"
+          md-whiteframe="4"
+          style="height:100%">
+          <!-- <md-toolbar class="md-theme-indigo">
+          <h1 class="md-toolbar-tools">Configure</h1>
+          </md-toolbar> -->
+          <md-content layout-padding ng-controller="drawerLeftController" >
+            <!-- <md-button ng-click="close()" class="md-primary" hide-gt-md> Close Sidenav Left </md-button> -->
+            <div>
+              <a class="md-button md-raised" ui-sref="davaview" class="btn btn-primary btn-raised">Data View</a>
+              <a class="md-button md-raised" ui-sref="configdata" class="btn btn-primary btn-raised">Config Data</a>
+            </div>
+            <div>
+              <div ui-view></div>
+            </div>
+          </md-content>
+        </md-sidenav>
+      </section>
+      <md-content flex layout-padding>
+        <div flex></div>
+      </md-content>
+    </div>
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+     <script>
+       !function(A,n,g,u,l,a,r){A.GoogleAnalyticsObject=l,A[l]=A[l]||function(){
+       (A[l].q=A[l].q||[]).push(arguments)},A[l].l=+new Date,a=n.createElement(g),
+       r=n.getElementsByTagName(g)[0],a.src=u,r.parentNode.insertBefore(a,r)
+       }(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+       ga('create', 'UA-XXXXX-X');
+       ga('send', 'pageview');
+    </script>
+
+    <!-- build:js(.) scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-touch/angular-touch.js"></script>
+    <script src="bower_components/angular-messages/angular-messages.js"></script>
+    <script src="bower_components/angular-material/angular-material.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- Added by hand. nwhite 20180317 Don't put imports in any other section! They will be removed when they are auto-updated. -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/deepstream.io-client-js/2.1.1/deepstream.js"></script>
+    <!--  -->
+        <!-- build:js({.tmp,app}) scripts/scripts.js -->
+        <script src="scripts/app.js"></script>
+        <script src="scripts/controllers/main.js"></script>
+        <script src="scripts/controllers/drawerLeftController.js"></script>
+        <script src="scripts/services/deepstreamService.js"></script>
+        <!-- endbuild -->
+</body>
+</html>
