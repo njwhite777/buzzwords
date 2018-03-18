@@ -1,0 +1,8 @@
+2018-03-18T08:08:47.803964207 0.048894s notice: Recursively removing directory /home/nwhite/programming/bsu/CS690_SE/buzzwords/backend/database/rethinkdb_data/tmp
+2018-03-18T08:08:47.823815649 0.068745s notice: Initializing directory /home/nwhite/programming/bsu/CS690_SE/buzzwords/backend/database/rethinkdb_data
+2018-03-18T08:08:47.823890900 0.068820s info: Creating a default database for your convenience. (This is because you ran 'rethinkdb' without 'create', 'serve', or '--join', and the directory '/home/nwhite/programming/bsu/CS690_SE/buzzwords/backend/database/rethinkdb_data' did not already exist or is empty.)
+2018-03-18T08:08:47.823921434 0.068850s notice: Running rethinkdb 2.3.6~0xenial (GCC 5.3.1)...
+2018-03-18T08:08:47.830743817 0.075675s notice: Running on Linux 4.4.0-116-generic x86_64
+2018-03-18T08:08:47.830809029 0.075738s notice: Loading data from directory /home/nwhite/programming/bsu/CS690_SE/buzzwords/backend/database/rethinkdb_data
+2018-03-18T08:08:47.992445565 0.237374s info: Automatically using cache size of 1605 MB
+2018-03-18T08:08:47.993252026 0.238182s error: TCP socket creation failed for port 29015: Address already in use.

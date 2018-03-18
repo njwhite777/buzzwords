@@ -16,6 +16,5 @@ var app = angular
     'ngCookies',
     'ngResource',
     'ngSanitize',
-    'ngTouch',
     'ui.router'
   ]);

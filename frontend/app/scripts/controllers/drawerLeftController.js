@@ -8,4 +8,5 @@
  * Controller of the left drawer of the application
  */
 app.controller('drawerLeftController', function () {
-  });
+
+});

@@ -1,4 +1,4 @@
-app.service('ds', function() {
+app.service('deepstreamService', function() {
           /************************************
           * Connect and login to deepstreamHub
           ************************************/

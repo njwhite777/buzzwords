@@ -1,0 +1,17 @@
+{
+  "name": "database",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nathan White",
+  "license": "ISC",
+  "dependencies": {
+    "deepstream.io": "^3.1.1",
+    "deepstream.io-provider-search-rethinkdb": "^2.0.0",
+    "deepstream.io-storage-rethinkdb": "^1.0.2",
+    "uws": "^9.14.0"
+  }
+}
