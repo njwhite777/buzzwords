@@ -32,30 +32,25 @@
           </div>
         </md-toolbar>
       </div>
-      <section style="height:100%" >
+      <section>
         <md-sidenav
           class="md-sidenav-left"
           md-component-id="left"
           md-is-locked-open="$mdMedia('gt-md')"
-          md-whiteframe="4"
-          style="height:100%">
+          md-whiteframe="4">
           <!-- <md-toolbar class="md-theme-indigo">
           <h1 class="md-toolbar-tools">Configure</h1>
           </md-toolbar> -->
           <md-content layout-padding ng-controller="drawerLeftController" >
             <!-- <md-button ng-click="close()" class="md-primary" hide-gt-md> Close Sidenav Left </md-button> -->
             <div>
-              <a class="md-button md-raised" ui-sref="davaview" class="btn btn-primary btn-raised">Data View</a>
-              <a class="md-button md-raised" ui-sref="configdata" class="btn btn-primary btn-raised">Config Data</a>
-            </div>
-            <div>
-              <div ui-view></div>
+              <div ui-view="menu"></div>
             </div>
           </md-content>
         </md-sidenav>
       </section>
       <md-content flex layout-padding>
-        <div flex></div>
+        <div flex ui-view="maincontent"></div>
       </md-content>
     </div>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -89,6 +84,8 @@
         <script src="scripts/app.js"></script>
         <script src="scripts/controllers/main.js"></script>
         <script src="scripts/controllers/drawerLeftController.js"></script>
+        <script src="scripts/controllers/maincontentController.js"></script>
+        <script src="scripts/controllers/menuController.js"></script>
         <script src="scripts/services/deepstreamService.js"></script>
         <script src="scripts/services/scopeApplyService.js"></script>
         <!-- endbuild -->

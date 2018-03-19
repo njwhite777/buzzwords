@@ -4,5 +4,5 @@ app.service('deepstreamService', function() {
           ************************************/
           //establish a connection. You can find your endpoint url in the
           //deepstreamhub dashbo
-         return deepstream( 'localhost:6020' ).login();
+         return deepstream( '10.193.18.77:6020' ).login();
 })

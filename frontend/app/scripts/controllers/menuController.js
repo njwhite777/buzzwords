@@ -2,13 +2,13 @@
 
 /**
  * @ngdoc function
- * @name frontendApp.controller:drawerLeftController
+ * @name frontendApp.controller:menuController
  * @description
- * # drawerLeftController
+ * # menuController
  * Controller of the left drawer of the application
  */
-app.controller('drawerLeftController', function () {
-
+app.controller('menuController', function () {
   // Do things in the drawer view.
+  console.log("MENUCONTROLLER.")
 
 });
