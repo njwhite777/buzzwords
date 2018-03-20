@@ -7,8 +7,9 @@
  * # menuController
  * Controller of the left drawer of the application
  */
-app.controller('menuController', function () {
-  // Do things in the drawer view.
-  console.log("MENUCONTROLLER.")
+angular.module('frontendApp')
+  .controller('menuController', ['$scope','gameService',function ($scope,gameService) {
 
-});
+    $scope.games  = gameService.games;
+
+  }]);

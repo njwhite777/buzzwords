@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 var SearchProvider = require( 'deepstream.io-provider-search-rethinkdb' );
 
 var searchProvider = new SearchProvider({

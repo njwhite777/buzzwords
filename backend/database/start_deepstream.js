@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const Deepstream = require('deepstream.io')
 const DSRethinkConnector = require("deepstream.io-storage-rethinkdb")
 
@@ -8,6 +9,7 @@ server.set("storage", new DSRethinkConnector({
     port: 28015,
     host: "localhost",
     splitChar: "/",
+    database: "buzzwords",
     defaultTable: "test"
 }));
 

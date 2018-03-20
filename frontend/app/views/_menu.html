@@ -1,12 +1,10 @@
 <md-content>
   <md-list>
-    <md-subheader class="md-no-sticky">Avatar with Secondary Action Icon</md-subheader>
-    <md-list-item ng-repeat="person in people" ng-click="goToPerson(person.name, $event)" class="noright">
-     <img alt="{{ person.name }}" ng-src="{{ person.img }}" class="md-avatar" />
-     <p>{{ person.name }}</p>
-     <md-checkbox class="md-secondary" ng-model="person.selected"></md-checkbox>
-     <md-icon md-svg-icon="communication:email"  ng-click="doSecondaryAction($event)" aria-label="Send Email" class="md-secondary md-hue-3" ></md-icon>
-     <md-icon class="md-secondary" ng-click="doSecondaryAction($event)" aria-label="Chat" md-svg-icon="communication:message"></md-icon>
-   </md-list-item>
+    <md-subheader class="md-no-sticky">Choose a game to join</md-subheader>
+    <md-list-item ng-repeat="game.nameList in games" ng-click="" class="">
+      <img alt="" ng-src="" class="" />
+      <p>{{ game.name }}</p>
+      <md-button class="btn-raised" > Join</md-button>
+    </md-list-item>
   </md-list>
 </md-content>

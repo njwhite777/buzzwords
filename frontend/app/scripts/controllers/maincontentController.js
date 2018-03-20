@@ -7,8 +7,9 @@
  * # maincontentController
  * Controller of the left drawer of the application
  */
-app.controller('maincontentController', function () {
+angular.module('frontendApp')
+  .controller('maincontentController', function () {
 
-  console.log("Maincontentcontroller!")
+  console.log("Maincontentcontroller!");
 
 });

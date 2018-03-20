@@ -17,8 +17,6 @@ angular.module('frontendApp')
     '$log',
   function ($scope,ds,$state,$timeout,$mdSidenav,$log) {
 
-    $scope.toggleLeftDrawer = buildDelayedToggler('left');
-
     function debounce(func, wait, context) {
       var timer;
       return function debounced() {
@@ -42,15 +40,17 @@ angular.module('frontendApp')
       }, 200);
     }
 
-    function buildToggler(navID) {
-      return function() {
-        // Component lookup should always be available since we are not using `ng-if`
-        $mdSidenav(navID)
-          .toggle()
-          .then(function () {
-            $log.debug("toggle " + navID + " is done");
-          });
-      };
-    }
+    // function buildToggler(navID) {
+    //   return function() {
+    //     // Component lookup should always be available since we are not using `ng-if`
+    //     $mdSidenav(navID)
+    //       .toggle()
+    //       .then(function () {
+    //         $log.debug("toggle " + navID + " is done");
+    //       });
+    //   };
+    // }
+
+    $scope.toggleLeftDrawer = buildDelayedToggler('left');
 
   }]);

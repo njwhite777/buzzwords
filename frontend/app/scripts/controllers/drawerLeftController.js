@@ -7,8 +7,9 @@
  * # drawerLeftController
  * Controller of the left drawer of the application
  */
-app.controller('drawerLeftController', function () {
+ angular.module('frontendApp')
+  .controller('drawerLeftController', function () {
 
   // Do things in the drawer view.
 
-});
+  });
