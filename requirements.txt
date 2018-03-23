@@ -8,7 +8,10 @@ decorator==4.1.2
 entrypoints==0.2.3
 Flask==0.12.2
 Flask-RESTful==0.3.6
+Flask-SocketIO==2.9.6
 formats==0.1.1
+gevent==1.2.2
+greenlet==0.4.13
 html5lib==1.0.1
 idna==2.6
 ipykernel==4.7.0
@@ -37,6 +40,8 @@ prompt-toolkit==1.0.15
 ptyprocess==0.5.2
 Pygments==2.2.0
 python-dateutil==2.6.1
+python-engineio==2.0.4
+python-socketio==1.9.0
 pytz==2017.3
 pyzmq==16.0.3
 qtconsole==4.3.1
