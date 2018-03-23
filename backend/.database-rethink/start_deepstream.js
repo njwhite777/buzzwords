@@ -9,12 +9,12 @@ server.set("storage", new DSRethinkConnector({
     port: 28015,
     host: "localhost",
     splitChar: "/",
-    database: "buzzwords",
-    defaultTable: "test"
+    database: "buzzwords"
 }));
 
 
-const C = Deepstream.constants
+const C = Deepstream.constants;
+
 /*
 The server can take
 1) a configuration file path

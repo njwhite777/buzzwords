@@ -10,7 +10,6 @@
 angular.module('frontendApp')
   .controller('MainCtrl', [
     '$scope',
-    'deepstreamService',
     '$state',
     '$timeout',
     '$mdSidenav',
@@ -39,17 +38,6 @@ angular.module('frontendApp')
           });
       }, 200);
     }
-
-    // function buildToggler(navID) {
-    //   return function() {
-    //     // Component lookup should always be available since we are not using `ng-if`
-    //     $mdSidenav(navID)
-    //       .toggle()
-    //       .then(function () {
-    //         $log.debug("toggle " + navID + " is done");
-    //       });
-    //   };
-    // }
 
     $scope.toggleLeftDrawer = buildDelayedToggler('left');
 

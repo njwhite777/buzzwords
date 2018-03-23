@@ -10,6 +10,7 @@
  */
 var app = angular
   .module('frontendApp', [
+    'btford.socket-io',
     'ngMaterial',
     'ngAnimate',
     'ngAria',
