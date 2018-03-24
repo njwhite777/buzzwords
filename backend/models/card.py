@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from sqlalchemy import Column, Integer, String
-from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.orm import sessionmaker, relationship, session
 from . import Base
 
 class Card(Base):

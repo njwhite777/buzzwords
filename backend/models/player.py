@@ -15,8 +15,8 @@ class Player(Base):
     #turn_teller_id = Column(Integer, ForeignKey('turn.id'), nullable=True)
     #turn_moderator_id = Column(Integer, ForeignKey('turn.id'), nullable=True)
 
-    turnTeller = relationship("Turn", backref = "turnTeller", lazy = False, uselist=False)
-    turnModerator = relationship("Turn", backref = "turnModerator", lazy = False, uselist=False)
+    turnTeller = relationship("Turn", backref = "player", lazy = False, uselist=False)
+    turnModerator = relationship("Turn", backref = "player", lazy = False, uselist=False)
 
     # TODO: what else will we need?
     def __repr__(self):
