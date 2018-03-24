@@ -16,6 +16,10 @@ angular.module('frontendApp')
     '$log',
   function ($scope,$state,$timeout,$mdSidenav,$log) {
 
+    $scope.$on('socket:connect', function (ev, data) {
+      console.log(data);
+    });
+
     function debounce(func, wait, context) {
       var timer;
       return function debounced() {

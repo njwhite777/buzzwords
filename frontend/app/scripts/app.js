@@ -20,6 +20,29 @@ var app = angular
     'ui.router'
   ]);
 
+app
+  .constant('debug', true )
+  .constant('socketIOConfig',
+    {
+      'host':'localhost',
+      'port':5000,
+      'proto':'http://',
+      'namespace':'io',
+      'gameSocketName': 'game',
+      'getSocketNameHelper' :
+        function(){
+          return this.proto + this.host + ":"+ this.port+"/"+this.namespace;
+        },
+      'getSocketName' :
+          function(whichSocket){
+            if(whichSocket == undefined){
+              return this.getSocketNameHelper();
+            }
+            if(whichSocket == 'game'){
+              return this.getSocketNameHelper() + '/' + this.gameSocketName;
+            }
+          }
+    });
 
 app.config(function($stateProvider) {
 

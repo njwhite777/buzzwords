@@ -13,6 +13,6 @@ angular.module('frontendApp')
     'gameService',
     function ($scope,gameService) {
 
-    $scope.games  = gameService.games;
+      $scope.games  = gameService.games;
 
   }]);
