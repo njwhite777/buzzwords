@@ -2,13 +2,13 @@
 
 /**
  * @ngdoc function
- * @name frontendApp.controller:menuController
+ * @name frontendApp.controller:appmenuController
  * @description
  * # menuController
  * Controller of the left drawer of the application
  */
 angular.module('frontendApp')
-  .controller('menuController', [
+  .controller('appmenuController', [
     '$scope',
     'gameService',
     function ($scope,gameService) {
