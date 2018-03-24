@@ -50,14 +50,14 @@ app.config(function($stateProvider) {
       name: 'main',
       url: '',
       views: {
-        'menu' : {
-          templateUrl: './views/_menu.html',
-          controller: 'menuController'
+        'appMenu' : {
+          templateUrl: './views/_appmenu.html',
+          controller: 'appmenuController'
         },
-        'maincontent' : {
-          name: 'maincontent',
-          templateUrl: './views/_maincontent.html',
-          controller: 'maincontentController'
+        'gameMenuView' : {
+          name: 'gamemenuview',
+          templateUrl: './views/_gamemenuview.html',
+          controller: 'gamemenuviewController'
         }
       }
     };
