@@ -65,3 +65,6 @@ typings/
 
 # ignore package-lock
 package-lock.json
+
+#ignore the database
+*.sqlite

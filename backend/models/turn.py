@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import sessionmaker, relationship
+from .player import Player
 from . import Base
 
 class Turn(Base):
@@ -15,8 +16,11 @@ class Turn(Base):
     team_id = Column(Integer, ForeignKey('team.id'), nullable=True)
     turn_teller_id = Column(Integer, ForeignKey('player.id'), nullable=True)
     turn_moderator_id = Column(Integer, ForeignKey('player.id'), nullable=True)
-    #teller = relationship("Player", backref = "turnTeller", lazy = False, uselist=False)
-    #moderator = relationship("Player", backref = "turnModerator", lazy = False, uselist=False)
+    teller = relationship('Turn', foreign_keys=turn_teller_id, post_update=True)
+    moderator = relationship('Turn', foreign_keys=turn_moderator_id, post_update=True)
+
+    #__mapper_args__ = {'polymorphic_identity': 'turn', 'inherit_condition': turn_teller_id == Player.id}
+
 
     def __repr__(self):
         return "<GameRound()>".format()
