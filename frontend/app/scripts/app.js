@@ -63,6 +63,16 @@ app.config(function($stateProvider) {
           name: 'gamemenuview',
           templateUrl: './views/_gamemenuview.html',
           controller: 'gamemenuviewController'
+        },
+        'gameinitiatorview':{
+          name: 'gameinitiatorview',
+          templateUrl: './views/_gameinitiatorview.html',
+          controller: 'gameinitiatorviewController'
+        },
+        'gameplayerwaitview':{
+          name: 'gameplayerwaitview',
+          templateUrl:"./views/_gameplayerwaitview.html",
+          controller: 'gameplayerwaitviewController'
         }
       }
     };
