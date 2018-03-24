@@ -14,7 +14,7 @@ angular.module('frontendApp')
     '$timeout',
     '$mdSidenav',
     '$log',
-  function ($scope,ds,$state,$timeout,$mdSidenav,$log) {
+  function ($scope,$state,$timeout,$mdSidenav,$log) {
 
     function debounce(func, wait, context) {
       var timer;
