@@ -20,6 +20,29 @@ var app = angular
     'ui.router'
   ]);
 
+app
+  .constant('debug', true )
+  .constant('socketIOConfig',
+    {
+      'host':'localhost',
+      'port':5000,
+      'proto':'http://',
+      'namespace':'io',
+      'gameSocketName': 'game',
+      'getSocketNameHelper' :
+        function(){
+          return this.proto + this.host + ":"+ this.port+"/"+this.namespace;
+        },
+      'getSocketName' :
+          function(whichSocket){
+            if(whichSocket == undefined){
+              return this.getSocketNameHelper();
+            }
+            if(whichSocket == 'game'){
+              return this.getSocketNameHelper() + '/' + this.gameSocketName;
+            }
+          }
+    });
 
 app.config(function($stateProvider) {
 
@@ -27,14 +50,14 @@ app.config(function($stateProvider) {
       name: 'main',
       url: '',
       views: {
-        'menu' : {
-          templateUrl: './views/_menu.html',
-          controller: 'menuController'
+        'appMenu' : {
+          templateUrl: './views/_appmenu.html',
+          controller: 'appmenuController'
         },
-        'maincontent' : {
-          name: 'maincontent',
-          templateUrl: './views/_maincontent.html',
-          controller: 'maincontentController'
+        'gameMenuView' : {
+          name: 'gamemenuview',
+          templateUrl: './views/_gamemenuview.html',
+          controller: 'gamemenuviewController'
         }
       }
     };

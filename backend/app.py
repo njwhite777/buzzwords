@@ -45,18 +45,22 @@ if __name__ == '__main__':
     api.add_resource(Team, '/team/<int:id>', endpoint = 'team')
     api.add_resource(Round, '/round/<int:id>', endpoint = 'round')
 
+
     # This defines the sockets that will be availible.
-    @socketio.on('new_game_created', namespace='/game')
+    @socketio.on('created_game', namespace='/io/game')
     def created_game(message):
+        print(message)
         emit('created_game', {'data': message['data']},broadcast=True)
 
-    @socketio.on('connect', namespace='/io')
-    def test_connect():
-        emit('client_connect', {'data': 'Connected to socketIO'})
+
+    # SocketIO emits a connect by default.
+    # @socketio.on('connect', namespace='/io')
+    # def clientConnect():
+    #     emit('client_connect', {'data': 'Server: SocketIO Client Connected!'})
 
     @socketio.on('disconnect', namespace='/io')
-    def test_disconnect():
-        print('Client disconnected')
+    def clientDisconnect():
+        print('Server: Socketio Client Disconnected')
 
     AppModelBase.metadata.create_all(engine)
     socketio.run(app,debug=True,port=5000,host='localhost')

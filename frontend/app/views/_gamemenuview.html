@@ -1,0 +1,25 @@
+<md-content layout="row">
+  <div flex> Choose a Game
+  <md-list>
+    <md-subheader class="md-no-sticky">Choose a game to join</md-subheader>
+    <md-list-item ng-repeat="game in games" ng-click="" class="">
+      <img alt="" ng-src="" class="" />
+      <p>{{ game.name }}</p>
+      <md-button class="btn-raised" > Join</md-button>
+    </md-list-item>
+  </md-list>
+</div>
+  <div flex>Create a Game
+    <md-list>
+      <md-list-item>
+      number of teams <input id="numberofTeam" type = "number" ng-model ="teamNumber">
+    </md-list-item>
+      <md-list-item ng-repeat= "teamNumber" ng-click="" class="">
+        hello
+      </md-list-item>
+      <lable>{{teamNumber}}</lable>
+
+    </md-list>
+  </div>
+
+</md-content>

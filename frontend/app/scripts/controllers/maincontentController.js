@@ -10,6 +10,4 @@
 angular.module('frontendApp')
   .controller('maincontentController', function () {
 
-  console.log("Maincontentcontroller!");
-
 });

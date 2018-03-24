@@ -62,3 +62,6 @@ typings/
 
 # python compiled files
 *.pyc
+
+# ignore package-lock
+package-lock.json

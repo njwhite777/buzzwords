@@ -44,13 +44,13 @@
           <md-content layout-padding ng-controller="drawerLeftController" >
             <!-- <md-button ng-click="close()" class="md-primary" hide-gt-md> Close Sidenav Left </md-button> -->
             <div>
-              <div ui-view="menu"></div>
+              <div ui-view="appMenu"></div>
             </div>
           </md-content>
         </md-sidenav>
       </section>
       <md-content flex layout-padding>
-        <div flex ui-view="maincontent"></div>
+        <div flex ui-view="gameMenuView"></div>
       </md-content>
     </div>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -76,17 +76,18 @@
     <script src="bower_components/angular-material/angular-material.js"></script>
     <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="bower_components/angular-socket-io/socket.js"></script>
+    <script src="bower_components/socket.io-client/dist/socket.io.js"></script>
+
     <!-- endbower -->
+
     <!-- endbuild -->
-    <!-- Added by hand. nwhite 20180317 Don't put imports in any other section! They will be removed when they are auto-updated. -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/deepstream.io-client-js/2.1.1/deepstream.js"></script>
-    <!--  -->
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
+        <script src="scripts/services/socketService.js"></script>
         <script src="scripts/controllers/main.js"></script>
         <script src="scripts/controllers/drawerLeftController.js"></script>
-        <script src="scripts/controllers/maincontentController.js"></script>
-        <script src="scripts/controllers/menuController.js"></script>
+        <script src="scripts/controllers/appmenuController.js"></script>
+        <script src="scripts/controllers/gamemenuviewController.js"></script>
         <script src="scripts/services/gameService.js"></script>
         <!-- endbuild -->
 </body>
