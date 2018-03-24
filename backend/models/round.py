@@ -1,12 +1,16 @@
 #!/usr/bin/env python
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy.orm import sessionmaker, relationship
+from . import Base
 
 class Round(Base):
     __tablename__ = 'round'
     id = Column(Integer,primary_key=True)
-    team_id          = Column(Integer,primary_key=True)
-    team_score       = Column(Integer)
-    round_modifier   = Column(String)
+    number       = Column(Integer)
+    startTime = Column(DateTime)
+    game_id = Column(Integer, ForeignKey('game.id'), nullable=False)
+    turns          = relationship("Turn", backref = "round", lazy = False)
+
 
     # TODO: what else will we need?
     def __repr__(self):

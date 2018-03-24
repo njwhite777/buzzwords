@@ -1,14 +1,26 @@
 #!/usr/bin/env python
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Table, ForeignKey, DateTime
+from sqlalchemy.orm import sessionmaker, relationship
 from . import Base
+
+usedCards = Table('used_cards',
+    Base.metadata,
+    Column('game_id', Integer, ForeignKey('game.id'), primary_key=True),
+    Column('card_id', Integer, ForeignKey('card.id'), primary_key=True)
+)
 
 class Game(Base):
 
     __tablename__ = 'game'
     id          = Column(Integer, primary_key=True)
-    number_of_teams= Column(String)
-    cards_to_win= Column(String)
-    player_count= Column(String)
+    name = Column(String)
+    defaultRoundTime = Column(Integer)
+    createdTimeStamp = Column(DateTime)
+    initiator = relationship("Player", backref = "game", lazy = False, uselist=False)
+    teams = relationship("Team", backref = "game", lazy = False)
+    rounds = relationship("Round", backref = "game", lazy = False)
+    used_cards = relationship("Card", secondary=usedCards)
+
     # TODO: what else will we need?
 
     def __repr__(self):
