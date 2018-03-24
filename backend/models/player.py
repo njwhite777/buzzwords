@@ -1,15 +1,22 @@
 #!/usr/bin/env python
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy.orm import sessionmaker, relationship
 from . import Base
 
 class Player(Base):
 
     __tablename__ = 'player'
     id       = Column(Integer,primary_key=True)
-    fname           = Column(String)
-    lname           = Column(String)
+    nickname           = Column(String)
     email           = Column(String)
-    phone           = Column(String)
+    role = Column(Integer)
+    game_id = Column(Integer, ForeignKey('game.id'), nullable=True)
+    team_id = Column(Integer, ForeignKey('team.id'), nullable=True)
+    #turn_teller_id = Column(Integer, ForeignKey('turn.id'), nullable=True)
+    #turn_moderator_id = Column(Integer, ForeignKey('turn.id'), nullable=True)
+
+    turnTeller = relationship("Turn", backref = "turnTeller", lazy = False, uselist=False)
+    turnModerator = relationship("Turn", backref = "turnModerator", lazy = False, uselist=False)
 
     # TODO: what else will we need?
     def __repr__(self):

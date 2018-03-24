@@ -28,7 +28,7 @@ if __name__ == '__main__':
 
 
     # SQLite Database for now
-    engine = create_engine("sqlite:///db/{}.sql".format(appMode))
+    engine = create_engine("sqlite:///db/{}.sqlite".format(appMode))
     create_db(engine)
 
     # Just want to start the  api service. Don't need to launch the frontend from here.
