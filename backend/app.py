@@ -75,21 +75,15 @@ if __name__ == '__main__':
 
     if(environment == 'testdb'):
         from models import CardModel
-
         delete_db(engine)
         AppModelBase.metadata.create_all(engine)
-
         Session = sessionmaker(bind=engine)
         session = Session()
-
-
-
         session.add_all([
             CardModel(buzzword="buzzword1",forbidden_words="{ 'word1':'word','word2':word' }",source="Class Notes",source_page="pg. 5"),
             CardModel(buzzword="buzzword2",forbidden_words="{ 'word1':'word','word2':word' }",source="Class Notes",source_page="pg. 5")
         ])
         session.commit()
-
         embed()
 
     if(environment in ['test','debug','dev']):

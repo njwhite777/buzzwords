@@ -24,13 +24,13 @@ app
   .constant('debug', true )
   .constant('socketIOConfig',
     {
-      'host':'localhost',
-      'port':5000,
-      'proto':'http://',
-      'namespace':'io',
-      'gameSocketName': 'game',
-      'viewSocketName': 'view',
-      'timerSocketName': 'timer',
+      'host' : 'localhost',
+      'port' : 5000,
+      'proto' : 'http://',
+      'namespace' : 'io',
+      'gameSocketName' : 'game',
+      'viewSocketName' : 'view',
+      'timerSocketName' : 'timer',
       'getSocketNameHelper' :
         function(){
           return this.proto + this.host + ":"+ this.port+"/"+this.namespace;
