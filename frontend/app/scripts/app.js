@@ -29,19 +29,24 @@ app
       'proto':'http://',
       'namespace':'io',
       'gameSocketName': 'game',
+      'viewSocketName': 'view',
+      'timerSocketName': 'timer',
       'getSocketNameHelper' :
         function(){
           return this.proto + this.host + ":"+ this.port+"/"+this.namespace;
         },
       'getSocketName' :
-          function(whichSocket){
-            if(whichSocket == undefined){
-              return this.getSocketNameHelper();
-            }
-            if(whichSocket == 'game'){
-              return this.getSocketNameHelper() + '/' + this.gameSocketName;
-            }
+        function(whichSocket){
+          if(whichSocket == undefined){
+            return this.getSocketNameHelper();
           }
+          if(whichSocket == 'game'){
+            return this.getSocketNameHelper() + '/' + this.gameSocketName;
+          }
+          if(whichSocket == 'timer'){
+            return this.getSocketNameHelper() + '/' + this.timerSocketName;
+          }
+        }
     });
 
 app.config(function($stateProvider) {
@@ -50,11 +55,11 @@ app.config(function($stateProvider) {
       name: 'main',
       url: '',
       views: {
-        'appMenu' : {
+        'appmenu' : {
           templateUrl: './views/_appmenu.html',
           controller: 'appmenuController'
         },
-        'gameMenuView' : {
+        'gamemenuview' : {
           name: 'gamemenuview',
           templateUrl: './views/_gamemenuview.html',
           controller: 'gamemenuviewController'
