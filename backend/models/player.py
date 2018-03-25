@@ -10,13 +10,11 @@ class Player(Base):
     nickname           = Column(String)
     email           = Column(String)
     role = Column(Integer)
-    game_id = Column(Integer, ForeignKey('game.id'), nullable=True)
+    initiator = relationship("Game", lazy = False, uselist=False)
     team_id = Column(Integer, ForeignKey('team.id'), nullable=True)
-    #turn_teller_id = Column(Integer, ForeignKey('turn.id'), nullable=True)
-    #turn_moderator_id = Column(Integer, ForeignKey('turn.id'), nullable=True)
 
-    # turnTeller = relationship("Turn",foreign_keys=[],backref = "turnTeller", lazy = False, uselist=False)
-    # turnModerator = relationship("Turn",foreign_keys=[],backref = "turnModerator", lazy = False, uselist=False)
+    turnTeller = relationship("Turn", foreign_keys='Turn.turn_teller_id', backref = "turnTeller", lazy = False, uselist=False)
+    turnModerator = relationship("Turn", foreign_keys='Turn.turn_moderator_id', backref = "turnModerator", lazy = False, uselist=False)
 
     # TODO: what else will we need?
     def __repr__(self):

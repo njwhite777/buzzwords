@@ -82,8 +82,6 @@ if __name__ == '__main__':
         Session = sessionmaker(bind=engine)
         session = Session()
 
-
-
         session.add_all([
             CardModel(buzzword="buzzword1",forbidden_words="{ 'word1':'word','word2':word' }",source="Class Notes",source_page="pg. 5"),
             CardModel(buzzword="buzzword2",forbidden_words="{ 'word1':'word','word2':word' }",source="Class Notes",source_page="pg. 5")

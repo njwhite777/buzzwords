@@ -14,7 +14,7 @@ from .turn import Turn as TurnModel
 
 
 # testing inserting data:
-card1 = CardModel()
+card1 = CardModel(buzzword="buzzword1",forbidden_words="{ 'word1':'word','word2':word' }",source="Class Notes",source_page="pg. 5")
 #card1.buzzword = "Cohesion"
 #card1.forbidden_words = "{'coupling', 'design', 'functional', 'strength'}"
 #card1.skipped_count = 0

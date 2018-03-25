@@ -13,13 +13,12 @@ class Turn(Base):
     startTime = Column(DateTime)
     round_id = Column(Integer, ForeignKey('round.id'), nullable=False)
     card_id = Column(Integer, ForeignKey('card.id'), nullable=True)
+    card = relationship("Card", foreign_keys=card_id, lazy = False)
     team_id = Column(Integer, ForeignKey('team.id'), nullable=True)
     turn_teller_id = Column(Integer, ForeignKey('player.id'), nullable=True)
     turn_moderator_id = Column(Integer, ForeignKey('player.id'), nullable=True)
-    teller = relationship('Turn', foreign_keys=turn_teller_id, post_update=True)
-    moderator = relationship('Turn', foreign_keys=turn_moderator_id, post_update=True)
-
-    #__mapper_args__ = {'polymorphic_identity': 'turn', 'inherit_condition': turn_teller_id == Player.id}
+    teller = relationship('Player', foreign_keys=turn_teller_id )
+    moderator = relationship('Player', foreign_keys=turn_moderator_id )
 
 
     def __repr__(self):
