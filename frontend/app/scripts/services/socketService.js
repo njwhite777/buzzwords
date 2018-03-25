@@ -17,9 +17,13 @@ angular.module('frontendApp')
     //  note the port on this is the port of the flask server.
     var IOsocketName = socketIOConfig.getSocketName();
     var gameSocketName = socketIOConfig.getSocketName('game');
+    var viewSocketName = socketIOConfig.getSocketName('view');
+    var timerSocketName = socketIOConfig.getSocketName('timer');
 
-    var ioSocketConnect = io.connect( IOsocketName );
+    var ioSocketConnect = io.connect(IOsocketName);
     var gameSocketConnect = io.connect(gameSocketName);
+    var viewSocketConnect = io.connect(viewSocketName);
+    var timerSocketConnect = io.connect(timerSocketName);
 
     var socket = socketFactory({
       ioSocket: ioSocketConnect
@@ -29,16 +33,25 @@ angular.module('frontendApp')
       ioSocket: gameSocketConnect
     });
 
+    var viewSocket = socketFactory({
+      ioSocket: viewSocketConnect
+    });
+
+    var timerSocket = socketFactory({
+      ioSocket: timerSocketConnect
+    });
+
     // Connect emitted from server.
-    // Should be connected.
     // socket.on('connect',function(){ console.log("socketio connected"); });
 
     // Disconnect issued by server.
     // socket.on('disconnect',function(message){ console.log(message); });
 
     return {
-      socket : socket,
-      gameSocket :  gameSocket
+      socket: socket,
+      gameSocket: gameSocket,
+      viewSocket: viewSocket,
+      timerSocket: timerSocket
     };
 
 }]);

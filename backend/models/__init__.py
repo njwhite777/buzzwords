@@ -11,15 +11,3 @@ from .turn import Turn as TurnModel
 # from .gameteam import GameTeam as GameTeamModel
 # from .round import Round as RoundModel
 # from .user import User as UserModel
-
-
-# testing inserting data:
-card1 = CardModel(buzzword="buzzword1",forbidden_words="{ 'word1':'word','word2':word' }",source="Class Notes",source_page="pg. 5")
-#card1.buzzword = "Cohesion"
-#card1.forbidden_words = "{'coupling', 'design', 'functional', 'strength'}"
-#card1.skipped_count = 0
-#card1.won_count = 0
-#card1.lost_count = 0
-#card1.source = "Book"
-#card1.source_page = "436"
-#session.add(card1)
