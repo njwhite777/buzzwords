@@ -8,4 +8,6 @@
  * Controller of the initial period of game
  */
 angular.module('frontendApp')
-      .controller('gameinitiatorviewController');
+      .controller('gameinitiatorviewController',['$scope',function(){
+        
+}]);

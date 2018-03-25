@@ -40,6 +40,9 @@ app
           if(whichSocket == undefined){
             return this.getSocketNameHelper();
           }
+          if(whichSocket == 'view'){
+            return this.getSocketNameHelper() + '/' + this.viewSocketName;
+          }
           if(whichSocket == 'game'){
             return this.getSocketNameHelper() + '/' + this.gameSocketName;
           }
@@ -56,10 +59,16 @@ app.config(function($stateProvider) {
       url: '',
       views: {
         'appmenu' : {
+          name: 'appmenu',
           templateUrl: './views/_appmenu.html',
           controller: 'appmenuController'
         },
-        'gamemenuview' : {
+        'appscreen' : {
+          name: 'appscreen',
+          templateUrl: './views/_appscreen.html',
+          controller: 'appscreenController'
+        },
+        'appscreen.gamemenuview' : {
           name: 'gamemenuview',
           templateUrl: './views/_gamemenuview.html',
           controller: 'gamemenuviewController'
@@ -69,10 +78,30 @@ app.config(function($stateProvider) {
           templateUrl: './views/_gameinitiatorview.html',
           controller: 'gameinitiatorviewController'
         },
+        'gameplayerturnview':{
+          name: 'gameplayerturnview',
+          templateUrl:"./views/_gameplayerturnview.html",
+          controller: 'gameplayerturnviewController'
+        },
         'gameplayerwaitview':{
           name: 'gameplayerwaitview',
           templateUrl:"./views/_gameplayerwaitview.html",
           controller: 'gameplayerwaitviewController'
+        },
+        'moderatorturnview':{
+          name: 'moderatorturnview',
+          templateUrl:"./views/_moderatorturnview.html",
+          controller: 'moderatorturnviewController'
+        },
+        'tellerrolldieview':{
+          name: 'tellerrolldieview',
+          templateUrl:"./views/_tellerrolldieview.html",
+          controller: 'tellerrolldieviewController'
+        },
+        'tellerturnview':{
+          name: 'tellerturnview',
+          templateUrl:"./views/_tellerturnview.html",
+          controller: 'tellerturnviewController'
         }
       }
     };

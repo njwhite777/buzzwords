@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from flask import Flask
+from flask import Flask,request
 import random, threading, webbrowser
 from flask_restful import Api, Resource
 from flask_socketio import SocketIO,emit
@@ -33,7 +33,6 @@ if __name__ == '__main__':
     api = Api(app)
     socketio = SocketIO(app)
 
-
     # SQLite Database for now
     engine = create_engine("sqlite:///db/{}.sqlite".format(args.env))
     create_db(engine)
@@ -53,18 +52,35 @@ if __name__ == '__main__':
     api.add_resource(Round, '/round/<int:id>', endpoint = 'round')
 
 
+    socketIOClients = list()
+
     # This defines the sockets that will be availible.
     @socketio.on('created_game', namespace='/io/game')
     def created_game(message):
-
         print(message)
         emit('created_game', {'data': message['data']},broadcast=True)
 
+    # This defines the sockets that will be availible.
+    @socketio.on('update_timer', namespace='/io/timer')
+    def update_timer(message):
+        print(message)
+        emit('update_timer', {'data': message['data']},broadcast=True)
+
+    #
+    # This defines the sockets that will be availible.
+    @socketio.on('update_view', namespace='/io/view')
+    def update_view(message):
+        # TODO: figure out how to address output to only specific clients.'
+        # Does this mean we will have to store socket connection details to be able to transmit to only that client,
+        #  or can we dynamically create client channels?
+        # emit('update_view', {'data': message['data']})
+        emit('update_view', {'data': message['data']},broadcast=True)
 
     # SocketIO emits a connect by default.
-    # @socketio.on('connect', namespace='/io')
-    # def clientConnect():
-    #     emit('client_connect', {'data': 'Server: SocketIO Client Connected!'})
+    @socketio.on('connect', namespace='/io')
+    def clientConnect():
+        socketIOClients.append(request.namespace)
+        emit('client_connect', {'data': 'Server: SocketIO Client Connected!'})
 
     @socketio.on('disconnect', namespace='/io')
     def clientDisconnect():
