@@ -8,7 +8,7 @@
  * Controller of the frontendApp
  */
 angular.module('frontendApp')
-  .controller('MainCtrl', [
+  .controller('indexController', [
     '$scope',
     '$state',
     '$timeout',

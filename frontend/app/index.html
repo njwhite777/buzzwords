@@ -22,7 +22,7 @@
     <!--[if lte IE 8]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-    <div  ng-controller="MainCtrl" ng-cloak flex style="height:100%">
+    <div  ng-controller="indexController" ng-cloak flex style="height:100%">
       <div layout="column">
         <md-toolbar class="md-hue-2">
           <div class="md-toolbar-tools">
@@ -51,7 +51,11 @@
         </md-sidenav>
       </section>
       <md-content flex layout-padding>
+
         <div flex ui-view="moderatorturnview"></div>
+
+        <div flex ui-view="appscreen"></div>
+
       </md-content>
     </div>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -90,9 +94,18 @@
         <script src="scripts/controllers/gamemenuviewController.js"></script>
         <script src="scripts/controllers/gameinitiatorviewController.js"></script>
         <script src="scripts/controllers/gameplayerwaitviewController.js"></script>
+<<<<<<< HEAD
         <script src="scripts/controllers/moderatorturnviewController.js"></script>
 
+=======
+        <script src="scripts/controllers/gameplayerturnviewController.js"></script>
+        <script src="scripts/controllers/moderatorturnviewController.js"></script>
+        <script src="scripts/controllers/tellerrolldieviewController.js"></script>
+        <script src="scripts/controllers/tellerturnviewController.js"></script>
+        <script src="scripts/controllers/appscreenController.js"></script>
+>>>>>>> 86922932c0d961b382fe7b594e1d80728dc95ef1
         <script src="scripts/services/gameService.js"></script>
+        <script src="scripts/services/viewSwapService.js"></script>
         <!-- endbuild -->
 </body>
 </html>

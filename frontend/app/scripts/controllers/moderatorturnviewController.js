@@ -2,6 +2,7 @@
 
 /**
  * @ngdoc function
+<<<<<<< HEAD
  * @name frontendApp.controller:gameinitialorviewController
  * @description
  * # gameinitiatorviewController
