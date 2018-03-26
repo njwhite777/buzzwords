@@ -102,6 +102,7 @@ app.config(function($stateProvider) {
           name: 'tellerturnview',
           templateUrl:"./views/_tellerturnview.html",
           controller: 'tellerturnviewController'
+
         }
       }
     };

@@ -14,6 +14,7 @@
     <!-- build:css(.tmp) styles/main.css -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
   </head>
@@ -50,7 +51,11 @@
         </md-sidenav>
       </section>
       <md-content flex layout-padding>
+
+        <div flex ui-view="moderatorturnview"></div>
+
         <div flex ui-view="appscreen"></div>
+
       </md-content>
     </div>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -64,7 +69,7 @@
        ga('send', 'pageview');
     </script>
 
-
+    <script src="bower_components/socket.io-client/dist/socket.io.js"></script>
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
     <script src="bower_components/angular/angular.js"></script>

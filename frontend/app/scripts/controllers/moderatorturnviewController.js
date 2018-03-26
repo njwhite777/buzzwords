@@ -2,12 +2,17 @@
 
 /**
  * @ngdoc function
- * @name frontendApp.controller:moderatorturnviewController
+<<<<<<< HEAD
+ * @name frontendApp.controller:gameinitialorviewController
  * @description
- * # moderatorturnviewController
- * Controller of the left drawer of the application
+ * # gameinitiatorviewController
+ * Controller of the initial period of game
  */
-angular.module('frontendApp')
-  .controller('moderatorturnviewController', function () {
+ angular.module('frontendApp')
+  .controller('moderatorturnviewController', ['$scope', function ($scope) {
 
-});
+
+
+  // Do things in the drawer view.
+
+}]);
