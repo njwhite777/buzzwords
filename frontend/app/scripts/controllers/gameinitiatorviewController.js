@@ -7,5 +7,9 @@
  * # gameinitiatorviewController
  * Controller of the initial period of game
  */
-angular.module('frontendApp')
-      .controller('gameinitiatorviewController');
+ angular.module('frontendApp')
+  .controller('gameinitiatorviewController', function () {
+
+  // Do things in the drawer view.
+
+  });

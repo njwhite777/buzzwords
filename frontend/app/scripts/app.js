@@ -73,6 +73,11 @@ app.config(function($stateProvider) {
           name: 'gameplayerwaitview',
           templateUrl:"./views/_gameplayerwaitview.html",
           controller: 'gameplayerwaitviewController'
+        },
+        'moderatorturnview':{
+          name: 'moderatorturnview',
+          templateUrl:"./views/_moderatorturnview.html",
+          controller: 'moderatorturnviewController'
         }
       }
     };
