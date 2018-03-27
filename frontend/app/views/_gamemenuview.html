@@ -1,8 +1,7 @@
 <md-content layout="row">
   <div flex=40> Choose a Game
   <md-list>
-    <md-subheader class="md-no-sticky">Choose a game to join</md-subheader>
-    <md-list-item ng-repeat="game in games" ng-click="" class="">
+    <md-list-item ng-repeat="game in gameData.games" ng-click="" class="">
       <img alt="" ng-src="" class="" />
       <p>{{ game.name }}</p>
       <md-button class="btn-raised" > Join</md-button>
@@ -10,27 +9,21 @@
   </md-list>
 </div>
 
+<form name="createGameForm" novalidate ng-submit="createGameForm.$valid && gameStateValid()">
   <div flex>Create a Game
     <md-list>
+
       <md-list-item>
-      number of teams <input id="numberofTeam" type = "number" ng-model ="teamData.teamNumber">
-
-    </md-list-item>
-
-      <md-list-item ng-repeat= "team in teamData.team" ng-click="" class="">
-          <input placeholder= {{team}} name>
+        Number of Teams <input id="numberofTeam" type = "number" ng-model ="teamData.teamNumber">
       </md-list-item>
 
-      <md-button class = "md-fab" aria-label="Create">
+      <md-list-item ng-repeat= "team in teamData.team" ng-click="" class="">
+        <input placeholder=team name="{{team}}" ng-model="team" ng-change="teamFieldChanged('team')" ng-model-options='{ debounce: 1000 }'>
+      </md-list-item>
 
-
+      <md-button type="submit" ng-click="initiateGameButton()" class = "md-fab" aria-label="Create">
         <i class="material-icons">add</i>
-
       </md-button>
-
-
-
     </md-list>
   </div>
-
 </md-content>

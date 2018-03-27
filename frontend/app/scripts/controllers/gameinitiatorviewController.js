@@ -10,5 +10,5 @@
 
 angular.module('frontendApp')
       .controller('gameinitiatorviewController',['$scope',function(){
-
+        console.log("GameIV Controller");
 }]);

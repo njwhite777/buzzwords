@@ -10,9 +10,7 @@
 angular.module('frontendApp')
   .controller('appmenuController', [
     '$scope',
-    'gameService',
-    function ($scope,gameService) {
-
-      $scope.games  = gameService.games;
+    function ($scope) {
+      console.log("am controller")
 
   }]);

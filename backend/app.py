@@ -3,7 +3,7 @@ from flask import Flask,request
 import random, threading, webbrowser
 from flask_restful import Api, Resource
 from flask_socketio import SocketIO,emit
-
+from flask_cors import CORS
 
 from sqlalchemy import create_engine
 from db import create_db,delete_db
@@ -12,7 +12,7 @@ from sqlalchemy.orm import sessionmaker
 
 #  TODO: will probably want to load the models in the api classes so that they can be manipulated in
 #  the api endpoints.
-from api import Player,Card,Team,Round,GameTeam,GameRound,Game
+from api import Player,Card,Team,Round,GameTeam,GameRound,Game,GameDetails
 
 from models import Base as AppModelBase
 # TODO: This is where the ORM magic happens. Make sure additional classes are
@@ -25,6 +25,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-e','--env',default='dev',help="Pass the environment : dev, test, prod")
 
 
+
 if __name__ == '__main__':
 
     args = parser.parse_args()
@@ -32,6 +33,7 @@ if __name__ == '__main__':
     app = Flask(__name__)
     api = Api(app)
     socketio = SocketIO(app)
+    CORS(app)
 
     # SQLite Database for now
     engine = create_engine("sqlite:///db/{}.sqlite".format(args.env))
@@ -47,7 +49,8 @@ if __name__ == '__main__':
     # This defines the REST APIs that will be availible.
     api.add_resource(Player, '/player/<int:id>', endpoint = 'player')
     api.add_resource(Card, '/card/<int:id>', endpoint = 'card')
-    api.add_resource(Game, '/game/<int:id>', endpoint = 'game')
+    api.add_resource(Game,'/game', endpoint = 'game')
+    api.add_resource(GameDetails,'/game/<int:id>', endpoint = 'game_details')
     api.add_resource(Team, '/team/<int:id>', endpoint = 'team')
     api.add_resource(Round, '/round/<int:id>', endpoint = 'round')
 

@@ -8,7 +8,12 @@
  * Controller of the initial period of game
  */
 angular.module('frontendApp')
-      .controller('appscreenController',['$scope',function($scope){
+      .controller('appscreenController',[
+        '$scope',
+        '$state',
+        function($scope,$state){
+          console.log("AS controller.")
 
-
-}]);
+        }
+    ]
+  );
