@@ -1,2 +1,40 @@
 <div layout="column">
+  <div layout="row" flex=20>
+    <div flex=33>
+      <md-card>
+        <img src="./images/BuzzWords.jpg" class="md-card-image" alt="image caption">
+        <md-card-content>
+          <h2>CS690 Software Engineer</h2>
+   <p>Corrent Words</p>
+   <p>Forbidden Words</p>
+ </md-card-content>
+ <md-card-footer>
+   hints: source of the words
+ </md-card-footer>
+</md-card>
+    </div>
+    <div flex=33>
+    <i class="material-icons">query_builder</i>
+    </div>
+  <div>
+    <md-button class = "md-fab" aria-label="Create">
+
+
+      <i class="material-icons">pause_circle_filled</i>
+
+    </md-button>
+  </div>
+  </div>
+  <div layout="row">
+    <md-list>
+      <md-list-item np-repeat="team in teams" onclick="" class="">
+        <div layout="row">
+          <div flex=33> <i class="material-icons">indeterminate_check_box</i></div>
+          <div flex=33> {{team.name}}</div>
+          <div flex=33> <i class="material-icons">add</i></div>
+        </div>
+      </md-list-item>
+  </md-list>
+  </div>
+  <div layout="row"></div>
 </div>

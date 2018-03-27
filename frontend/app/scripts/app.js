@@ -52,58 +52,71 @@ app
         }
     });
 
+
+app.run(function($rootScope) {
+  $rootScope.$on("$stateChangeError", console.log.bind(console));
+});
+
 app.config(function($stateProvider) {
 
-    var main = {
-      name: 'main',
-      url: '',
-      views: {
-        'appmenu' : {
-          name: 'appmenu',
-          templateUrl: './views/_appmenu.html',
+    var mainState = {
+     url: '',
+     views :
+     {
+        "appmenu" : {
+          parent: 'root',
+          templateUrl:'./views/_appmenu.html',
           controller: 'appmenuController'
         },
-        'appscreen' : {
-          name: 'appscreen',
-          templateUrl: './views/_appscreen.html',
-          controller: 'appscreenController'
-        },
-        'appscreen.gamemenuview' : {
-          name: 'gamemenuview',
+        '':{
+          parent: 'root',
           templateUrl: './views/_gamemenuview.html',
           controller: 'gamemenuviewController'
-        },
-        'gameinitiatorview':{
-          name: 'gameinitiatorview',
-          templateUrl: './views/_gameinitiatorview.html',
-          controller: 'gameinitiatorviewController'
-        },
-        'gameplayerturnview':{
-          name: 'gameplayerturnview',
-          templateUrl:"./views/_gameplayerturnview.html",
-          controller: 'gameplayerturnviewController'
-        },
-        'gameplayerwaitview':{
-          name: 'gameplayerwaitview',
-          templateUrl:"./views/_gameplayerwaitview.html",
-          controller: 'gameplayerwaitviewController'
-        },
-        'moderatorturnview':{
-          name: 'moderatorturnview',
-          templateUrl:"./views/_moderatorturnview.html",
-          controller: 'moderatorturnviewController'
-        },
-        'tellerrolldieview':{
-          name: 'tellerrolldieview',
-          templateUrl:"./views/_tellerrolldieview.html",
-          controller: 'tellerrolldieviewController'
-        },
-        'tellerturnview':{
-          name: 'tellerturnview',
-          templateUrl:"./views/_tellerturnview.html",
-          controller: 'tellerturnviewController'
         }
       }
-    };
-    $stateProvider.state(main);
-  });
+   };
+
+   var gameplayerwait = {
+     url: '/waitforgame',
+     templateUrl : './views/_gameplayerwaitview.html',
+     controller: 'gameplayerwaitviewController'
+   }
+
+   var gameinitiatorwaitState = {
+     url: '/waitforplayers',
+     templateUrl : './views/_gameinitiatorview.html',
+     controller: 'gameinitiatorviewController'
+   }
+
+   var gameplayerturnState = {
+     url: '/play_turn',
+     templateUrl: './views/_gameplayerturnview.html',
+     controller: 'gameplayerturnviewController'
+   };
+
+   var tellerrolldieState = {
+     url: '/roll_die',
+     templateUrl :'./views/_tellerrolldieview.html',
+     controller:'tellerrolldieviewController'
+   };
+
+   var tellerturnState = {
+     url: '/play_teller_turn',
+     templateUrl :'./views/_tellerturnview.html',
+     controller:'tellerturnviewController'
+   }
+
+   var moderatorturnState = {
+     url: '/play_moderator_turn',
+     templateUrl : './views/_moderatorturnview.html',
+     controller : 'moderatorturnviewController'
+   };
+
+   $stateProvider.state('root',mainState);
+   $stateProvider.state('gameinitiatorwait',gameinitiatorwaitState);
+   $stateProvider.state('gameplayerwait',gameplayerwait);
+   $stateProvider.state('gameplayerturn',gameplayerturnState);
+   $stateProvider.state('tellerrolldie',tellerrolldieState);
+   $stateProvider.state('tellerturn',tellerturnState);
+   $stateProvider.state('moderatorturn',moderatorturnState);
+});

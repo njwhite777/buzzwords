@@ -12,23 +12,24 @@
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
   </head>
-  <body ng-app="frontendApp">
+  <body ng-app="frontendApp" ng-controller="indexController">
+
     <!--[if lte IE 8]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-    <div  ng-controller="indexController" ng-cloak flex style="height:100%">
+    <div  ng-cloak flex style="height:100%">
       <div layout="column">
         <md-toolbar class="md-hue-2">
           <div class="md-toolbar-tools">
-          <md-button class="md-icon-button" aria-label="Settings" ng-disabled="false" ng-click="toggleLeftDrawer()">
-            <i class="material-icons md-light">menu</i>
-          </md-button>
-          <h2 flex md-truncate>Configure</h2>
+            <md-button class="md-icon-button" aria-label="Settings" ng-disabled="false" ng-click="toggleLeftDrawer()">
+              <i class="material-icons md-light">menu</i>
+            </md-button>
+            <h2 flex md-truncate>Configure</h2>
           </div>
         </md-toolbar>
       </div>
@@ -50,10 +51,9 @@
         </md-sidenav>
       </section>
       <md-content flex layout-padding>
-        <div flex ui-view="appscreen"></div>
+        <div flex ui-view></div>
       </md-content>
-    </div>
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+    </div>    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
      <script>
        !function(A,n,g,u,l,a,r){A.GoogleAnalyticsObject=l,A[l]=A[l]||function(){
        (A[l].q=A[l].q||[]).push(arguments)},A[l].l=+new Date,a=n.createElement(g),
@@ -64,6 +64,7 @@
        ga('send', 'pageview');
     </script>
 
+    <script src="bower_components/socket.io-client/dist/socket.io.js"></script>
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
     <script src="bower_components/angular/angular.js"></script>
@@ -74,15 +75,15 @@
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="bower_components/angular-messages/angular-messages.js"></script>
     <script src="bower_components/angular-material/angular-material.js"></script>
-    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="bower_components/angular-socket-io/socket.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <!-- endbower -->
 
     <!-- endbuild -->
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
         <script src="scripts/services/socketService.js"></script>
-        <script src="scripts/controllers/main.js"></script>
+        <script src="scripts/controllers/indexController.js"></script>
         <script src="scripts/controllers/drawerLeftController.js"></script>
         <script src="scripts/controllers/appmenuController.js"></script>
         <script src="scripts/controllers/gamemenuviewController.js"></script>
