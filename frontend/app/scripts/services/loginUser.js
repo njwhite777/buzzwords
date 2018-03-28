@@ -7,47 +7,35 @@ angular.module('frontendApp')
   .service('loginUser',['localStorageService', function(localStorageService) {
 
     return {
-      validateToken : function(token){
-        // TODO: implement. Will need some backend functionality!
-        return true;
+      username : null,
+      email : null,
+      storeUsername : function(username){
+        localStorageService.set("username",username);
+        this.username = username;
       },
-      validateEmail : function(email){
-        // TODO: implement.  Will need some backend functionality!
-        return true;
-      },
-      validateUser : function(token,email){
-        // I know this would make some programmers cringe hardcore!
-        if(token == undefined && email == undefined){
-          // TODO: Retrieve email and token from local storage.
-          // TODO: Check with server if email and token are valid.
-          return this.registeredEmailInStorage() && this.validUserTokenInStorage();
-        }
-        return (this.validateToken(token) && this.validateEmail(email));
-      },
-      _debugStoreEmail : function(email){
+      storeEmail : function(email){
         localStorageService.set("userEmail",email);
+        this.email = email;
       },
-      _debugStoreToken : function(token){
-        localStorageService.set("userToken",token);
+      deleteUsername : function(){
+        return localStorageService.remove("username");
       },
-      _debugDeleteEmail : function(){
+      deleteEmail : function(){
         return localStorageService.remove("userEmail");
       },
-      _debugDeleteToken : function(){
-        return localStorageService.remove("userToken");
+      getUsername : function(){
+        return localStorageService.get("username");
       },
-      validUserTokenInStorage : function(){
-        var storageTok = localStorageService.get("userToken");
-        if(storageTok){
-          // return this.validateToken(storageTok);
-          return true;
-        }
-        return false;
+      getPlayerDetails : function(){
+        return { username : this.username, email : this.email };
       },
       registeredEmailInStorage: function(){
         var storageEmail = localStorageService.get("userEmail");
-        if(storageEmail){
-          // return this.validateEmail();
+        var storageUsername = localStorageService.get("username");
+        if(storageEmail && storageUsername){
+          this.email = storageEmail;
+          this.username = storageUsername;
+          // TODO: Do lookup on server to verify/notify that the user is checking back in.
           return true;
         }
         return false;

@@ -2,23 +2,34 @@
 
 /**
  * @ngdoc function
- * @name buzzwordsApp.controller:registerController
+ * @name buzzwordsApp.controller:loginController
  * @description
- * # registerController
+ * # loginController
  * Controller of the buzzwordsApp
  */
 angular.module('frontendApp')
-  .controller('registerController', [ '$scope','$mdPanel','loginUser','$stateParams', registerController]);
+  .controller('loginController', [
+    '$scope',
+    '$mdPanel',
+    'loginUser',
+    '$stateParams',
+    'playerService',
+    loginController]);
 
-function registerController ($scope,$mdPanel,validUser,$stateParams){
-  console.log("HERE!!")
+function loginController ($scope,$mdPanel,loginUser,$stateParams,playerService){
   this._mdPanel = $mdPanel;
   this.disableParentScroll = false;
-  this._validUser = validUser;
-  if(!validUser.validateUser()) this.showDialog();
+  this._validUser = loginUser;
+  if(!loginUser.registeredEmailInStorage())
+  {
+    this.showDialog();
+  }
+  playerService.emitPlayerJoined();
+  // playerService.
+
 }
 
-registerController.prototype.showDialog = function(){
+loginController.prototype.showDialog = function(){
   var position = this._mdPanel.newPanelPosition()
       .absolute()
       .center();
@@ -39,7 +50,7 @@ registerController.prototype.showDialog = function(){
     panelClass: 'registerOverlay',
     position: position,
     trapFocus: true,
-    zIndex: 150,
+    zIndex: 200,
     clickOutsideToClose: false,
     escapeToClose: false,
     animation: panelAnimation,
@@ -49,9 +60,16 @@ registerController.prototype.showDialog = function(){
   this._mdPanel.open(config);
 };
 
-var RegisterPanelController = function(mdPanelRef,validUser){
+var RegisterPanelController = function(mdPanelRef,loginUser){
   this._mdPanelRef = mdPanelRef;
-  this._validUser = validUser;
+  this._validUser = loginUser;
+  this.user = {};
+
+  var name = loginUser.getUsername();
+  if(name){
+    this.user.name = name;
+  }
+
 };
 
 RegisterPanelController.prototype.closeDialog = function() {
@@ -61,9 +79,6 @@ RegisterPanelController.prototype.closeDialog = function() {
     angular.element(document.querySelector('.demo-dialog-open-button')).focus();
     panelRef.destroy();
   });
-  console.log(this.user.name);
-  console.log(this.user.email);
-  // TODO: get rid of these when we are not debugging
-  this._validUser._debugStoreEmail(this.user.name);
-  this._validUser._debugStoreToken("deadbeef");
+  this._validUser.storeEmail(this.user.email);
+  this._validUser.storeUsername(this.user.name);
 };

@@ -10,7 +10,12 @@
 angular.module('frontendApp')
   .controller('appmenuController', [
     '$scope',
-    function ($scope) {
-      console.log("am controller")
+    'loginUser',
+    function ($scope,loginUser) {
+      $scope.loginUser = loginUser;
+      
+      $scope.userLogOut = function(){
+        loginUser.deleteEmail();
+      };
 
   }]);

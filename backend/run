@@ -1,1 +1,83 @@
 #!/usr/bin/env python
+import argparse
+from app import app,socketio,session,engine
+from flask_cors import CORS
+from db import create_db,delete_db
+from models import Base as AppModelBase
+from socketIO import *
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-e','--env',default='dev',help="Pass the environment : dev, test, prod")
+args = parser.parse_args()
+
+
+if __name__ == '__main__':
+    args = parser.parse_args()
+    CORS(app)
+
+    #  Flask is only responsible for implementing the game logic and the socket communications.
+    #   Don't need to launch the frontend from here.
+    #   it is completely decoupled and handled by the grunt serve process for the time being.
+    #   Eventually, will just be served by a static server like nginx or apache.
+
+    environment = args.env
+
+    # Gross doing stuff to test the db.
+    if(environment == 'testdb'):
+        from models import CardModel, PlayerModel, TeamModel, GameModel
+        delete_db(engine)
+        AppModelBase.metadata.create_all(engine)
+        Session = sessionmaker(bind=engine)
+        session = Session()
+        initiator = PlayerModel("Bob", "bob@yahoo.com", 2)
+        member1 = PlayerModel("Member 1", "member1@yahoo.com", 3)
+        member2 = PlayerModel("Member 2", "member2@yahoo.com", 3)
+        game = GameModel("CS699", initiator, 60)
+        team1 = TeamModel("Team 1")
+        team2 = TeamModel("Team 2")
+        teams = [team1, team2]
+        team1.add_member(initiator)
+        team1.add_member(member1)
+        team2.add_member(member2)
+        # session.add(member)
+        session.add(game)
+        session.add_all([
+            CardModel(buzzword="buzzword1",forbidden_words="{ 'word1':'word','word2':word' }",source="Class Notes",source_page="pg. 5"),
+            CardModel(buzzword="buzzword2",forbidden_words="{ 'word1':'word','word2':word' }",source="Class Notes",source_page="pg. 5"),
+            CardModel(buzzword="buzzword3",forbidden_words="{ 'word1':'word','word2':word' }",source="Class Notes",source_page="pg. 5")
+        ])
+        session.commit()
+        game.set_teams(teams)
+        session.commit()
+
+        # add used card to the game
+        used_card = session.query(CardModel).get(1)
+        # fetch the game from db
+        db_game = session.query(GameModel).get(1)
+        db_game.add_used_card(used_card)
+        session.add(db_game)
+        session.commit()
+        print(db_game.name)
+        # print the names of all teams with their team members:
+        for team in db_game.teams:
+            print("Team: " + team.team_name)
+            for member in team.members:
+                print("Name: " + member.nickname)
+        embed()
+
+        # print used cards
+        print("Used card: ")
+        for card in db_game.used_cards:
+            print("used card: " + card.buzzword)
+
+    if(environment in ['test','debug','dev']):
+        delete_db(engine)
+
+    AppModelBase.metadata.create_all(engine)
+
+    socketio.run(app,debug=True,port=5000,host='localhost')
+    # app.run(port=port, debug=False)
+
+    # try:
+    # except KeyboardInterrupt as e:
+    #     print("Keyboard interrupt! Shutting down server.")

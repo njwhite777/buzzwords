@@ -16,21 +16,39 @@ angular.module('frontendApp')
     var gameData = {};
     gameData['games'] = [];
     var socket = socketService.gameSocket;
+    var notifySocketReady = socketService.notifySocketReady;
 
     //TODO: when this service is initialized, should request a list of games from the API.
     //  game updates come over the games socket.
     //TODO: move the url definition into consts so that it can be in the same file as the
-    //  rest of the config stuff.
+    //  rest of the config stuff
 
-    $http({
-      method: 'GET',
-      url: 'http://localhost:5000/game'
-    }).then(function successCallback(response) {
-      if(response.status == 200){
-        if(debug) console.log(response.status);
-        gameData.games = response.data;
+    notifySocketReady().then(
+      function(result){
+        console.log("requesting games")
+        socket.emit('request_games');
+      },
+      function(result){
+
       }
-    }, function errorCallback(response) {});
+    );
+
+    socket.on('disconnect',function(){
+      if(debug) console.log("gameService:disconnected from socket");
+      notifySocketReady().then(
+        function(result){
+          socket.emit('request_games');
+        },
+        function(result){
+          console.log(result);
+        }
+      );
+    });
+
+    socket.on('game_list',function(data){
+      if(debug) console.log("games list",data);
+      gameData.games = data;
+    });
 
     // The event listener which listens for game creation events.
     socket.on('created_game',function(message){
