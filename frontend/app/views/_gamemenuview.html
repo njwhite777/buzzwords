@@ -18,7 +18,7 @@
       </md-list-item>
 
       <md-list-item ng-repeat= "team in teamData.team" ng-click="" class="">
-        <input placeholder=team name="{{team}}" ng-model="team" ng-change="teamFieldChanged('team')" ng-model-options='{ debounce: 1000 }'>
+        <input placeholder=team name="{{ team }}" ng-model="team" ng-change="teamFieldChanged('team')" ng-model-options='{ debounce: 1000 }'>
       </md-list-item>
 
       <md-button type="submit" ng-click="initiateGameButton()" class = "md-fab" aria-label="Create">

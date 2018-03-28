@@ -17,7 +17,8 @@ var app = angular
     'ngCookies',
     'ngResource',
     'ngSanitize',
-    'ui.router'
+    'ui.router',
+    'LocalStorageModule'
   ]);
 
 app
@@ -57,7 +58,14 @@ app.run(function($rootScope) {
   $rootScope.$on("$stateChangeError", console.log.bind(console));
 });
 
-app.config(function($stateProvider) {
+app.config(function($stateProvider,$urlRouterProvider,localStorageServiceProvider) {
+
+  localStorageServiceProvider
+ .setPrefix('buzzwordsApp');
+ // localStorageServiceProvider
+  // .setStorageType('sessionStorage');
+  localStorageServiceProvider
+  .setNotify(true, true);
 
     var mainState = {
      url: '',

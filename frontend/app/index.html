@@ -18,6 +18,7 @@
     <!-- endbuild -->
   </head>
   <body ng-app="frontendApp" ng-controller="indexController">
+    <div ng-app="registerController"></div>
 
     <!--[if lte IE 8]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
@@ -77,6 +78,7 @@
     <script src="bower_components/angular-material/angular-material.js"></script>
     <script src="bower_components/angular-socket-io/socket.js"></script>
     <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
     <!-- endbower -->
 
     <!-- endbuild -->
@@ -96,6 +98,8 @@
         <script src="scripts/controllers/appscreenController.js"></script>
         <script src="scripts/services/gameService.js"></script>
         <script src="scripts/services/viewSwapService.js"></script>
+        <script src="scripts/services/loginUser.js"></script>
+        <script src="scripts/controllers/registerController.js"></script>
         <!-- endbuild -->
 </body>
 </html>
