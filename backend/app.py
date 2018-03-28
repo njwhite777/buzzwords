@@ -93,17 +93,51 @@ if __name__ == '__main__':
 
 
     if(environment == 'testdb'):
-        from models import CardModel
+        from models import CardModel, PlayerModel, TeamModel, GameModel
         delete_db(engine)
         AppModelBase.metadata.create_all(engine)
         Session = sessionmaker(bind=engine)
         session = Session()
+        initiator = PlayerModel("Bob", "bob@yahoo.com", 2)
+        member1 = PlayerModel("Member 1", "member1@yahoo.com", 3)
+        member2 = PlayerModel("Member 2", "member2@yahoo.com", 3)
+        game = GameModel("CS699", initiator, 60)
+        team1 = TeamModel("Team 1")
+        team2 = TeamModel("Team 2")
+        teams = [team1, team2]
+        team1.add_member(initiator)
+        team1.add_member(member1)
+        team2.add_member(member2)
+        # session.add(member)
+        session.add(game)
         session.add_all([
             CardModel(buzzword="buzzword1",forbidden_words="{ 'word1':'word','word2':word' }",source="Class Notes",source_page="pg. 5"),
-            CardModel(buzzword="buzzword2",forbidden_words="{ 'word1':'word','word2':word' }",source="Class Notes",source_page="pg. 5")
+            CardModel(buzzword="buzzword2",forbidden_words="{ 'word1':'word','word2':word' }",source="Class Notes",source_page="pg. 5"),
+            CardModel(buzzword="buzzword3",forbidden_words="{ 'word1':'word','word2':word' }",source="Class Notes",source_page="pg. 5")
         ])
         session.commit()
+        game.set_teams(teams)
+        session.commit()
+
+        # add used card to the game
+        used_card = session.query(CardModel).get(1)
+        # fetch the game from db
+        db_game = session.query(GameModel).get(1)
+        db_game.add_used_card(used_card)
+        session.add(db_game)
+        session.commit()
+        print(db_game.name)
+        # print the names of all teams with their team members:
+        for team in db_game.teams:
+            print("Team: " + team.team_name)
+            for member in team.members:
+                print("Name: " + member.nickname)
         embed()
+
+        # print used cards
+        print("Used card: ")
+        for card in db_game.used_cards:
+            print("used card: " + card.buzzword)
 
     if(environment in ['test','debug','dev']):
         delete_db(engine)
