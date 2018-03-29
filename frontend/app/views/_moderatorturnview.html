@@ -1,3 +1,5 @@
+
+
 <div layout="column">
   <div layout="row" flex=20>
     <div flex=33>
@@ -5,6 +7,7 @@
         <img src="./images/BuzzWords.jpg" class="md-card-image" alt="image caption">
         <md-card-content>
           <h2>CS690 Software Engineer</h2>
+
    <p>Corrent Words</p>
    <p>Forbidden Words</p>
  </md-card-content>
@@ -13,28 +16,35 @@
  </md-card-footer>
 </md-card>
     </div>
-    <div flex=33>
-    <i class="material-icons">query_builder</i>
+    <div flex=33 id="vc">
+    <i class="material-icons md-icon-72"  >query_builder</i>
+    <div id="vci"><div id="content">
+      00:00
+        </div></div>
     </div>
-  <div>
+  <div flex=33>
     <md-button class = "md-fab" aria-label="Create">
 
 
-      <i class="material-icons">pause_circle_filled</i>
+      <i class="material-icons md-48">pause_circle_filled</i>
 
     </md-button>
   </div>
-  </div>
-  <div layout="row">
+</div>
+
     <md-list>
-      <md-list-item np-repeat="team in teams" onclick="" class="">
+      <md-list-item np-repeat="team in data.team" onclick="" class="">
         <div layout="row">
-          <div flex=33> <i class="material-icons">indeterminate_check_box</i></div>
+          <md-button class="md-fab" aria-label="add" ng-click = "addPoints(team)">
+            <div flex=33> <i class="material-icons md-48">add</i></div>
+          </md-button>
           <div flex=33> {{team.name}}</div>
-          <div flex=33> <i class="material-icons">add</i></div>
+          <md-button class="md-fab" aria-label="minus" ng-click = "minusPoints(team)">
+            <div flex=33> <i class="material-icons md-48">indeterminate_check_box</i></div>
+          </md-button>
         </div>
       </md-list-item>
   </md-list>
-  </div>
+
   <div layout="row"></div>
 </div>

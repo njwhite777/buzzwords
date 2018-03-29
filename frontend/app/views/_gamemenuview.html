@@ -1,5 +1,5 @@
 <md-content layout="row">
-  <div flex=40> Choose a Game
+  <div flex=40 class="font-open"> Choose a Game
   <md-list>
     <md-list-item ng-repeat="game in gameData.games" ng-click="" class="">
       <img alt="" ng-src="" class="" />
@@ -10,10 +10,10 @@
 </div>
 
 <form name="createGameForm" novalidate ng-submit="createGameForm.$valid && gameStateValid()">
-  <div flex>Create a Game
+  <div ><p class="font-open" style="color:#000">Create a Game</p>
     <md-list>
 
-      <md-list-item>
+      <md-list-item >
         Number of Teams <input id="numberofTeam" type = "number" ng-model ="teamData.teamNumber">
       </md-list-item>
 
