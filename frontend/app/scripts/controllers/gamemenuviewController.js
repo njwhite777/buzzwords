@@ -19,7 +19,7 @@ function ($scope,gameService,$state,$http,debug) {
   if(debug) console.log("GM View controller");
   // Note: The games service is responsible for keeping the gameData object up to date.
   //  as long as we are using an object e.g. "{}" changes are automatically detected and synchronzied!
-  $scope.gameServiceData = gameService.gameData;
+  $scope.gameServiceData = gameService.gameServiceData;
   $scope.gameData = {
     maxNumberOfPlayers: 3,
     turnDuration: 30,

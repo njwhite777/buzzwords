@@ -13,9 +13,9 @@ angular.module('frontendApp')
 
     if(debug) console.log("game Service!");
 
-    var gameData = {};
-    gameData.games = [];
-    gameData.showGameStartButton = false;
+    var gameServiceData = {};
+    gameServiceData.games = [];
+    gameServiceData.showGameStartButton = false;
 
     var socket = socketService.gameSocket;
 
@@ -26,7 +26,7 @@ angular.module('frontendApp')
 
     var validateGameConfig = function(game){
       // This is bad. Introduces temporal coupling...
-      gameData._checkGameName = game.name;
+      gameServiceData._checkGameName = game.name;
       game._gameValid = true;
       socket.emit('validate_game_config',game);
     };
@@ -40,9 +40,8 @@ angular.module('frontendApp')
     );
 
     socket.on('show_game_start_button_enabled',function(data){
-      console.log(data,gameData._checkGameName);
-      if(data.name == gameData._checkGameName){
-        gameData.showGameStartButton=true;
+      if(data.name == gameServiceData._checkGameName){
+        gameServiceData.showGameStartButton=true;
       }
     });
 
@@ -62,7 +61,7 @@ angular.module('frontendApp')
 
     socket.on('game_list',function(data){
       if(debug) console.log("games list",data);
-      gameData.games = data;
+      gameServiceData.games = data;
     });
 
     // The event listener which listens for game creation events.
@@ -80,7 +79,7 @@ angular.module('frontendApp')
     });
 
     return {
-      gameData : gameData,
+      gameServiceData : gameServiceData,
       validateGameConfig : validateGameConfig,
     };
 

@@ -31,13 +31,11 @@ def request_games():
 def validate_game(data):
     # TODO: returns if the game is valid or not.
     # emits only to the requesting client.
-    print(request.namespace, file=sys.stderr)
-    print(request.sid,file=sys.stderr)
-    print(data, file=sys.stderr)
-    print("HERE!!!!", file=sys.stderr)
-
     if(data['_gameValid']):
-        emit('show_game_start_button')
+        emit('show_game_start_button_enabled',{'name':data['name'],'valid':True})
+    else:
+        emit('show_game_start_button_enabled',{'name':data['name'],'valid':False})
+
 
 # init_game: once a game is validated, a client should be able to transmit an init_game.
 #  once this has happened and the game has been inited in the db,
