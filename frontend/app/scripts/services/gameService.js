@@ -14,28 +14,43 @@ angular.module('frontendApp')
     if(debug) console.log("game Service!");
 
     var gameData = {};
-    gameData['games'] = [];
+    gameData.games = [];
+    gameData.showGameStartButton = false;
+
     var socket = socketService.gameSocket;
-    var notifySocketReady = socketService.notifySocketReady;
 
     //TODO: when this service is initialized, should request a list of games from the API.
     //  game updates come over the games socket.
     //TODO: move the url definition into consts so that it can be in the same file as the
     //  rest of the config stuff
 
-    notifySocketReady().then(
+    var validateGameConfig = function(game){
+      // This is bad. Introduces temporal coupling...
+      gameData._checkGameName = game.name;
+      game._gameValid = true;
+      socket.emit('validate_game_config',game);
+    };
+
+    // Gets the game list when a game view that needs it is rendered.
+    socketService.notifySocketReady().then(
       function(result){
-        console.log("requesting games")
         socket.emit('request_games');
       },
-      function(result){
-
-      }
+      function(result){}
     );
 
+    socket.on('show_game_start_button_enabled',function(data){
+      console.log(data,gameData._checkGameName);
+      if(data.name == gameData._checkGameName){
+        gameData.showGameStartButton=true;
+      }
+    });
+
+    // On a disconnect from the server set up a listener to notify when then
+    //  socket is back up. When it is, request games.
     socket.on('disconnect',function(){
       if(debug) console.log("gameService:disconnected from socket");
-      notifySocketReady().then(
+      socketService.notifySocketReady().then(
         function(result){
           socket.emit('request_games');
         },
@@ -65,7 +80,8 @@ angular.module('frontendApp')
     });
 
     return {
-      'gameData' : gameData
+      gameData : gameData,
+      validateGameConfig : validateGameConfig,
     };
 
   }]);
