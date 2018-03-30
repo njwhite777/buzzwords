@@ -1,0 +1,22 @@
+<div role="dialog" aria-label="Register Dialog" class="registerDialog md-whiteframe-1dp"  layout="column" layout-align="center center">
+  <div layout="row" layout-padding>
+      <h3>Hello, please provide some details to play!</h3>
+  </div>
+  <div layout="row">
+    <md-input-container>
+      <label>Email</label>
+      <input type="email" ng-model="ctrl.user.email">
+    </md-input-container>
+  </div>
+  <div layout="row">
+    <md-input-container>
+      <label>Desired Player Name</label>
+      <input type="text" ng-model="ctrl.user.name">
+    </md-input-container>
+  </div>
+  <div layout="row" class="demo-dialog-button">
+    <md-button md-autofocus flex class="md-primary md-button md-raised" ng-click="ctrl.closeDialog()">
+      Submit
+    </md-button>
+  </div>
+</div>

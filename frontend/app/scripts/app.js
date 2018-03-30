@@ -17,7 +17,8 @@ var app = angular
     'ngCookies',
     'ngResource',
     'ngSanitize',
-    'ui.router'
+    'ui.router',
+    'LocalStorageModule'
   ]);
 
 app
@@ -31,6 +32,7 @@ app
       'gameSocketName' : 'game',
       'viewSocketName' : 'view',
       'timerSocketName' : 'timer',
+      'playerSocketName' : 'player',
       'getSocketNameHelper' :
         function(){
           return this.proto + this.host + ":"+ this.port+"/"+this.namespace;
@@ -49,6 +51,9 @@ app
           if(whichSocket == 'timer'){
             return this.getSocketNameHelper() + '/' + this.timerSocketName;
           }
+          if(whichSocket == 'player'){
+            return this.getSocketNameHelper() + '/' + this.playerSocketName;
+          }
         }
     });
 
@@ -57,13 +62,20 @@ app.run(function($rootScope) {
   $rootScope.$on("$stateChangeError", console.log.bind(console));
 });
 
-app.config(function($stateProvider) {
+app.config(function($stateProvider,$urlRouterProvider,localStorageServiceProvider) {
+
+  localStorageServiceProvider
+ .setPrefix('buzzwordsApp');
+ // localStorageServiceProvider
+  // .setStorageType('sessionStorage');
+  localStorageServiceProvider
+  .setNotify(true, true);
 
     var mainState = {
-     url: '',
+     url: '/',
      views :
      {
-        "appmenu" : {
+        "appmenu@" : {
           parent: 'root',
           templateUrl:'./views/_appmenu.html',
           controller: 'appmenuController'

@@ -13,24 +13,56 @@ angular.module('frontendApp')
 
     if(debug) console.log("game Service!");
 
-    var gameData = {};
-    gameData['games'] = [];
+    var gameServiceData = {};
+    gameServiceData.games = [];
+    gameServiceData.showGameStartButton = false;
+
     var socket = socketService.gameSocket;
 
     //TODO: when this service is initialized, should request a list of games from the API.
     //  game updates come over the games socket.
     //TODO: move the url definition into consts so that it can be in the same file as the
-    //  rest of the config stuff.
+    //  rest of the config stuff
 
-    $http({
-      method: 'GET',
-      url: 'http://localhost:5000/game'
-    }).then(function successCallback(response) {
-      if(response.status == 200){
-        if(debug) console.log(response.status);
-        gameData.games = response.data;
+    var validateGameConfig = function(game){
+      // This is bad. Introduces temporal coupling...
+      gameServiceData._checkGameName = game.name;
+      game._gameValid = true;
+      socket.emit('validate_game_config',game);
+    };
+
+    // Gets the game list when a game view that needs it is rendered.
+    socketService.notifySocketReady().then(
+      function(result){
+        socket.emit('request_games');
+      },
+      function(result){}
+    );
+
+    socket.on('show_game_start_button_enabled',function(data){
+      if(data.name == gameServiceData._checkGameName){
+        gameServiceData.showGameStartButton=true;
       }
-    }, function errorCallback(response) {});
+    });
+
+    // On a disconnect from the server set up a listener to notify when then
+    //  socket is back up. When it is, request games.
+    socket.on('disconnect',function(){
+      if(debug) console.log("gameService:disconnected from socket");
+      socketService.notifySocketReady().then(
+        function(result){
+          socket.emit('request_games');
+        },
+        function(result){
+          console.log(result);
+        }
+      );
+    });
+
+    socket.on('game_list',function(data){
+      if(debug) console.log("games list",data);
+      gameServiceData.games = data;
+    });
 
     // The event listener which listens for game creation events.
     socket.on('created_game',function(message){
@@ -47,7 +79,8 @@ angular.module('frontendApp')
     });
 
     return {
-      'gameData' : gameData
+      gameServiceData : gameServiceData,
+      validateGameConfig : validateGameConfig,
     };
 
   }]);

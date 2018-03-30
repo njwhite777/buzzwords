@@ -1,2 +1,13 @@
-<div>
-</div>
+<md-container layout="row">
+  <div flex="70">
+      <div>
+        Email : {{ loginUser.email }}
+      </div>
+      <div>
+        Username : {{ loginUser.username }}
+      </div>
+  </div>
+  <div flex="30">
+    <md-button ng-click="userLogOut()" class="md-raised">Logout <md-icon class="material-icons">exit_to_app</md-icon>  <md-button>
+  </div>
+</md-container>

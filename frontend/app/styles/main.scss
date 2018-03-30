@@ -1,5 +1,27 @@
 // bower:scss
 // endbower
+/*Customize change size of Google Icon*/
+@mixin md-icon-size($size: 24px) {
+  font-size: $size;
+  height: $size;
+  width: $size;
+}
+
+.md-icon-72 {
+  @include md-icon-size(72px);
+}
+
+.md-icon-18 {
+  @include md-icon-size(18px);
+}
+
+.md-icon-24 {
+  @include md-icon-size(24px);
+}
+
+.md-icon-36 {
+  @include md-icon-size(36px);
+}
 
 .browsehappy {
   margin: 0.2em 0;
@@ -8,10 +30,25 @@
   padding: 0.2em 0;
 }
 
-body {
+
+.font-ubuntu{
+  padding: 0;
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 48px;
+}
+
+
+.font-open{
   padding: 0;
   font-family: 'Open Sans', sans-serif;
+  font-size: 36px;
+  text-align: center;
+  color: #070
 }
+
+#vc { display:table; background-color:#FFFFFF; width:200px; height:200px; overflow:hidden; margin-left:50px; _position:relative; }
+    #vci { vertical-align:middle; display:table-cell; text-align:center; _position:absolute; _top:50%; _left:50%; }
+    #content { color:#000; border:1px solid #000; display:inline-block; _position:relative; _top:-50%; _left:-50%; }
 
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -22,6 +59,9 @@ body {
   padding-right: 15px;
 }
 
+.registerDialog{
+  background-color: #fff;
+}
 /* Custom page header */
 .header {
   border-bottom: 1px solid #e5e5e5;

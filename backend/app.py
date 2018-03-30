@@ -3,24 +3,18 @@ from flask import Flask,request
 import random, threading, webbrowser
 from flask_restful import Api, Resource
 from flask_socketio import SocketIO,emit
-from flask_cors import CORS
-
 from sqlalchemy import create_engine
-from db import create_db,delete_db
 from sqlalchemy.orm import sessionmaker
 
-
-#  TODO: will probably want to load the models in the api classes so that they can be manipulated in
-#  the api endpoints.
-from api import Player,Card,Team,Round,GameTeam,GameRound,Game,GameDetails
-
-from models import Base as AppModelBase
+# TODO: there is still more restructuring to happen.
+from db import create_db
 # TODO: This is where the ORM magic happens. Make sure additional classes are
 #  created in ./models and imported by __init__.py
-from models import *
 import argparse
+import sys
 from IPython import embed
 
+<<<<<<< HEAD
 parser = argparse.ArgumentParser()
 parser.add_argument('-e','--env',default='dev',help="Pass the environment : dev, test, prod")
 
@@ -147,7 +141,14 @@ if __name__ == '__main__':
 
     socketio.run(app,debug=True,port=5000,host='localhost')
     # app.run(port=port, debug=False)
+=======
+app = Flask(__name__)
+socketio = SocketIO(app)
+>>>>>>> c583f21be9851abba888ac7aece6a74c73901434
 
-    # try:
-    # except KeyboardInterrupt as e:
-    #     print("Keyboard interrupt! Shutting down server.")
+#
+# TODO: more db setup based on the env that gets passed in.
+engine = create_engine("sqlite:///db/{}.sqlite".format("dev"))
+create_db(engine)
+Session = sessionmaker(bind=engine)
+session = Session()
