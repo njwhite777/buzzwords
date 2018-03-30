@@ -14,10 +14,12 @@ class Card(Base):
     lost_count = Column(Integer)
     source      = Column(String)
     source_page = Column(String)
+    source_page = Column(String)
+    is_phrase = Column(Integer)
     card = relationship("Turn", lazy = False)
     # turns = relationship("Turn", backref = "card", lazy = False)
 
-    def __init__(self,buzzword,forbidden_words,source,source_page,skipped_count=0,won_count=0,lost_count=0):
+    def __init__(self,buzzword,forbidden_words,source,source_page,skipped_count=0,won_count=0,lost_count=0, is_phrase = 0):
         self.buzzword           = buzzword
         self.forbidden_words    = forbidden_words
         self.skipped_count      = skipped_count
@@ -25,6 +27,7 @@ class Card(Base):
         self.lost_count         = lost_count
         self.source             = source
         self.source_page        = source_page
+        self.is_phrase = is_phrase
         # self.turns              = turns
 
     def __repr__(self):

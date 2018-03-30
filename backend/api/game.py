@@ -8,7 +8,6 @@ class Game(Resource):
     def __init__(self):
         pass
 
-
     def get(self):
         return [
             {'id':10,'name':'blatherStammer','teams':['t1','t2','t3']},
@@ -17,6 +16,10 @@ class Game(Resource):
             {'id':13,'name':'fearthebeard','teams':['t1','t2','t3']},
             {'id':13,'name':'whatthe?','teams':['t1','t2','t3']},
             ]
+
+    def post(self):
+        pass
+
 
 
 

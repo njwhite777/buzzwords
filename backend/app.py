@@ -122,7 +122,8 @@ if __name__ == '__main__':
         # add used card to the game
         used_card = session.query(CardModel).get(1)
         # fetch the game from db
-        db_game = session.query(GameModel).get(1)
+        # db_game = session.query(GameModel).get(1)
+        db_game = GameModel.get_game_by_id(session, 1)
         db_game.add_used_card(used_card)
         session.add(db_game)
         session.commit()
