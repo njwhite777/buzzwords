@@ -34,30 +34,17 @@
       <input ng-model="gameData.name">
     </md-input-container>
 
-    <md-list>
-      <md-list-item>
-        <md-input-container class="md-block" flex-gt-sm>
-          Number of Teams <input id="numberofTeam" type = "number" ng-model ="gameData.teamNumber" ng-max = "5" max="5">
-        </md-input-container>
-      </md-list-item>
-
-<<<<<<< HEAD
-  <md-list>
-    <md-list-item>
-      <md-input-container class="md-block" flex-gt-sm>
-        Number of Teams <input id="gameData.teamNumber" type = "number" ng-model ="gameData.teamNumber" ng-change="forceBack(gameData,'teamNumber',5,1)" ng-model-options='{debounce:1000}'>
-=======
-      <md-input-container ng-repeat= "team in gameData.teamData" ng-click="" class="">
-        <input placeholder="{{ team.prettyName }}" name="{{ team.prettyName }}" ng-model="team.name" ng-change="formFieldChanged()" ng-model-options='{ debounce: 1000 }'>
->>>>>>> 04b66d9dd2f9ac8d3d6afba576d1400a114d8a0c
-      </md-input-container>
-    </md-list>
 
     <md-input-container class="md-block" flex-gt-sm>
-      Max Players/Team <input id="gameData.maxNumberOfPlayers" type = "number" ng-change="forceBack();formFieldChanged()" ng-model ="gameData.maxNumberOfPlayers">
+      Number of Teams <input id="gameData.teamNumber" type = "number" ng-model ="gameData.teamNumber" ng-change="forceBack(gameData,'teamNumber',5,1)" ng-model-options='{debounce:1000}'>
     </md-input-container>
-<<<<<<< HEAD
-  </md-list>
+    <md-list>
+      <md-list-item>
+
+      <md-input-container ng-repeat= "team in gameData.teamData" ng-click="" class="">
+        <input placeholder="{{ team.prettyName }}" name="{{ team.prettyName }}" ng-model="team.name" ng-change="formFieldChanged()" ng-model-options='{ debounce: 1000 }'>
+      </md-input-container>
+    </md-list>
 
   <md-input-container class="md-block" flex-gt-sm>
     Max Players/Team <input id="gameData.maxNumberOfPlayers" type = "number" ng-change="forceBack(gameData,'maxNumberOfPlayers',6,2);formFieldChanged()" ng-model-options='{debounce:1000}'  ng-model ="gameData.maxNumberOfPlayers">
@@ -73,13 +60,8 @@
     <md-option ng-value="opt" ng-repeat="opt in gameData.turnDuration">{{ opt }}</md-option>
   </md-select>
 </md-input-container>
-=======
 
 
-    <md-input-container class="md-block" flex-gt-sm>
-      Turn Duration <input id="gameData.roundDuration" type = "number" ng-change="formFieldChanged()" ng-model ="gameData.turnDuration">
-    </md-input-container>
->>>>>>> 04b66d9dd2f9ac8d3d6afba576d1400a114d8a0c
 
     <md-input-container class="md-block" flex-gt-sm>
       Turn Modifiers:
