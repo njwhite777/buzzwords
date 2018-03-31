@@ -35,7 +35,9 @@ angular.module('frontendApp')
         }, wait || 10);
       };
     }
-
+    $scope.isOpenLeft = function(){
+      return $mdSidenav('left').isOpen();
+    }
     function buildDelayedToggler(navID) {
       return debounce(function() {
         // Component lookup should always be available since we are not using `ng-if`

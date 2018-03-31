@@ -44,10 +44,10 @@ def validate_game(data):
     # emits only to the requesting client.
     if(data['_gameValid']):
         data['valid']=True
-        emit('show_game_start_button_enabled',data)
+        emit('show_game_init_button_enabled',data)
     else:
         data['valid']=False
-        emit('show_game_start_button_enabled',data)
+        emit('show_game_init_button_enabled',data)
 
 # init_game: once a game is validated, a client should be able to transmit an init_game.
 #  once this has happened and the game has been inited in the db,

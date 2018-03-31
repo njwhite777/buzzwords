@@ -32,3 +32,7 @@ Running `grunt test` will run the unit tests with karma.
 
 ## Useful Online Documents:  
 deepstream-Rethink: https://deepstreamhub.com/open-source/integrations/db-rethinkdb/  
+
+
+## Resources:
+Digital Clock: https://codepen.io/Dunner/pen/MYPKgz
