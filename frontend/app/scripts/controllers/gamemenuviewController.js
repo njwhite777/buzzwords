@@ -39,11 +39,6 @@ function ($scope,gameService,$state,$http,debug) {
     }
     data.expanded = !data.expanded;
   };
-  // $scope.accordianData = [{'id':10,'name':'workworkwork','teams':['t1','t2','t3']},
-  //     {'id':11,'name':'textualChallenge','teams':['red','blue','green']},
-  //     {'id':12,'name':'talkTalkTalk','teams':['t1','t2','t3']},
-  //     {'id':13,'name':'fearthebeard','teams':['t1','t2','t3']},
-  //     {'id':13,'name':'gogogo','teams':['t1','t2','t3']}]
 
   $scope.accordingData = $scope.gameServiceData.games;
   console.log($scope.accordingData);
@@ -88,7 +83,9 @@ function ($scope,gameService,$state,$http,debug) {
   $scope.gameData.turnDuration = [10,20,30];
   $scope.gameData.selectedDuration = 10;
   $scope.getData = function(){
-    console.log($scope.gameData.selectedDuration);
+    if(debug){
+      console.log($scope.gameData.selectedDuration);
+    };
   };
 
 }]);
