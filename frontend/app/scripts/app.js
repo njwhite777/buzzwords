@@ -64,6 +64,9 @@ app.run(function($rootScope) {
 
 app.config(function($stateProvider,$urlRouterProvider,localStorageServiceProvider) {
 
+
+  $urlRouterProvider.when("", "/");
+
   localStorageServiceProvider
  .setPrefix('buzzwordsApp');
  // localStorageServiceProvider
