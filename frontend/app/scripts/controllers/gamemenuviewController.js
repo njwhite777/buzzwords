@@ -75,13 +75,20 @@ function ($scope,gameService,$state,$http,debug) {
     gameService.validateGameConfig($scope.gameData);
   }
 
-  $scope.forceBack = function(){
-    $scope.isExceed = false;
-    if($scope.gameData.maxNumberOfPlayers > 5){
-      $scope.gameData.maxNumberOfPlayers = 5;
-      console.log("exceed maximun value");
-      $scope.isExceed = true;
+  $scope.forceBack = function(object,fieldString,max,min){
+
+    if(object[fieldString] > max){
+      alert(fieldString + " cannot larger than" + max);
+      object[fieldString] = max;
+    }else if(object < min){
+      object[fieldString] = min;
+      alert(fieldString + " cannot less than" + min);
     }
   }
+  $scope.gameData.turnDuration = [10,20,30];
+  $scope.gameData.selectedDuration = 10;
+  $scope.getData = function(){
+    console.log($scope.gameData.selectedDuration);
+  };
 
 }]);
