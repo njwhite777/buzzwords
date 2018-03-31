@@ -4,7 +4,7 @@
 // https://stackoverflow.com/questions/18247130/how-do-i-store-data-in-local-storage-using-angularjs
 
 angular.module('frontendApp')
-  .service('loginUser',['localStorageService', function(localStorageService) {
+  .service('loginUser',['localStorageService','playerService', function(localStorageService,playerService) {
 
     return {
       username : null,
@@ -29,12 +29,18 @@ angular.module('frontendApp')
       getPlayerDetails : function(){
         return { username : this.username, email : this.email };
       },
+      createNewPlayer : function(email,username){
+        this.storeEmail(email);
+        this.storeUsername(username);
+        playerService.emitPlayerJoined(this.getPlayerDetails());
+      },
       registeredEmailInStorage: function(){
         var storageEmail = localStorageService.get("userEmail");
         var storageUsername = localStorageService.get("username");
         if(storageEmail && storageUsername){
           this.email = storageEmail;
           this.username = storageUsername;
+          playerService.emitPlayerJoined(this.getPlayerDetails());
           // TODO: Do lookup on server to verify/notify that the user is checking back in.
           return true;
         }

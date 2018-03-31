@@ -24,7 +24,8 @@ function ($scope,gameService,$state,$http,debug) {
   console.log(gameService.gameServiceData.teams)
   $scope.gameData = {
     maxNumberOfPlayers: 3,
-    turnDuration: 30,
+    turnDurationOptions: [20,30,60],
+    turnDuration : 30,
     teamNumber: 2,
     turnModifiers: true,
     name:"",
@@ -80,8 +81,7 @@ function ($scope,gameService,$state,$http,debug) {
       alert(fieldString + " cannot less than" + min);
     }
   }
-  $scope.gameData.turnDuration = [10,20,30];
-  $scope.gameData.selectedDuration = 10;
+
   $scope.getData = function(){
     if(debug){
       console.log($scope.gameData.selectedDuration);
