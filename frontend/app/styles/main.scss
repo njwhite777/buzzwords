@@ -1,11 +1,111 @@
 // bower:scss
 // endbower
+/*Customize change size of Google Icon*/
+@import url('https://fonts.googleapis.com/css?family=Cabin|Dosis|Mina|Padauk|Quicksand|Rubik');
+@import "./clock";
+
+$font-ubuntu: 'Ubuntu', sans-serif;
+$font-cabin: 'Cabin', sans-serif;
+$font-padauk: 'Padauk', sans-serif;
+
+$default-font: $font-cabin;
+
+@mixin font-fam-size($font,$size) {
+  font-family: $font;
+  font-size: $size;
+}
+
+@mixin font-medium($font) {
+  font-family: $font;
+  font-size: 32px;
+}
+
+@mixin font-small($font) {
+  font-family: $font;
+  font-size: 18px;
+}
+
+@mixin font-large($font) {
+  font-family: $font;
+  font-size: 40px;
+}
+
+@mixin md-icon-size($size: 24px) {
+  font-size: $size;
+  height: $size;
+  width: $size;
+}
+
+.md-icon-72 {
+  @include md-icon-size(72px);
+}
+
+.md-icon-18 {
+  @include md-icon-size(18px);
+}
+
+.md-icon-24 {
+  @include md-icon-size(24px);
+}
+
+.md-icon-36 {
+  @include md-icon-size(36px);
+}
+
+.font-cabin {
+  padding: 0;
+  font-family: 'Cabin', sans-serif;
+  font-size: 48px;
+}
+
+.font-cabin {
+  padding: 0;
+  font-family: 'Cabin', sans-serif;
+  font-size: 48px;
+}
+
+.font-ubuntu{
+  padding: 0;
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 48px;
+}
+
+body{
+  @include font-small($default-font);
+}
+
+p {
+  @include font-small($default-font);
+}
+
+h1 {
+  @include font-large($default-font);
+}
+
+h3  {
+  @include font-medium($default-font);
+}
+.text-med{
+  @include font-medium($default-font);
+}
+
+.text-medsmall {
+  @include font-fam-size($default-font,"24px");
+}
+
+.text-small{
+  @include font-small($default-font);
+}
+
+
+.md-accordion {
+  margin: 0px;
+}
 /*Choose team in game list*/
 .md-accordion .expandCollapse {
   width: 30px;
   height: 30px;
   position: relative;
-  font-size: 20px;
   font-weight: bold;
   cursor: pointer;
   color: #fff;
@@ -58,7 +158,6 @@
 }
 
 .md-accordion .dataContent {
-  background: #F2F2F2;
   height: 0px;
   overflow: hidden;
   -webkit-transition: .3s all ease-out;
@@ -73,89 +172,12 @@
 
 .md-accordion md-toolbar {
   cursor: pointer;
-  border-bottom: 1px solid rgb(63, 107, 181)
 }
 
 md-slider canvas {
   height: 30px;
 }
-/*Customize change size of Google Icon*/
 
-@import "./clock";
-
-$font-cabin: 'Cabin', sans-serif;
-$default-font: $font-cabin;
-
-@mixin font-medium($font) {
-  font-family: $font;
-  font-size: 32px;
-}
-
-@mixin font-small($font) {
-  font-family: $font;
-  font-size: 18px;
-}
-
-@mixin font-large($font) {
-  font-family: $font;
-  font-size: 40px;
-}
-
-@import url('https://fonts.googleapis.com/css?family=Cabin|Dosis|Mina|Padauk|Quicksand|Rubik');
-
-@mixin md-icon-size($size: 24px) {
-  font-size: $size;
-  height: $size;
-  width: $size;
-}
-
-.md-icon-72 {
-  @include md-icon-size(72px);
-}
-
-.md-icon-18 {
-  @include md-icon-size(18px);
-}
-
-.md-icon-24 {
-  @include md-icon-size(24px);
-}
-
-.md-icon-36 {
-  @include md-icon-size(36px);
-}
-
-.browsehappy {
-  margin: 0.2em 0;
-  background: #ccc;
-  color: #000;
-  padding: 0.2em 0;
-}
-
-.font-cabin {
-  padding: 0;
-  font-family: 'Cabin', sans-serif;
-  font-size: 48px;
-}
-
-.font-ubuntu{
-  padding: 0;
-  font-family: 'Ubuntu', sans-serif;
-  font-size: 48px;
-}
-
-body{
-
-}
-
-
-.font-open{
-  padding: 0;
-  font-family: 'Open Sans', sans-serif;
-  font-size: 36px;
-  text-align: center;
-  color: #070
-}
 
 #vc { display:table; background-color:#FFFFFF; width:200px; height:200px; overflow:hidden; margin-left:50px; _position:relative; }
     #vci { vertical-align:middle; display:table-cell; text-align:center; _position:absolute; _top:50%; _left:50%; }
@@ -222,19 +244,16 @@ body{
   background-color: #014574;
 }
 
-.loading_text {
+.text h3 {
+  @include font-large($default-font);
+}
+
+.text-center {
   margin: 100px auto 0;
   width: 300px;
   text-align: center;
 }
 
-.loading_text > p {
-  @include font-medium($default-font);
-}
-
-.loading_text > button {
-  @include font-small($default-font);
-}
 // Thanks for dots animation!
 // https://codepen.io/danielmorosan/pen/XmYBVx
 .spinner {

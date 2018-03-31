@@ -1,65 +1,68 @@
-<md-content layout="row">
-  <div flex=40 class="font-open"> Choose a Game
-
-  <div class="md-accordion" ng-repeat="game in gameServiceData.games">
-
-    <md-toolbar ng-init="game.expanded = false" ng-click="collapseAll(game)">
-      <div class="md-toolbar-tools">
-        <h2>
-                <span>{{game.name}}</span>
-          </h2>
-        <span flex=""></span>
-        <span ng-class="{expandCollapse:true, active:game.expanded}"></span>
+<md-content layout="row" layout-xs="column">
+  <div flex class="text" layout-margin>
+    <div class="text-med"> Choose a Game </div>
+    <div class="md-accordion" ng-repeat="game in gameServiceData.games">
+      <md-toolbar ng-init="game.expanded = false" ng-click="collapseAll(game)">
+        <div class="md-toolbar-tools">
+          <div class="text-medsmall"> {{ game.name }} </div>
+          <span flex=""></span>
+          <span ng-class="{expandCollapse:true, active:game.expanded}"></span>
+        </div>
+      </md-toolbar>
+      <div ng-class="{dataContent:true, activeContent:game.expanded}">
+        <md-content layout="row" ng-repeat="team in game.teams">
+          <div flex="50" class="text-medsmall">
+            <div layout="row" layout-align="start" class="text-medsmall">
+              {{ team }}
+            </div>
+          </div>
+          <div flex>
+            <div layout="row" layout-align="end">
+              <md-button style="width: 70px;" class="md-secondary md-raised" ng-click="joinButton()">Join</md-button>
+            </div>
+          </div>
+        </md-content>
       </div>
-    </md-toolbar>
-
-    <div ng-class="{dataContent:true, activeContent:game.expanded}">
-      <div ng-repeat="team in game.teams">
-      {{team}}
-      <md-button class="btn-raised" ng-click="joinButton()" > Join</md-button>
-    </div>
-
     </div>
   </div>
-</div>
-<div flex=10></div>
-
-<form name="createGameForm" novalidate ng-submit="createGameForm.$valid && gameStateValid()">
-  <!-- TODO: frontend form validation! -->
-  <div flex>Create a Game</div>
-  <md-input-container class="md-block" flex-gt-sm>
-          <label>Game Name</label>
-          <input ng-model="gameData.name">
-  </md-input-container>
-
-  <md-list>
-    <md-list-item>
-      <md-input-container class="md-block" flex-gt-sm>
-        Number of Teams <input id="numberofTeam" type = "number" ng-model ="gameData.teamNumber" ng-max = "5" max="5">
-      </md-input-container>
-    </md-list-item>
-
-    <md-input-container ng-repeat= "team in gameData.teamData" ng-click="" class="">
-      <input placeholder="{{ team.prettyName }}" name="{{ team.prettyName }}" ng-model="team.name" ng-change="formFieldChanged()" ng-model-options='{ debounce: 1000 }'>
+  <div flex layout-margin>
+  <form name="createGameForm" novalidate ng-submit="createGameForm.$valid && gameStateValid()">
+    <!-- TODO: frontend form validation! -->
+    <div class="text-med">Create a Game</div>
+    <md-input-container class="md-block" flex-gt-sm>
+      <label>Game Name</label>
+      <input ng-model="gameData.name">
     </md-input-container>
-  </md-list>
 
-  <md-input-container class="md-block" flex-gt-sm>
-    Max Players/Team <input id="gameData.maxNumberOfPlayers" type = "number" ng-change="forceBack();formFieldChanged()" ng-model ="gameData.maxNumberOfPlayers">
-  </md-input-container>
+    <md-list>
+      <md-list-item>
+        <md-input-container class="md-block" flex-gt-sm>
+          Number of Teams <input id="numberofTeam" type = "number" ng-model ="gameData.teamNumber" ng-max = "5" max="5">
+        </md-input-container>
+      </md-list-item>
+
+      <md-input-container ng-repeat= "team in gameData.teamData" ng-click="" class="">
+        <input placeholder="{{ team.prettyName }}" name="{{ team.prettyName }}" ng-model="team.name" ng-change="formFieldChanged()" ng-model-options='{ debounce: 1000 }'>
+      </md-input-container>
+    </md-list>
+
+    <md-input-container class="md-block" flex-gt-sm>
+      Max Players/Team <input id="gameData.maxNumberOfPlayers" type = "number" ng-change="forceBack();formFieldChanged()" ng-model ="gameData.maxNumberOfPlayers">
+    </md-input-container>
 
 
-  <md-input-container class="md-block" flex-gt-sm>
-    Turn Duration <input id="gameData.roundDuration" type = "number" ng-change="formFieldChanged()" ng-model ="gameData.turnDuration">
-  </md-input-container>
+    <md-input-container class="md-block" flex-gt-sm>
+      Turn Duration <input id="gameData.roundDuration" type = "number" ng-change="formFieldChanged()" ng-model ="gameData.turnDuration">
+    </md-input-container>
 
-  <md-input-container class="md-block" flex-gt-sm>
-    Turn Modifiers:
-    <md-checkbox ng-model="gameData.turnModifiers" aria-label="With Turn Modifiers"></md-checkbox>
-  </md-input-container>
+    <md-input-container class="md-block" flex-gt-sm>
+      Turn Modifiers:
+      <md-checkbox ng-model="gameData.turnModifiers" aria-label="With Turn Modifiers"></md-checkbox>
+    </md-input-container>
 
-  <md-button type="submit" ng-disabled="!gameServiceData.showGameStartButton" ng-click="initiateGameButton()" class = "md-fab" aria-label="Create">
-    <i class="material-icons">add</i>
-  </md-button>
-</form>
+    <md-button type="submit" ng-disabled="!gameServiceData.showGameStartButton" ng-click="initiateGameButton()" class = "md-fab" aria-label="Create">
+      <i class="material-icons">add</i>
+    </md-button>
+  </form>
+</div>
 </md-content>
