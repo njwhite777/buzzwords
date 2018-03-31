@@ -16,6 +16,7 @@ class Game(Base):
     id          = Column(Integer, primary_key=True)
     name = Column(String)
     game_changers_activated = Column(Integer)
+    game_state = Column(Integer)
     defaultRoundTime = Column(Integer)
     createdTimeStamp = Column(DateTime, default=datetime.datetime.utcnow)
     initiator_id = Column(Integer, ForeignKey('player.id'), nullable=True)
@@ -28,6 +29,7 @@ class Game(Base):
         self.name = name
         self.defaultRoundTime = defaultRoundTime
         self.initiator = initiator
+        self.game_state = 0
         self.teams = []
         self.used_cards = []
 
@@ -43,7 +45,7 @@ class Game(Base):
     @staticmethod
     def get_all_games(session):
         games = session.query(Game).all()
-        return game
+        return games
 
     def add_used_card(self, card):
         self.used_cards.append(card)
