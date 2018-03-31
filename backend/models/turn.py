@@ -11,6 +11,7 @@ class Turn(Base):
     number         = Column(Integer)
     numberOfSkips = Column(Integer)
     startTime = Column(DateTime)
+    game_changer_number = Column(Integer)
     round_id = Column(Integer, ForeignKey('round.id'), nullable=False)
     card_id = Column(Integer, ForeignKey('card.id'), nullable=True)
     card = relationship("Card", foreign_keys=card_id, lazy = False)
@@ -19,7 +20,6 @@ class Turn(Base):
     turn_moderator_id = Column(Integer, ForeignKey('player.id'), nullable=True)
     teller = relationship('Player', foreign_keys=turn_teller_id )
     moderator = relationship('Player', foreign_keys=turn_moderator_id )
-
 
     def __repr__(self):
         return "<GameRound()>".format()
