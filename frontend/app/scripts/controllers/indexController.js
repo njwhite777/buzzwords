@@ -15,6 +15,7 @@ angular.module('frontendApp')
     '$mdSidenav',
     '$log',
     '$rootScope',
+    'viewSwapService',
     'debug',
   function ($scope,$state,$timeout,$mdSidenav,$log,$rootScope,debug) {
 

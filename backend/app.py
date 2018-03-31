@@ -16,7 +16,6 @@ from IPython import embed
 
 app = Flask(__name__)
 socketio = SocketIO(app)
-
 #
 # TODO: more db setup based on the env that gets passed in.
 engine = create_engine("sqlite:///db/{}.sqlite".format("dev"))

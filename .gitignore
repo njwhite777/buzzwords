@@ -68,3 +68,6 @@ package-lock.json
 
 #ignore the database
 *.sqlite
+
+#ignore python files
+*__pycache__

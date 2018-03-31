@@ -30,6 +30,16 @@ class Game(Base):
         self.teams = []
         self.used_cards = []
 
+    @staticmethod
+    def get_game_by_id(session, game_id):
+        game = session.query(Game).get(1)
+        return game
+
+    @staticmethod
+    def get_all_games(session):
+        games = session.query(Game).all()
+        return game
+
     def add_used_card(self, card):
         self.used_cards.append(card)
 
