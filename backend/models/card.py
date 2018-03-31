@@ -16,8 +16,7 @@ class Card(Base):
     source_page = Column(String)
     source_page = Column(String)
     is_phrase = Column(Integer)
-    card = relationship("Turn", lazy = False)
-    # turns = relationship("Turn", backref = "card", lazy = False)
+    turn = relationship("Turn", lazy = False)
 
     def __init__(self,buzzword,forbidden_words,source,source_page,skipped_count=0,won_count=0,lost_count=0, is_phrase = 0):
         self.buzzword           = buzzword
@@ -28,7 +27,14 @@ class Card(Base):
         self.source             = source
         self.source_page        = source_page
         self.is_phrase = is_phrase
-        # self.turns              = turns
+
+    @staticmethod
+    def number_of_rows(session):
+        return session.query(Card).count()
+
+    @staticmethod
+    def load_card():
+        pass
 
     def __repr__(self):
         return "<Card(id='{}', buzzword='{}', source='{}')>".format(
