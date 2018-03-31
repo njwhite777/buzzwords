@@ -1,15 +1,17 @@
 
 <div layout="column" >
-  <div flex=30>
-    <p>I'm above on mobile, and to the left on larger devices.</p>
+  <div flex class="loading_text">
+    <p class="md-primary md-hue-2"> Waiting for players <p>
   </div>
-  <div flex>
-    Waiting for players to join<span class="d">.</span><span class="d d-2">.</span><span class="d d-3">.</span>
+  <div class="spinner">
+    <div class="bounce1"></div>
+    <div class="bounce2"></div>
+    <div class="bounce3"></div>
   </div>
   <div flex=30>
-    <md-button class = "md-fab" aria-label="Start">
-      Start
-      <i class="material-icons">add</i>
-    </md-button>
+
+    <div flex class="loading_text">
+      <md-button ng-disabled="gameStateValid()"  class="md-primary md-raised" aria-label="Start"> Start </md-button>
+    </div>
   </div>
 </div>

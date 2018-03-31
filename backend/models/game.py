@@ -15,6 +15,7 @@ class Game(Base):
     __tablename__ = 'game'
     id          = Column(Integer, primary_key=True)
     name = Column(String)
+    game_changers_activated = Column(Integer)
     defaultRoundTime = Column(Integer)
     createdTimeStamp = Column(DateTime, default=datetime.datetime.utcnow)
     initiator_id = Column(Integer, ForeignKey('player.id'), nullable=True)
@@ -31,6 +32,10 @@ class Game(Base):
         self.used_cards = []
 
     @staticmethod
+    def number_of_rows(session):
+        return session.query(Game).count()
+
+    @staticmethod
     def get_game_by_id(session, game_id):
         game = session.query(Game).get(1)
         return game
@@ -45,6 +50,11 @@ class Game(Base):
 
     def set_teams(self, teams):
         self.teams = teams
+
+
+
+
+
 
     def __repr__(self):
         return "<Game(id='{}', player_count='{}', cards_to_win='{}', number_of_teams='{}')>".format(

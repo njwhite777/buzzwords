@@ -43,7 +43,7 @@ angular.module('frontendApp')
       function(result){}
     );
 
-    socket.on('show_game_start_button_enabled',function(data){
+    socket.on('show_game_init_button_enabled',function(data){
       if(data.name == gameServiceData._checkGameName){
         gameServiceData.showGameStartButton=true;
         gameServiceData._validatedGame = data;
