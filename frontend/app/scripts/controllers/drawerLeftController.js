@@ -10,6 +10,8 @@
  angular.module('frontendApp')
   .controller('drawerLeftController', function () {
 
+
+
   // Do things in the drawer view.
 
   });

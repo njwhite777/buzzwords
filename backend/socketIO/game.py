@@ -19,7 +19,7 @@ def request_games():
         {'id':11,'name':'textualChallenge','teams':['red','blue','green']},
         {'id':12,'name':'talkTalkTalk','teams':['t1','t2','t3']},
         {'id':13,'name':'fearthebeard','teams':['t1','t2','t3']},
-        {'id':13,'name':'?','teams':['t1','t2','t3']},
+        {'id':13,'name':'gogogo','teams':['t1','t2','t3']},
         ]
     emit('game_list',games)
 
