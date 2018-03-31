@@ -29,16 +29,20 @@ class Player(Base):
 
     @staticmethod
     def is_logged_in():
-        http_session['email'] is not None
+        email = http_session.get('email', None)
+        return email is not None
 
     @staticmethod
     def find_player_by_id(session, id):
         player = session.query(Player).get(id)
-        return player 
+        return player
 
     def login(self):
         http_session['email'] = self.email
         http_session['player_id'] = self.id
+
+    def add_team_session(self):
+        http_session['team_id'] = self.team.id
 
 
 

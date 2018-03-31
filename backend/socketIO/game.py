@@ -14,14 +14,25 @@ import sys
 def request_games():
     # TODO: do db operations
     # return the games only to the requesting clients.
-    games = [
-        {'id':10,'name':'workworkwork','teams':['t1','t2','t3']},
-        {'id':11,'name':'textualChallenge','teams':['red','blue','green']},
-        {'id':12,'name':'talkTalkTalk','teams':['t1','t2','t3']},
-        {'id':13,'name':'fearthebeard','teams':['t1','t2','t3']},
-        {'id':13,'name':'gogogo','teams':['t1','t2','t3']},
-        ]
-    emit('game_list',games)
+    # games = [
+    #     {'id':10,'name':'workworkwork','teams':['t1','t2','t3']},
+    #     {'id':11,'name':'textualChallenge','teams':['red','blue','green']},
+    #     {'id':12,'name':'talkTalkTalk','teams':['t1','t2','t3']},
+    #     {'id':13,'name':'fearthebeard','teams':['t1','t2','t3']},
+    #     {'id':13,'name':'gogogo','teams':['t1','t2','t3']},
+    #     ]
+    games = GameModel.get_all_games(session)
+    games_json = "["
+    for game in games:
+        games_json += "{'id' : '" + str(game.id) + "',"
+        games_json += "'name' : '" + str(game.name) + "',"
+        games_json += "'teams' : ["
+        for team in game.teams:
+            games_json += "'" + team.name + "',"
+        games_json += "]},"
+    games_json += "]"
+    print("the games: " + games_json)
+    emit('game_list',games_json)
 
 # validate_game: returns an object that indicates if the game is valid or not.
 #  in the form { valid : false }
@@ -49,6 +60,13 @@ def init_game(data):
     # TODO: gets passed if the game is valid and tbe user has pressed the init game button
     #  time to build the game in the db and tell the creator's view to switch
     # ...
+    if not PlayerModel.is_logged_in():
+        print ("You are not logged in")
+    else:
+        initiator = PlayerModel.find_player_by_id(session, 1)
+    print ("The new game: " + str(data))
+
+
     viewData = {'swapView':'gameinitiatorwait'}
 
     emit('swap_view',viewData,namespace="/io/view")

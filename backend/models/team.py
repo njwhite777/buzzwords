@@ -21,6 +21,11 @@ class Team(Base):
     def add_member(self, member):
         self.members.append(member)
 
+    @staticmethod
+    def find_team_by_id(session, id):
+        team = session.query(Team).get(id)
+        return team 
+
     # TODO: what else will we need?
     def __repr__(self):
         return "<Team(id='{}',team_name='{}')>".format(self.id,self.team_name)
