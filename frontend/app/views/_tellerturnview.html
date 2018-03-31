@@ -1,0 +1,20 @@
+<md-container>
+  <md-content>
+    <div class="loading_text">
+      <p>Time Remaining: {{ secondsRemaining }} </p>
+    </div>
+  </md-content>
+  <div layout="row" layout-align="center center">
+    <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" md-theme-watch style="width: 400px">
+         <md-card-title>
+           <md-card-title-text>
+             <span class="md-headline"> {{ card.buzzword }} </span>
+             <span ng-repeat="forbiddenword in card.forbiddenwords" class="md-subhead">{{ forbiddenword }}</span>
+           </md-card-title-text>
+         </md-card-title>
+       <md-card-actions layout="row" layout-align="end center">
+           <md-button ng-click="skipCard()" class="md-primary">Skip Card</md-button>
+       </md-card-actions>
+    </md-card>
+  </div>
+</md-contaier>

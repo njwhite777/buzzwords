@@ -8,6 +8,15 @@
  * Controller of the left drawer of the application
  */
 angular.module('frontendApp')
-  .controller('gameplayerturnviewController', function () {
+  .controller('gameplayerturnviewController',['$scope',function ($scope) {
 
-});
+    $scope.secondsRemaining = 30;
+    $scope.gameData = {
+
+    };
+    // $scope.gameData.team
+    // gameData.teller
+    // gameData.moderator
+    // gameData.modifier
+
+}]);

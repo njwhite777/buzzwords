@@ -9,6 +9,11 @@
  */
 
 angular.module('frontendApp')
-      .controller('gameinitiatorviewController',['$scope',function(){
+      .controller('gameinitiatorviewController',['$scope',function($scope){
         console.log("GameIV Controller");
+
+  $scope.gameStateValid = function(){
+    return true;
+  };
+
 }]);
