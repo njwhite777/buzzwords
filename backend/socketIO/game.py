@@ -23,17 +23,7 @@ def request_games():
     #     ]
     session = Session()
     games = GameModel.get_all_games(session)
-    games_json = "["
-    for game in games:
-        games_json += "{'id' : '" + str(game.id) + "',"
-        games_json += "'name' : '" + str(game.name) + "',"
-        games_json += "'teams' : ["
-        for team in game.teams:
-            games_json += "'" + team.name + "',"
-        games_json += "]},"
-    games_json += "]"
-    print("the games: " + games_json)
-    emit('game_list',games_json)
+    emit('game_list',games)
     session.close()
 
 # validate_game: returns an object that indicates if the game is valid or not.
@@ -79,15 +69,15 @@ def init_game(data):
     game_name = data['name']
     has_modifiers = data['turnModifiers']
     # TODO: switch to turnDuration
-    turnDuration = data['selectedDuration']
+    turnDuration = data['turnDuration']
     number_of_teams = data['teamNumber']
     teamData = data['teamData']
 
-    print(socketIOClients)
+    #print(socketIOClients)
     session = Session()
-    initiator = PlayerModel.find_player_by_id(session, socketIOClients[request.sid].id)
+    initiator = PlayerModel.find_player_by_id(session, socketIOClients[request.sid]) #socketIOClients[request.sid].id
     print ("Email: " + initiator.email)
-    game = GameModel(name, initiator, turnDuration)
+    game = GameModel(game_name, initiator, turnDuration)
     teams = []
     index = 0
     for the_team in teamData:

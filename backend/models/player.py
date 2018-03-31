@@ -48,4 +48,4 @@ class Player(Base):
 
     # TODO: what else will we need?
     def __repr__(self):
-        return "<Player(id='{}',fname='{}',lname='{}',email='{}',phone='{}')>".format(id,fname,lname,email,phone)
+        return "<Player(id='{}',name='{}',email='{}')>".format(self.id, self.nickname,self.email)

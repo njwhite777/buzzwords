@@ -12,14 +12,15 @@ def playerLogin(data):
     print(data, file=sys.stderr)
     session = Session()
     print("the username is: " + str(data['username']))
-    email = str("ron20@gmail.com")
+    email = str(data['email'])
     if PlayerModel.email_exists(session, email):
         print ("the entered email already exists")
     else:
-        player = PlayerModel("ron20", email, 3)
+        player = PlayerModel(str(data['username']), email, 3)
         session.add(player)
         session.commit()
         print ("account created")
-        socketIOClients[request.sid] = player
-        socketIOClients[data['email']] = player
+        socketIOClients[request.sid] = player.id
+        socketIOClients[data['email']] = player # storing request.namespace might be a good idea here
+        print("player created and socket added")
     session.close()
