@@ -17,26 +17,11 @@ angular.module('frontendApp')
     var socket = socketService.viewSocket;
     var data = {};
 
-    socket.on('swap_view',function(message){
+    socket.on('swap_view',function(data){
       if(debug) console.log("viewswapservice:swap_view");
-      if(debug) console.log(message);
-
-      if(message['turn_view'] == 'moderatorturn'){
-        data = message['data'];
-        $state.go('moderatorturn');
-      }
-      if(message['turn_view'] == 'tellerrolldie'){
-        data = message['data'];
-        $state.go('tellerrolldie')
-      }
-      if(message['turn_view'] == 'tellerturn' ){
-        data = message['data'];
-        $state.go('tellerturn');
-      }
-      if(message['turn_view'] == 'gameplayerturn'){
-        data = message['data'];
-        $state.go('gameplayerturn');
-      }
+      if(debug) console.log(data);
+      console.log($state);
+      $state.go(data['swapView']);
     });
 
     return {
