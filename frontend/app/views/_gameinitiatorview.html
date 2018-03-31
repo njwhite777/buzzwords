@@ -1,16 +1,17 @@
 
 <div layout="column" >
-  <div flex class="loading_text">
-    <p class="md-primary md-hue-2"> Waiting for players <p>
-  </div>
-  <div class="spinner">
-    <div class="bounce1"></div>
-    <div class="bounce2"></div>
-    <div class="bounce3"></div>
+  <div layout="column" >
+    <div layout="row" >
+      <p class="text-med text-center"> Waiting for players </p>
+    </div>
+    <div  layout="row" class="spinner">
+      <div class="bounce1"></div>
+      <div class="bounce2"></div>
+      <div class="bounce3"></div>
+    </div>
   </div>
   <div flex=30>
-
-    <div flex class="loading_text">
+    <div flex class="text-center" >
       <md-button ng-disabled="gameStateValid()"  class="md-primary md-raised" aria-label="Start"> Start </md-button>
     </div>
   </div>
