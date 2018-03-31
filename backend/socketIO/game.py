@@ -32,10 +32,11 @@ def validate_game(data):
     # TODO: returns if the game is valid or not.
     # emits only to the requesting client.
     if(data['_gameValid']):
-        emit('show_game_start_button_enabled',{'name':data['name'],'valid':True})
+        data['valid']=True
+        emit('show_game_start_button_enabled',data)
     else:
-        emit('show_game_start_button_enabled',{'name':data['name'],'valid':False})
-
+        data['valid']=False
+        emit('show_game_start_button_enabled',data)
 
 # init_game: once a game is validated, a client should be able to transmit an init_game.
 #  once this has happened and the game has been inited in the db,
@@ -48,11 +49,12 @@ def init_game(data):
     # TODO: gets passed if the game is valid and tbe user has pressed the init game button
     #  time to build the game in the db and tell the creator's view to switch
     # ...
-    emit('show_game_start_view',{'game_name':data['name']})
+    viewData = {'swapView':'gameinitiatorwait'}
 
+    emit('swap_view',viewData,namespace="/io/view")
     # This can be emitted to all clients. Tells them a new game has been created.
     #   allows them to update their views.
-    emit('created_game', {'data': data['data']},broadcast=True)
+    emit('created_game',data,broadcast=True)
 
 # 'validate_game_start': once a game is in a waiting state, joining clients should emit
 #  this message.  If the game is indeed ready to start, the server should emit to the starting

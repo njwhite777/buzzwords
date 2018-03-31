@@ -44,7 +44,7 @@ function ($scope,gameService,$state,$http,debug) {
 
   $scope.initiateGameButton = function(){
     // TODO: when this happens should send a request to the api that kicks off the game.
-    $state.go('gameplayerwait');
+    gameService.initGame();
   }
 
   $scope.formFieldChanged = function(){
