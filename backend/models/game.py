@@ -32,6 +32,7 @@ class Game(Base):
         self.game_state = 0
         self.teams = []
         self.used_cards = []
+        self.rounds = []
 
     @staticmethod
     def number_of_rows(session):
@@ -52,6 +53,35 @@ class Game(Base):
 
     def set_teams(self, teams):
         self.teams = teams
+
+    def is_game_in_valid_state(self):
+        if self.rounds == 0:
+            return False
+        for team in self.teams:
+            if len(team.members) < 2:
+                return False
+        return True
+
+
+    def is_game_over(self):
+        if not self.has_at_least_one_round():
+            return False
+        elif self.teams_have_equal_turns():
+            return False
+
+    def has_at_least_one_round(self):
+        return self.rounds > 0
+
+    def teams_have_equal_turns(self):
+        turns = self.teams.number_of_turns()
+        for team in self.teams:
+            if team.number_of_turns() != turns:
+                return False
+        return True
+
+    def team_has_reached_threshold():
+        pass 
+
 
 
 

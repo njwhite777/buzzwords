@@ -93,9 +93,7 @@ def init_game(data):
     session.commit()
     session.close()
 
-
     viewData = {'swapView':'gameinitiatorwait'}
-
     emit('swap_view',viewData,namespace="/io/view")
     # This can be emitted to all clients. Tells them a new game has been created.
     #   allows them to update their views.

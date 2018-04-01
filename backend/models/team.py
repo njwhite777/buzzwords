@@ -24,7 +24,10 @@ class Team(Base):
     @staticmethod
     def find_team_by_id(session, id):
         team = session.query(Team).get(id)
-        return team 
+        return team
+
+    def number_of_turns(self):
+        return len(self.turns)
 
     # TODO: what else will we need?
     def __repr__(self):
