@@ -12,15 +12,7 @@ import sys
 #  'request_games'
 @socketio.on('request_games',namespace='/io/game')
 def request_games():
-    # TODO: do db operations
-    # return the games only to the requesting clients.
-    # games = [
-    #     {'id':10,'name':'workworkwork','teams':['t1','t2','t3']},
-    #     {'id':11,'name':'textualChallenge','teams':['red','blue','green']},
-    #     {'id':12,'name':'talkTalkTalk','teams':['t1','t2','t3']},
-    #     {'id':13,'name':'fearthebeard','teams':['t1','t2','t3']},
-    #     {'id':13,'name':'gogogo','teams':['t1','t2','t3']},
-    #     ]
+    print("HERE!!!!requesting games")
     session = Session()
     games = GameModel.get_all_games(session)
     tGames = list()
