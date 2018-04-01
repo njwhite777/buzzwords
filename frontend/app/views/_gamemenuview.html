@@ -2,7 +2,7 @@
   <div flex class="text" layout-margin>
     <div class="text-med"> Choose a Game </div>
     <div class="md-accordion" ng-repeat="game in gameServiceData.games">
-      <md-toolbar ng-init="game.expanded = false" ng-click="collapseAll(game)">
+      <md-toolbar ng-init="game.expanded=false" ng-click="collapseAll(game)">
         <div class="md-toolbar-tools">
           <div class="text-medsmall"> {{ game.name }} </div>
           <span flex=""></span>

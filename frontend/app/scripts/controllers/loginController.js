@@ -12,10 +12,11 @@ angular.module('frontendApp')
     '$scope',
     '$mdPanel',
     'loginUser',
+    'playerService',
     '$stateParams',
     loginController]);
 
-  function loginController ($scope,$mdPanel,loginUser,$stateParams){
+  function loginController ($scope,$mdPanel,loginUser,playerService,$stateParams){
     this._mdPanel = $mdPanel;
     this.disableParentScroll = false;
     this._validUser = loginUser;

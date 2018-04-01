@@ -4,47 +4,68 @@
 // https://stackoverflow.com/questions/18247130/how-do-i-store-data-in-local-storage-using-angularjs
 
 angular.module('frontendApp')
-  .service('loginUser',['localStorageService','playerService', function(localStorageService,playerService) {
+  .service('loginUser',['localStorageService','$q', function(localStorageService,$q) {
+    var username=null;
+    var email=null;
+    var deferred = $q.defer();
+
+    var registeredEmailInStorage = function(){
+      var storageEmail = localStorageService.get("email");
+      var storageUsername = localStorageService.get("username");
+      if(storageEmail && storageUsername){
+        email = storageEmail;
+        username = storageUsername;
+        return true;
+      }
+      return false;
+    };
+
+    var storeUsername = function(username){
+      localStorageService.set("username",username);
+      username = username;
+    };
+
+    var storeEmail = function(email){
+      localStorageService.set("email",email);
+      email = email;
+    };
+
+    var createNewPlayer = function(email,username){
+      storeEmail(email);
+      storeUsername(username);
+      if(registeredEmailInStorage())
+        deferred.resolve({ username : username, email : email });
+    };
+
+    var waitForPlayerDetails = function(){
+      if(registeredEmailInStorage()){
+        return deferred.resolve({username : username, email : email });
+      }else{
+        return deferred.promise;
+      }
+    };
+
+    var getPlayerDetails = function(){
+      return { username : username, email : email };
+    };
 
     return {
-      username : null,
-      email : null,
-      storeUsername : function(username){
-        localStorageService.set("username",username);
-        this.username = username;
-      },
-      storeEmail : function(email){
-        localStorageService.set("userEmail",email);
-        this.email = email;
-      },
+      username : username,
+      email : email,
+      storeUsername : storeUsername,
+      storeEmail : storeEmail,
+      getPlayerDetails : getPlayerDetails,
+      createNewPlayer : createNewPlayer,
+      registeredEmailInStorage:registeredEmailInStorage,
+      waitForPlayerDetails: waitForPlayerDetails,
       deleteUsername : function(){
         return localStorageService.remove("username");
       },
       deleteEmail : function(){
-        return localStorageService.remove("userEmail");
+        return localStorageService.remove("email");
       },
       getUsername : function(){
         return localStorageService.get("username");
-      },
-      getPlayerDetails : function(){
-        return { username : this.username, email : this.email };
-      },
-      createNewPlayer : function(email,username){
-        this.storeEmail(email);
-        this.storeUsername(username);
-        playerService.emitPlayerJoined(this.getPlayerDetails());
-      },
-      registeredEmailInStorage: function(){
-        var storageEmail = localStorageService.get("userEmail");
-        var storageUsername = localStorageService.get("username");
-        if(storageEmail && storageUsername){
-          this.email = storageEmail;
-          this.username = storageUsername;
-          playerService.emitPlayerJoined(this.getPlayerDetails());
-          // TODO: Do lookup on server to verify/notify that the user is checking back in.
-          return true;
-        }
-        return false;
       }
     };
   }]);

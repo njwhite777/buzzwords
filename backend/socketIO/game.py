@@ -23,7 +23,15 @@ def request_games():
     #     ]
     session = Session()
     games = GameModel.get_all_games(session)
-    emit('game_list',games)
+    tGames = list()
+    for game in games:
+        tGame = dict()
+        tGame['id'] = game.id
+        tGame['name'] = game.name
+        tGame['teams'] = list()
+        for team in game.teams:
+            tGame['teams'].append({'name':team.name,'id':team.id})
+    emit('game_list',tGames)
     session.close()
 
 # validate_game: returns an object that indicates if the game is valid or not.
