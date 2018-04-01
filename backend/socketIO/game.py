@@ -22,17 +22,15 @@ def request_games():
     #     {'id':13,'name':'gogogo','teams':['t1','t2','t3']},
     #     ]
     games = GameModel.get_all_games(session)
-    games_json = "["
+    tGames = list()
     for game in games:
-        games_json += "{'id' : '" + str(game.id) + "',"
-        games_json += "'name' : '" + str(game.name) + "',"
-        games_json += "'teams' : ["
+        tGame = dict()
+        tGame['id'] = game.id
+        tGame['name'] = game.name
+        tGame['teams'] = list()
         for team in game.teams:
-            games_json += "'" + team.name + "',"
-        games_json += "]},"
-    games_json += "]"
-    print("the games: " + games_json)
-    emit('game_list',games_json)
+            tGame['teams'].append({'name':team.name,'id':team.id})
+    emit('game_list',tGames)
 
 # validate_game: returns an object that indicates if the game is valid or not.
 #  in the form { valid : false }
