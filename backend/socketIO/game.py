@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from models import *
-from app import session,socketio
+from app import Session,socketio, socketIOClients
 from flask_socketio import emit
 from flask import request
 import sys
@@ -21,6 +21,7 @@ def request_games():
     #     {'id':13,'name':'fearthebeard','teams':['t1','t2','t3']},
     #     {'id':13,'name':'gogogo','teams':['t1','t2','t3']},
     #     ]
+    session = Session()
     games = GameModel.get_all_games(session)
     tGames = list()
     for game in games:
@@ -31,6 +32,7 @@ def request_games():
         for team in game.teams:
             tGame['teams'].append({'name':team.name,'id':team.id})
     emit('game_list',tGames)
+    session.close()
 
 # validate_game: returns an object that indicates if the game is valid or not.
 #  in the form { valid : false }
@@ -58,11 +60,46 @@ def init_game(data):
     # TODO: gets passed if the game is valid and tbe user has pressed the init game button
     #  time to build the game in the db and tell the creator's view to switch
     # ...
-    if not PlayerModel.is_logged_in():
-        print ("You are not logged in")
-    else:
-        initiator = PlayerModel.find_player_by_id(session, 1)
-    print ("The new game: " + str(data))
+    # print("Email:======================" + socketIOClients[request.sid].email)
+    # if not PlayerModel.is_logged_in():
+    #     print ("You are not logged in")
+    # else:
+    #     initiator = PlayerModel.find_player_by_id(session, 1)
+    # print ("The new game: " + str(data))
+    print(data)
+
+    # {'maxNumberOfPlayers': 3, 'name': 'buzzwords', 'turnModifiers': True, 'turnDuration': [10, 20, 30],
+    # 'selectedDuration': 10, 'teamNumber': 2, '_gameValid': True, 'valid': True,
+    # teamData': [{'prettyName': 'Team 1', '$$hashKey': 'object:18', 'name': 'team1'},
+    # {'prettyName': 'Team 2', '$$hashKey': 'object:19', 'name': 'team222'}]}
+
+    maxNumberOfPlayers = data['maxNumberOfPlayers']
+    game_name = data['name']
+    has_modifiers = data['turnModifiers']
+    # TODO: switch to turnDuration
+    turnDuration = data['turnDuration']
+    number_of_teams = data['teamNumber']
+    teamData = data['teamData']
+
+    #print(socketIOClients)
+    session = Session()
+    initiator = PlayerModel.find_player_by_id(session, socketIOClients[request.sid]) #socketIOClients[request.sid].id
+    print ("Email: " + initiator.email)
+    game = GameModel(game_name, initiator, turnDuration)
+    teams = []
+    index = 0
+    for the_team in teamData:
+        team = TeamModel(the_team['name'])
+        teams.append(team)
+        if index == 0:
+            initiator.team = team
+            session.commit()
+        index += 1
+    game.set_teams(teams)
+    initiator.game = game
+    session.add(game)
+    session.commit()
+    session.close()
 
 
     viewData = {'swapView':'gameinitiatorwait'}
