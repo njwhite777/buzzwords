@@ -31,6 +31,12 @@ angular.module('frontendApp')
       socket.emit('validate_game_config',game);
     };
 
+
+
+    var playerJoinTeam = function(data){
+      socket.emit('validate_game_start',data);
+    };
+
     var initGame = function(){
       socket.emit('init_game',gameServiceData._validatedGame);
     }
@@ -76,12 +82,41 @@ angular.module('frontendApp')
       gameServiceData.games.push(data)
     });
 
+    socket.on('players_on_team',function(data){
+      var teamID = data['teamID'];
+      var count = data['playerCount'];
+      angular.forEach(gameServiceData.games,function(gameObject){
+        angular.forEach(gameObject.teams,function(teamObject){
+          if(teamID = teamObject.id){
+            console.log(teamObject,data);
+            Object.assign(teamObject,data)
+          }
+        });
+      });
+    });
+
+    socket.on('remove_team_from_view',function(data){
+      var removeID = data['gameID'];
+      angular.forEach(gameServiceData.games,function(gameObject){
+        if(removeID == gameObject.id){
+          angular.foreach(gameObject.teams,function(teamObject){
+            console.log("HERE",teamObject);
+              if(data['teamID'] == teamObject.id){
+                console.log("HERE",teamObject);
+                teamObj.visible = false;
+              }
+          });
+        }
+      });
+    });
+
     socket.on('deleted_game',function(){
       if(debug) console.log("gameSocket:deleted_game");
       // TODO: Remove the game
     });
 
     return {
+      playerJoinTeam : playerJoinTeam,
       gameServiceData : gameServiceData,
       validateGameConfig : validateGameConfig,
       initGame: initGame,

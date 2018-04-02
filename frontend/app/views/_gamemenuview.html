@@ -10,15 +10,18 @@
         </div>
       </md-toolbar>
       <div ng-class="{dataContent:true, activeContent:game.expanded}">
-        <md-content layout="row" ng-repeat="team in game.teams">
-          <div flex="50" class="text-medsmall">
+        <md-content layout="row" ng-repeat="team in game.teams" >
+          <div flex class="text-medsmall">
             <div layout="row" layout-align="start" class="text-medsmall">
               {{ team.name }}
             </div>
           </div>
+          <div flex >
+            <div layout="row" layout-align="center center">Current Players: {{ team.playerCount + '/' + team.maxPlayers }}</div>
+          </div>
           <div flex>
             <div layout="row" layout-align="end">
-              <md-button style="width: 70px;" class="md-secondary md-raised" ng-click="joinButton()">Join</md-button>
+              <md-button style="width: 70px;" class="md-secondary md-raised" ng-disabled="team.disableTeamJoin" ng-click="joinButton(game,team)">Join</md-button>
             </div>
           </div>
         </md-content>

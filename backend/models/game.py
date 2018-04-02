@@ -22,6 +22,7 @@ class Game(Base):
     maxPlayersPerTeam = Column(Integer)
     numberOfTeams = Column(Integer)
     skipPenaltyAfter = Column(Integer)
+    minRequiredPlayers=Column(Integer)
     createdTimeStamp = Column(DateTime, default=datetime.datetime.utcnow)
     initiatorID = Column(Integer, ForeignKey('player.id'), nullable=True)
 
@@ -30,7 +31,7 @@ class Game(Base):
     rounds = relationship("Round",backref = "game", lazy = False)
     used_cards = relationship("Card",secondary=usedCards, lazy = False)
 
-    def __init__(self,initiator,name=None,turnDuration=30,numberOfTeams=2,maxPlayersPerTeam=5,pointsToWin=30,skipPenaltyAfter=3,gameChangers=1):
+    def __init__(self,initiator,name=None,turnDuration=30,numberOfTeams=2,maxPlayersPerTeam=5,pointsToWin=30,skipPenaltyAfter=3,gameChangers=1,minRequiredPlayers=2):
         self.name = name
         self.gameState    = "initialized"
         self.turnDuration = turnDuration
@@ -38,6 +39,7 @@ class Game(Base):
         self.pointsToWin  = pointsToWin
         self.maxPlayersPerTeam = maxPlayersPerTeam
         self.numberOfTeams = numberOfTeams
+        self.minRequiredPlayers = minRequiredPlayers
         self.skipPenaltyAfter = skipPenaltyAfter
         self.initiator = initiator
 
@@ -56,9 +58,6 @@ class Game(Base):
 
     def add_used_card(self, card):
         self.used_cards.append(card)
-
-    def set_teams(self, teams):
-        self.teams = teams
 
     def add_team(self,team):
         self.teams.append(team)

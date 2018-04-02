@@ -10,14 +10,16 @@ def playerLogin(data):
     session = Session()
     player=PlayerModel.find_player_by_email(session,data['email'])
     if(player):
-        socketIOClients[request.sid] = player.id
-        socketIOClients[data['email']] = player.id # storing request.namespace might be a good idea here
+        socketIOClients[request.sid] = data['email']
+        socketIOClients[player.id] = request.sid
+        socketIOClients[data['email']] = request.sid # storing request.namespace might be a good idea here
     else:
         player = PlayerModel(data['username'], data['email'], 3)
         session.add(player)
         session.flush()
-        socketIOClients[request.sid] = player.id
-        socketIOClients[data['email']] = player.id # storing request.namespace might be a good idea here
+        socketIOClients[request.sid] = data['email']
+        socketIOClients[player.id] = request.sid
+        socketIOClients[data['email']] = request.sid # storing request.namespace might be a good idea here
     session.commit()
     session.close()
 

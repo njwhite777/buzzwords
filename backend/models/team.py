@@ -17,11 +17,11 @@ class Team(Base):
         self.score = 0
         self.turns = []
 
-    def add_player(self, player):
+    def add_player(self,player):
         self.players.append(player)
 
     @staticmethod
-    def find_team_by_id(session, id):
+    def get_team_by_id(session, id):
         team = session.query(Team).get(id)
         return team
 

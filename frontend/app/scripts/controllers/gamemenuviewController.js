@@ -13,8 +13,9 @@ angular.module('frontendApp')
     'gameService',
     '$state',
     '$http',
+    'loginUser',
     'debug',
-function ($scope,gameService,$state,$http,debug) {
+function ($scope,gameService,$state,$http,loginUser,debug) {
 
   if(debug) console.log("GM View controller");
 
@@ -59,13 +60,14 @@ function ($scope,gameService,$state,$http,debug) {
           return teams;
         })();
   });
-  $scope.joinButton = function(){
+  $scope.joinButton = function(game,team){
     //TODO: add team, game in player;
-    $state.go('gameplayerwait');
+    var player = loginUser.getPlayerDetails();
+    var data = {'gameID':game.id,'teamID': team.id,'player':player.email};
+    gameService.playerJoinTeam(data);
   }
 
   $scope.initiateGameButton = function(){
-    // TODO: when this happens should send a request to the api that kicks off the game.
     gameService.initGame();
   }
 
