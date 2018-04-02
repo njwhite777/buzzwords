@@ -6,16 +6,21 @@ from flask import request
 import sys
 
 
+def print_item(item,message):
+    print("#################################")
+    print("#{} : {}".format(message,item))
+    print("#################################")
+
 # request_games: returns a list of current and open games on the server
 #  list is in the form [{game1info},{game2info},...,{}]
 # client must emit on the /io/game namespace:
 #  'request_games'
 @socketio.on('request_games',namespace='/io/game')
 def request_games():
-    print("HERE!!!!requesting games")
     session = Session()
     games = GameModel.get_all_games(session)
-    tGames = list()
+    print("HERE",games)
+    tGlist = list()
     for game in games:
         tGame = dict()
         tGame['id'] = game.id
@@ -23,7 +28,9 @@ def request_games():
         tGame['teams'] = list()
         for team in game.teams:
             tGame['teams'].append({'name':team.name,'id':team.id})
-    emit('game_list',tGames)
+        tGlist.append(tGame)
+    print_item(tGlist,"List of games")
+    emit('game_list',tGlist)
     session.close()
 
 # validate_game: returns an object that indicates if the game is valid or not.
@@ -58,46 +65,33 @@ def init_game(data):
     # else:
     #     initiator = PlayerModel.find_player_by_id(session, 1)
     # print ("The new game: " + str(data))
-    print(data)
-
-    # {'maxNumberOfPlayers': 3, 'name': 'buzzwords', 'turnModifiers': True, 'turnDuration': [10, 20, 30],
-    # 'selectedDuration': 10, 'teamNumber': 2, '_gameValid': True, 'valid': True,
-    # teamData': [{'prettyName': 'Team 1', '$$hashKey': 'object:18', 'name': 'team1'},
-    # {'prettyName': 'Team 2', '$$hashKey': 'object:19', 'name': 'team222'}]}
-
-    maxNumberOfPlayers = data['maxNumberOfPlayers']
-    game_name = data['name']
-    has_modifiers = data['turnModifiers']
-    # TODO: switch to turnDuration
-    turnDuration = data['turnDuration']
-    number_of_teams = data['teamNumber']
-    teamData = data['teamData']
-
-    #print(socketIOClients)
     session = Session()
     initiator = PlayerModel.find_player_by_id(session, socketIOClients[request.sid]) #socketIOClients[request.sid].id
-    print ("Email: " + initiator.email)
-    game = GameModel(game_name, initiator, turnDuration)
-    teams = []
-    index = 0
-    for the_team in teamData:
-        team = TeamModel(the_team['name'])
-        teams.append(team)
-        if index == 0:
-            initiator.team = team
-            session.commit()
-        index += 1
-    game.set_teams(teams)
-    initiator.game = game
+    gameArgs = {k:v for(k,v) in data.items() if k in ['name','turnDuration','numberOfTeams','maxPlayersPerTeam','pointsToWin','skipPenaltyAfter','gameChangers'] }
+    gameArgs['initiator'] = initiator
+    game = GameModel(**gameArgs)
     session.add(game)
+    session.flush()
+
+    returnTeams = []
+    for idx,teamObj in enumerate(data['teamData']):
+        tData = dict()
+        team = TeamModel(teamObj['name'])
+        game.add_team(team)
+        session.flush()
+        tData['name'] = teamObj['name']
+        tData['id'] = team.id
+        returnTeams.append(tData)
+
+    returnData = {'name' : game.name, 'id' : game.id, 'teams' : returnTeams }
+
     session.commit()
     session.close()
 
     viewData = {'swapView':'gameinitiatorwait'}
+
     emit('swap_view',viewData,namespace="/io/view")
-    # This can be emitted to all clients. Tells them a new game has been created.
-    #   allows them to update their views.
-    emit('created_game',data,broadcast=True)
+    emit('created_game',returnData,broadcast=True)
 
 # 'validate_game_start': once a game is in a waiting state, joining clients should emit
 #  this message.  If the game is indeed ready to start, the server should emit to the starting

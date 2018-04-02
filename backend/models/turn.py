@@ -47,7 +47,7 @@ class Turn(Base):
         return selected_team
 
     def get_random_player(self, players):
-        players = selected_team.members
+        players = selected_team.players
         number_of_players = len(players)
         random_player_index = random.randint(0, number_of_players - 1)
         return players[random_player_index]
@@ -55,13 +55,13 @@ class Turn(Base):
     def set_moderator(self, game):
         teams_not_on_turn = self.get_teams_not_on_turn(game)
         random_team = self.get_random_team(teams_not_on_turn)
-        moderator = self.get_random_player(random_team.members)
+        moderator = self.get_random_player(random_team.players)
         moderator.role = 2
         self.moderator = moderator
         return moderator
 
     def set_teller(self):
-        teller = self.get_random_player(self.team.members)
+        teller = self.get_random_player(self.team.players)
         teller.role = 1
         self.teller = teller
         return teller

@@ -20,4 +20,4 @@ class  GameChangers():
         self.changers[7] = GameChanger("All guessers: Any member of the other team can also guess along with guessers. Whoever can guess the word will be rewarded with one point to his/her team.", 7)
 
     def roll_die(self):
-        pass 
+        pass

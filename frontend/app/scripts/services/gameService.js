@@ -73,9 +73,7 @@ angular.module('frontendApp')
     // The event listener which listens for game creation events.
     socket.on('created_game',function(data){
       if(debug) console.log("gameSocket:created_game");
-      console.log(data);
-      // TODO: Add new game to the list of games currently maintained.
-      // gameData.games.push()
+      gameServiceData.games.push(data)
     });
 
     socket.on('deleted_game',function(){

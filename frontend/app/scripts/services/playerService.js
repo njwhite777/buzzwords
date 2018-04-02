@@ -15,9 +15,6 @@ angular.module('frontendApp')
     var socket = socketService.playerSocket;
     var notifySocketReady = socketService.notifySocketReady;
     var notifyPlayerReady = loginUser.waitForPlayerDetails;
-    var socketConnected=false;
-
-    notifySocketReady().then(function(result){socketConnected=true});
 
     var emitPlayerConnected = function(playerDetails){
       socket.emit('player_login',playerDetails);
@@ -26,8 +23,8 @@ angular.module('frontendApp')
     // Causes player credentials to be re-associated with the uuid
     //   when a disconnect, re-connect has happened
     socket.on('disconnect',function(){
-      socketConnected=false;
-      $.all([notifyPlayerReady(),notifySocketReady()]).then(
+      // TODO: figure out stuff here.
+      $q.all([notifySocketReady()]).then(
         function(result){
           console.log(loginUser.getPlayerDetails());
           emitPlayerConnected(loginUser.getPlayerDetails());

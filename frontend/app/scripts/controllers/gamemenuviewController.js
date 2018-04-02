@@ -23,13 +23,15 @@ function ($scope,gameService,$state,$http,debug) {
   $scope.gameServiceData = gameService.gameServiceData;
   console.log(gameService.gameServiceData.teams)
   $scope.gameData = {
-    maxNumberOfPlayers: 3,
-    turnDurationOptions: [20,30,60],
+    maxPlayersPerTeam: 3,
     turnDuration : 30,
-    teamNumber: 2,
-    turnModifiers: true,
-    name:"",
+    pointsToWin : 30,
+    numberOfTeams: 2,
+    skipPenaltyAfter : 3,
+    gameChangers : true,
+    name:""
   };
+  $scope.turnDurationOptions= [20,30,60];
 
   $scope.gameData.teamData = [];
   $scope.collapseAll = function(data) {
@@ -45,7 +47,7 @@ function ($scope,gameService,$state,$http,debug) {
   console.log($scope.accordingData);
 //TODO: get game list from socket, not hardcoding.
 
-  $scope.$watch('gameData.teamNumber', function (newVal,oldVal) {
+  $scope.$watch('gameData.numberOfTeams', function (newVal,oldVal) {
     console.log(newVal);
 
     $scope.gameData.teamData = (
