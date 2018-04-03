@@ -48,6 +48,7 @@ def validate_game(data):
     # emits only to the requesting client.
     if(data['_gameValid']):
         data['valid']=True
+        print_item(data,'Game config: ')
         emit('show_game_init_button_enabled',data)
     else:
         data['valid']=False
@@ -72,7 +73,7 @@ def init_game(data):
     # print ("The new game: " + str(data))
     session = Session()
     initiator = PlayerModel.find_player_by_email(session, socketIOClients[request.sid]) #socketIOClients[request.sid].id
-    gameArgs = {k:v for(k,v) in data.items() if k in ['name','turnDuration','numberOfTeams','maxPlayersPerTeam','pointsToWin','skipPenaltyAfter','gameChangers'] }
+    gameArgs = {k:v for(k,v) in data.items() if k in ['name','turnDuration','numberOfTeams','maxPlayersPerTeam','pointsToWin','skipPenaltyAfter','withGameChangers'] }
     gameArgs['initiator'] = initiator
     game = GameModel(**gameArgs)
     initiatorTeamName = data['initiatorTeam']['name']
@@ -107,23 +108,20 @@ def init_game(data):
     emit('swap_view',viewData,namespace="/io/view")
     emit('created_game',returnData,broadcast=True)
 
-# 'validate_game_start': once a game is in a waiting state, joining clients should emit
-#  this message.  If the game is indeed ready to start, the server should emit to the starting
-#  client that the game is ready to start and the the start game button should become clickable.
-@socketio.on('validate_game_start',namespace='/io/game')
-def validate_game_start(data):
+
+@socketio.on('join_team',namespace='/io/game')
+def join_team(data):
     # Join player to team. Check the game
     session = Session()
     gameID = data['gameID']
     teamID = data['teamID']
     playerEmail = data['player']
-
     game = GameModel.get_game_by_id(session,gameID)
-    initiator=game.initiator
+    initiator = game.initiator
     player = PlayerModel.find_player_by_email(session,playerEmail)
     initiatorEmail = initiator.email
-    teamUnder = len(game.teams)
 
+    teamUnder = len(game.teams)
     for team in game.teams:
         # check if all teams have requisite 2 players.
         if(team.id == teamID):
@@ -133,7 +131,16 @@ def validate_game_start(data):
             emit('swap_view',{'swapView':'gameplayerwait'},namespace='/io/view')
             break
 
+    validate_game_start(data)
+
+# 'validate_game_start': once a game is in a waiting state, joining clients should emit
+#  this message.  If the game is indeed ready to start, the server should emit to the starting
+#  client that the game is ready to start and the the start game button should become clickable.
+@socketio.on('validate_game_start',namespace='/io/game')
+def validate_game_start(data):
     session = Session()
+    print_item(data,'Game Object')
+    gameID = data['gameID']
     game = GameModel.get_game_by_id(session,gameID)
     for team in game.teams:
         playerCount = len(team.players)
@@ -143,7 +150,6 @@ def validate_game_start(data):
         emit('players_on_team',tData,broadcast=True)
         if( playerCount >= game.minRequiredPlayers ):
             teamUnder -= 1
-
     if(teamUnder == 0):
         emit('show_game_start_button_enabled',room=socketIOClients[initiatorEmail],namespace='/io/view')
 

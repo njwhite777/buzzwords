@@ -2,38 +2,33 @@
   <div flex=50 class="text" layout-margin>
     <div class="text-med"> Choose a Game </div>
     <div>
-  <md-button ng-click="dynamicTheme = 'default'" class="md-raised">Default</md-button>
-  <div md-theme="Sweet">
-  <md-button ng-click="dynamicTheme = 'Sweet'" class="md-primary md-raised">Sweet</md-button>
-</div>
-</div>
-    <div class="md-accordion" ng-repeat="game in gameServiceData.games">
-      <div md-theme="{{dynamicTheme}}" md-theme-watch>
-      <md-toolbar class="md-primary"ng-init="game.expanded = false" ng-click="collapseAll(game)">
-        <div class="md-toolbar-tools">
-          <div class="text-medsmall"> {{ game.name }} </div>
-          <span flex=""></span>
-          <span ng-class="{expandCollapse:true, active:game.expanded}"></span>
+      <div class="md-accordion" ng-repeat="game in gameServiceData.games">
+        <div md-theme="{{dynamicTheme}}" md-theme-watch>
+        <md-toolbar class="md-primary"ng-init="game.expanded = false" ng-click="collapseAll(game)">
+          <div class="md-toolbar-tools">
+            <div class="text-medsmall"> {{ game.name }} </div>
+            <span flex=""></span>
+            <span ng-class="{expandCollapse:true, active:game.expanded}"></span>
+          </div>
+        </md-toolbar>
         </div>
-      </md-toolbar>
-      </div>
-      <div ng-class="{dataContent:true, activeContent:game.expanded}">
-        <md-content layout="row" ng-repeat="team in game.teams" >
-          <div flex class="text-medsmall">
-            <div layout="row" layout-align="start" class="text-medsmall">
-              {{ team.name }}
+        <div ng-class="{dataContent:true, activeContent:game.expanded}">
+          <md-content layout="row" ng-repeat="team in game.teams" >
+            <div flex class="text-medsmall">
+              <div layout="row" layout-align="start" class="text-medsmall">
+                {{ team.name }}
+              </div>
             </div>
-          </div>
-          <div flex >
-            <div layout="row" layout-align="center center">Current Players: {{ team.playerCount + '/' + team.maxPlayers }}</div>
-          </div>
-          <div flex>
-            <div layout="row" layout-align="end">
-              <md-button style="width: 70px;" class="md-secondary md-raised" ng-disabled="team.disableTeamJoin" ng-click="joinButton(game,team)">Join</md-button>
+            <div flex >
+              <div layout="row" layout-align="center center">Current Players: {{ team.playerCount + '/' + team.maxPlayers }}</div>
             </div>
-          </div>
-          </div>
-        </md-content>
+            <div flex>
+              <div layout="row" layout-align="end">
+                <md-button style="width: 70px;" class="md-secondary md-raised" ng-disabled="team.disableTeamJoin" ng-click="joinButton(game,team)">Join</md-button>
+              </div>
+            </div>
+          </md-content>
+        </div>
       </div>
     </div>
   </div>
@@ -45,7 +40,7 @@
     <div layout="row" layout-sm="column">
     <md-input-container class="md-block" flex-gt-sm>
       <label>Game Name</label>
-      <input ng-model="gameData.name" ng-change="formFieldChanged()" ng-model-options='{ debounce: 1000 }'>
+      <input ng-model="gameData.name" ng-change="formFieldChanged(gameData.name)" ng-model-options='{ debounce: 1000 }'>
     </md-input-container>
 
     <md-input-container class="md-block" flex-gt-sm>
@@ -55,7 +50,7 @@
     <md-list>
       <md-list-item>
       <md-input-container ng-repeat= "team in gameData.teamData" ng-click="" class="">
-        <input placeholder="{{ team.prettyName }}" name="{{ team.prettyName }}" ng-model="team.name" ng-change="formFieldChanged()" ng-model-options='{ debounce: 1000 }'>
+        <input placeholder="{{ team.prettyName }}" name="{{ team.prettyName }}" ng-model="team.name" ng-change="formFieldChanged(team.name)" ng-model-options='{ debounce: 1000 }'>
       </md-input-container>
     </md-list>
 
@@ -66,23 +61,22 @@
   </md-input-container>
 
   <md-input-container class="md-block" flex-gt-sm>
-    Max Players/Team <input id="gameData.maxPlayersPerTeam" type = "number" ng-change="forceBack(gameData,'maxPlayersPerTeam',6,2);formFieldChanged()" ng-model-options='{debounce:1000}'  ng-model ="gameData.maxPlayersPerTeam">
+    Max Players/Team <input id="gameData.maxPlayersPerTeam" type = "number" ng-change="forceBack(gameData,'maxPlayersPerTeam',6,2);formFieldChanged(gameData.maxPlayersPerTeam)" ng-model-options='{debounce:1000}'  ng-model ="gameData.maxPlayersPerTeam">
   </md-input-container>
-
 
   <!-- <md-input-container class="md-block" flex-gt-sm>
     Turn Duration <input id="gameData.roundDuration" type = "number" ng-change="formFieldChanged()" ng-model ="gameData.turnDuration">
   </md-input-container> -->
 
   <md-input-container class="md-block" flex-gt-sm> Turn Duration
-  <md-select  placeholder="Turn Duration" ng-change="getData();formFieldChanged()" ng-model="gameData.turnDuration">
-    <md-option ng-value="opt" ng-repeat="opt in turnDurationOptions">{{ opt }}</md-option>
+  <md-select  placeholder="Turn Duration" ng-change="getData();formFieldChanged(gameData.turnDuration)" ng-model="gameData.turnDuration">
+    <md-option ng-value="opt" ng-repeat="opt in turnDurationOptions" >{{ opt }}</md-option>
   </md-select>
   </md-input-container>
 
 <md-input-container class="md-block" flex-gt-sm> Free Skips
-<md-select  placeholder="Free Skips" ng-change="getData();formFieldChanged()" ng-model="gameData.selectedFreeSkips">
-  <md-option ng-value="opt" ng-repeat="opt in gameData.freeSkips">{{ opt }}</md-option>
+<md-select  placeholder="Free Skips" ng-change="getData();formFieldChanged(gameData.skipPenaltyAfter)" ng-model="gameData.skipPenaltyAfter">
+  <md-option ng-value="opt" ng-repeat="opt in skipOptions" >{{ opt }}</md-option>
 </md-select>
 </md-input-container>
 
@@ -93,7 +87,7 @@
       <md-checkbox ng-model="gameData.gameChangers" aria-label="With Turn Modifiers"></md-checkbox>
     </md-input-container>
 
-    <md-button type="submit" ng-disabled="!gameServiceData.showGameStartButton" ng-click="initiateGameButton()" class = "md-fab" aria-label="Create">
+    <md-button type="submit" ng-disabled="!gameCreateData.showGameStartButton" ng-click="initiateGameButton()" class = "md-fab" aria-label="Create">
       <i class="material-icons">add</i>
     </md-button>
   </form>

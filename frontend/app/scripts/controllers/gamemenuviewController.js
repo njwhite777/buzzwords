@@ -22,7 +22,7 @@ function ($scope,gameService,$state,$http,loginUser,debug) {
   // Note: The games service is responsible for keeping the gameData object up to date.
   //  as long as we are using an object e.g. "{}" changes are automatically detected and synchronzied!
   $scope.gameServiceData = gameService.gameServiceData;
-  console.log(gameService.gameServiceData.teams)
+  $scope.gameCreateData = gameService.gameCreateData;
   $scope.gameData = {
     maxPlayersPerTeam: 3,
     turnDuration : 30,
@@ -33,6 +33,7 @@ function ($scope,gameService,$state,$http,loginUser,debug) {
     name:""
   };
   $scope.turnDurationOptions= [20,30,60];
+  $scope.skipOptions = ['infinite',3,5,10];
 
   $scope.gameData.teamData = [];
   $scope.collapseAll = function(data) {
@@ -44,10 +45,8 @@ function ($scope,gameService,$state,$http,loginUser,debug) {
     data.expanded = !data.expanded;
   };
 
-  $scope.accordingData = $scope.gameServiceData.games;
-  console.log($scope.accordingData);
-//TODO: get game list from socket, not hardcoding.
 
+  $scope.accordingData = $scope.gameServiceData.games;
   $scope.$watch('gameData.numberOfTeams', function (newVal,oldVal) {
     console.log(newVal);
 
@@ -72,7 +71,7 @@ function ($scope,gameService,$state,$http,loginUser,debug) {
   }
 
   $scope.formFieldChanged = function(field){
-    if(field!="" || field != undefined) gameService.validateGameConfig($scope.gameData);
+    if(field) gameService.validateGameConfig($scope.gameData);
   }
 
   $scope.forceBack = function(object,fieldString,max,min){
