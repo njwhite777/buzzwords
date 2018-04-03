@@ -66,6 +66,7 @@ var RegisterPanelController = function(mdPanelRef,loginUser){
   if(name){
     this.user.name = name;
   }
+  console.log(this.loginPlayerForm);
 
 };
 

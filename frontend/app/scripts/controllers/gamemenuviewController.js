@@ -88,7 +88,7 @@ function ($scope,gameService,$state,$http,loginUser,debug) {
 
   $scope.getData = function(){
     if(debug){
-      console.log($scope.gameData.selectedDuration);
+      console.log($scope.gameData.selectedFreeSkips);
     };
   };
 

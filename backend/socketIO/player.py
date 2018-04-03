@@ -28,10 +28,10 @@ def playerJoinTeam(data):
     session = Session()
     player_id = socketIOClients[request.sid]
     player = PlayerModel.find_player_by_id(session, player_id)
-    if player is None:
+    if player:
         print("the player does not exist")
         return
-    team_id = data['team_id'] # should come from the client
+    team_id = data['team_id']
     team = TeamModel.find_team_by_id(session, team_id)
     if team is None:
         print("the team does not exist")
