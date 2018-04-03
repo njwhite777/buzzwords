@@ -2,7 +2,7 @@
 
     <p class="font-ubuntu" >{{ loginUser.email }}<p>
     <p class="font-ubuntu" >{{ loginUser.username }}<p>
-      <div flex>
+      <div md-theme="{{ dynamicTheme }}" md-theme-watch>
         <md-button ng-click="userLogOut()" class="md-primary md-raised">Logout <md-icon class="material-icons">exit_to_app</md-icon>  <md-button>
       </div>
 

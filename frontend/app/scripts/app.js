@@ -64,6 +64,7 @@ app.run(function($rootScope) {
 
 app.config(function($stateProvider,$urlRouterProvider,localStorageServiceProvider,$mdThemingProvider) {
 
+  $mdThemingProvider.alwaysWatchTheme(true);
   $mdThemingProvider.theme('default')
    .primaryPalette('blue', {
      'default': '400', // by default use shade 400 from the pink palette for primary intentions
