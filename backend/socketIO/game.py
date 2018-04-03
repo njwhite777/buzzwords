@@ -28,9 +28,9 @@ def request_games():
         tGame['teams'] = list()
         for team in game.teams:
             playerCount = len(team.players)
-            tData = {'name':team.name,'id':team.id,'visible':True,'playerCount': playerCount}
-            if( playerCount >= maxPlayersPerTeam):
-                tData['visible']=False
+            tData = {'name':team.name,'id':team.id,'visible':True,'playerCount': playerCount,'maxPlayers':maxPlayersPerTeam}
+            if(game.maxPlayersPerTeam <= len(team.players)):
+                tData['disableTeamJoin']=True
             tGame['teams'].append(tData)
 
         tGlist.append(tGame)
@@ -75,21 +75,29 @@ def init_game(data):
     gameArgs = {k:v for(k,v) in data.items() if k in ['name','turnDuration','numberOfTeams','maxPlayersPerTeam','pointsToWin','skipPenaltyAfter','gameChangers'] }
     gameArgs['initiator'] = initiator
     game = GameModel(**gameArgs)
+    initiatorTeamName = data['initiatorTeam']['name']
 
+    print_item(data,"game")
     session.add(game)
-    session.flush()
+    session.commit()
 
     returnTeams = []
     for idx,teamObj in enumerate(data['teamData']):
         tData = dict()
-        team = TeamModel(teamObj['name'])
+        teamName = teamObj['name']
 
+        team = TeamModel(teamObj['name'])
         game.add_team(team)
-        session.flush()
+        session.commit()
+
+        if(teamName == initiatorTeamName):
+            team.add_player(initiator)
+
         tData['name'] = teamObj['name']
         tData['id'] = team.id
         tData['visible'] = True
         tData['playerCount'] = len(team.players)
+        tData['maxPlayers'] = game.maxPlayersPerTeam
         returnTeams.append(tData)
 
     returnData = {'name' : game.name, 'id' : game.id, 'teams' : returnTeams }
@@ -109,6 +117,7 @@ def validate_game_start(data):
     gameID = data['gameID']
     teamID = data['teamID']
     playerEmail = data['player']
+    print_item(data,"data is")
 
     game = GameModel.get_game_by_id(session,gameID)
     initiator=game.initiator
@@ -120,17 +129,25 @@ def validate_game_start(data):
         # check if all teams have requisite 2 players.
         if(team.id == teamID):
             team.add_player(player)
-            session.flush()
-            disableTeamJoin=False
-            if(game.maxPlayersPerTeam == len(team.players)):
-                disableTeamJoin = True
-            print_item({'teamID':team.id,'playerCount':len(team.players),'maxPlayers':game.maxPlayersPerTeam,'disableTeamJoin':disableTeamJoin},"sending update")
-            emit('players_on_team',{'teamID':team.id,'playerCount':len(team.players),'maxPlayers':game.maxPlayersPerTeam,'disableTeamJoin':disableTeamJoin},broadcast=True)
+            session.commit()
+            session.close()
             emit('swap_view',{'swapView':'gameplayerwait'},namespace='/io/view')
-            print_item(team,'Adding player to team')
-        if( len(team.players) < game.minRequiredPlayers ):
-            teamUnder -= 1
+            break
+
+    session = Session()
+    game = GameModel.get_game_by_id(session,gameID)
+    for game in games:
+        maxPlayersPerTeam = game.maxPlayersPerTeam
+        for team in game.teams:
+            playerCount = len(team.players)
+            tData = {'name':team.name,'id':team.id,'visible':True,'playerCount': playerCount,'maxPlayers':maxPlayersPerTeam}
+            if(game.maxPlayersPerTeam <= playerCount):
+                tData['disableTeamJoin']=True
+            emit('players_on_team',tData,broadcast=True)
+            if( playerCount >= game.minRequiredPlayers ):
+                teamUnder -= 1
+
     if(teamUnder == 0):
         emit('show_game_start_button_enabled',room=socketIOClients[initiatorEmail],namespace='/io/view')
-    session.commit()
+
     session.close()

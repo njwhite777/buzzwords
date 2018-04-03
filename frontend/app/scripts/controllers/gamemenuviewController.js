@@ -71,8 +71,8 @@ function ($scope,gameService,$state,$http,loginUser,debug) {
     gameService.initGame();
   }
 
-  $scope.formFieldChanged = function(){
-    gameService.validateGameConfig($scope.gameData);
+  $scope.formFieldChanged = function(field){
+    if(field!="" || field != undefined) gameService.validateGameConfig($scope.gameData);
   }
 
   $scope.forceBack = function(object,fieldString,max,min){
@@ -88,7 +88,7 @@ function ($scope,gameService,$state,$http,loginUser,debug) {
 
   $scope.getData = function(){
     if(debug){
-      console.log($scope.gameData.selectedDuration);
+      console.log($scope.gameData.selectedFreeSkips);
     };
   };
 

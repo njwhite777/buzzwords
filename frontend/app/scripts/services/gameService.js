@@ -85,28 +85,14 @@ angular.module('frontendApp')
     socket.on('players_on_team',function(data){
       var teamID = data['teamID'];
       var count = data['playerCount'];
+      console.log(data);
       angular.forEach(gameServiceData.games,function(gameObject){
         angular.forEach(gameObject.teams,function(teamObject){
-          if(teamID = teamObject.id){
-            console.log(teamObject,data);
+          if(teamID == teamObject.id){
             Object.assign(teamObject,data)
           }
-        });
-      });
-    });
 
-    socket.on('remove_team_from_view',function(data){
-      var removeID = data['gameID'];
-      angular.forEach(gameServiceData.games,function(gameObject){
-        if(removeID == gameObject.id){
-          angular.foreach(gameObject.teams,function(teamObject){
-            console.log("HERE",teamObject);
-              if(data['teamID'] == teamObject.id){
-                console.log("HERE",teamObject);
-                teamObj.visible = false;
-              }
-          });
-        }
+        });
       });
     });
 

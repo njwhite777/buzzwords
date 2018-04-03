@@ -10,6 +10,7 @@ $font-padauk: 'Padauk', sans-serif;
 
 $default-font: $font-cabin;
 
+
 @mixin font-fam-size($font,$size) {
   font-family: $font;
   font-size: $size;
@@ -55,19 +56,19 @@ $default-font: $font-cabin;
 .font-cabin {
   padding: 0;
   font-family: 'Cabin', sans-serif;
-  font-size: 48px;
+  font-size: 24px;
 }
 
 .font-cabin {
   padding: 0;
   font-family: 'Cabin', sans-serif;
-  font-size: 48px;
+  font-size: 24px;
 }
 
 .font-ubuntu{
   padding: 0;
   font-family: 'Ubuntu', sans-serif;
-  font-size: 48px;
+  font-size: 24px;
 }
 
 body{
