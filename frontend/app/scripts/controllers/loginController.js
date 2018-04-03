@@ -26,6 +26,14 @@ function loginController ($scope,$mdPanel,loginUser,$stateParams,playerService){
   }
   playerService.emitPlayerJoined();
   // playerService.
+  // $scope.isEmailValid = function(){
+    // if( /(.+)@(.+){2,}\.(.+){2,}/.test($scope.ctrl.user.email) ){
+      // console.log("valid email");
+      // return true;
+// } else {
+    // return false;
+// }
+  // }();
 
 }
 
@@ -69,6 +77,7 @@ var RegisterPanelController = function(mdPanelRef,loginUser){
   if(name){
     this.user.name = name;
   }
+  console.log(this.loginPlayerForm);
 
 };
 

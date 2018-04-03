@@ -50,6 +50,4 @@ angular.module('frontendApp')
     }
 
     $scope.toggleLeftDrawer = buildDelayedToggler('left');
-
-
   }]);

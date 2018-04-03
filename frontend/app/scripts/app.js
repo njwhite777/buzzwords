@@ -75,7 +75,29 @@ app.config(function($stateProvider,$urlRouterProvider,localStorageServiceProvide
    // default shades
    .accentPalette('blue', {
      'default': '100' // use shade 200 for default, and keep all other shades the same
-   });
+   })
+   .warnPalette('red',{
+     'default': '400',
+     'hue-1' : 'A400'
+   })
+;
+
+  $mdThemingProvider.theme('Sweet')
+    .primaryPalette('pink',{
+      'default' : '400',
+      'hue-1': 'A200',
+      'hue-2': 'A400'
+    })
+    .accentPalette('light-green', {
+      'default': 'A400' // use shade 200 for default, and keep all other shades the same
+    })
+    .warnPalette('lime',{
+      'default': 'A100'
+    })
+
+    .backgroundPalette('blue-grey',{
+      'default' : '200'
+    });
 
   // This is necessary!
   $urlRouterProvider.when("", "/");

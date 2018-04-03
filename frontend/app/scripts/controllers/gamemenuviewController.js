@@ -82,9 +82,11 @@ function ($scope,gameService,$state,$http,debug) {
   }
   $scope.gameData.turnDuration = [10,20,30];
   $scope.gameData.selectedDuration = 10;
+  $scope.gameData.freeSkips = ["infinite",0,3,5];
+  $scope.gameData.selectedFreeSkips = 3;
   $scope.getData = function(){
     if(debug){
-      console.log($scope.gameData.selectedDuration);
+      console.log($scope.gameData.selectedFreeSkips);
     };
   };
 
