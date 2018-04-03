@@ -71,8 +71,8 @@ function ($scope,gameService,$state,$http,loginUser,debug) {
     gameService.initGame();
   }
 
-  $scope.formFieldChanged = function(){
-    gameService.validateGameConfig($scope.gameData);
+  $scope.formFieldChanged = function(field){
+    if(field!="" || field != undefined) gameService.validateGameConfig($scope.gameData);
   }
 
   $scope.forceBack = function(object,fieldString,max,min){
