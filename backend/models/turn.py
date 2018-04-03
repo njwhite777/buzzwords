@@ -29,6 +29,7 @@ class Turn(Base):
         self.numberOfSkips = 0
         self.startTime = time.time()
         self.game_changer_number = 3
+        self.card = None
 
     def set_team(self, team):
         self.team = team
@@ -77,7 +78,10 @@ class Turn(Base):
             return None
         # we might mind to implement a more elegant algorithm which picks a card depending on the stats
         # like number of times gotten right or missed
-        return self.get_random_unused_card()
+        card = self.get_random_unused_card()
+        self.card = card # sets a new card to the turn
+        game.add_used_card(card)
+        return card
 
     def can_skip(self):
         pass

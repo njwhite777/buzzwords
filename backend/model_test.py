@@ -1,7 +1,7 @@
 from app import engine, Session
 from models import Base as AppModelBase
 from db import delete_db
-from models import CardModel, PlayerModel, TeamModel, GameModel
+from models import CardModel, PlayerModel, TeamModel, GameModel, GameChanger, GameChangers
 
 def test_game_create():
     session = Session()
@@ -91,6 +91,12 @@ def test_find_unused_cards():
     session.commit()
     session.close()
 
+def testGameChanger():
+    gameChangers = GameChangers()
+    selectedGameChanger = gameChangers.rollDie()
+    print(selectedGameChanger.description)
+
+
 
 
 
@@ -104,4 +110,5 @@ def test_find_unused_cards():
 #test_save_cards()
 #test_add_used_card()
 #test_find_used_cards()
-test_find_unused_cards()
+# test_find_unused_cards()
+testGameChanger()
