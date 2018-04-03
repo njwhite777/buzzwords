@@ -105,8 +105,8 @@ def init_game(data):
     session.commit()
     session.close()
     viewData = {'swapView':'gameinitiatorwait'}
-    emit('swap_view',viewData,namespace="/io/view")
     emit('created_game',returnData,broadcast=True)
+    emit('swap_view',viewData,namespace="/io/view")
 
 
 @socketio.on('join_team',namespace='/io/game')
@@ -121,7 +121,6 @@ def join_team(data):
     player = PlayerModel.find_player_by_email(session,playerEmail)
     initiatorEmail = initiator.email
 
-    teamUnder = len(game.teams)
     for team in game.teams:
         # check if all teams have requisite 2 players.
         if(team.id == teamID):
@@ -139,9 +138,10 @@ def join_team(data):
 @socketio.on('validate_game_start',namespace='/io/game')
 def validate_game_start(data):
     session = Session()
-    print_item(data,'Game Object')
+
     gameID = data['gameID']
     game = GameModel.get_game_by_id(session,gameID)
+    teamUnder = len(game.teams)
     for team in game.teams:
         playerCount = len(team.players)
         tData = {'name':team.name,'id':team.id,'visible':True,'playerCount': playerCount,'maxPlayers':game.maxPlayersPerTeam}

@@ -84,8 +84,11 @@ angular.module('frontendApp')
 
     // The event listener which listens for game creation events.
     socket.on('created_game',function(data){
-      if(debug) console.log("gameSocket:created_game");
-      gameServiceData.games.push(data)
+      if(debug) console.log("created_game",data);
+      if(gameCreateData.backendValidatedGame.name == data.name){
+        gameServiceData.games.push(data)
+        gameCreateData.backendValidatedGame.gameID = data.id;
+      }
     });
 
     socket.on('players_on_team',function(data){

@@ -15,9 +15,13 @@ angular.module('frontendApp')
         'gameService',
         function($scope,viewSwapService,gameService){
           $scope.switchedElements = viewSwapService.switchedElements;
-          var game = gameService.gameCreateData.backendValidatedGame;
+          $scope.game = gameService.gameCreateData.backendValidatedGame;
 
-          gameService.validateGameStart(game);
+          $scope.$watch('game', function (newVal,oldVal) {
+            console.log(oldVal,newVal);
+            gameService.validateGameStart($scope.game);
+          });
+
         }
 
       ]);
