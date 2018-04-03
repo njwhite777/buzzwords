@@ -1,13 +1,16 @@
 #!/usr/bin/env python
 import argparse
-from app import app,socketio,session,engine
+from app import app,socketio,engine,Session
 from flask_cors import CORS
 from db import create_db,delete_db
 from models import Base as AppModelBase
 from socketIO import *
 
+from tests import *
+
 parser = argparse.ArgumentParser()
 parser.add_argument('-e','--env',default='dev',help="Pass the environment : dev, test, prod")
+parser.add_argument('-d','--db',default=None,help="Pass a flag to set up a db for every time the server restarts.")
 args = parser.parse_args()
 
 
@@ -21,11 +24,20 @@ if __name__ == '__main__':
     #   Eventually, will just be served by a static server like nginx or apache.
 
     environment = args.env
+    db = args.db
 
     if(environment in ['test','debug','dev']):
         delete_db(engine)
 
+
+        # if(db == 'midgamestate'):
+        #     mid_game_db(Session)
+
     AppModelBase.metadata.create_all(engine)
+
+    if(db):
+        if(db == 'startgame'):
+            start_game_db(Session)
 
     socketio.run(app,debug=True,port=5000,host='localhost')
     # app.run(port=port, debug=False)

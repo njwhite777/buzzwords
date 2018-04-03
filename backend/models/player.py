@@ -3,6 +3,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from flask import Flask, session as http_session
 from sqlalchemy.orm import sessionmaker, relationship
 from . import Base
+from app import TELLER,GUESSER,OBSERVER,MODERATOR
 
 class Player(Base):
 

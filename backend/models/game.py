@@ -4,6 +4,7 @@ from sqlalchemy import Column, Integer, String, Table, ForeignKey, DateTime
 from sqlalchemy.orm import sessionmaker, relationship
 from .card import Card
 from . import Base
+from app import GAME_CREATED,GAME_READY,GAME_PLAYING,GAME_PAUSED,GAME_COMPLETE
 
 usedCards = Table('used_cards',
     Base.metadata,
@@ -16,9 +17,9 @@ class Game(Base):
     __tablename__ = 'game'
     id   = Column(Integer, primary_key=True)
     name = Column(String)
-    gameState = Column(String)
+    gameState = Column(Integer)
     turnDuration = Column(Integer)
-    noGameChangers = Column(Integer)
+    withGameChangers = Column(Integer)
     pointsToWin = Column(Integer)
     maxPlayersPerTeam = Column(Integer)
     numberOfTeams = Column(Integer)
@@ -32,11 +33,11 @@ class Game(Base):
     rounds = relationship("Round",backref = "game", lazy = False)
     used_cards = relationship("Card",secondary=usedCards, lazy = False)
 
-    def __init__(self,initiator,name=None,turnDuration=30,numberOfTeams=2,maxPlayersPerTeam=5,pointsToWin=30,skipPenaltyAfter=3,noGameChangers=0,minRequiredPlayers=2):
+    def __init__(self,initiator,name=None,turnDuration=30,numberOfTeams=2,maxPlayersPerTeam=5,pointsToWin=30,skipPenaltyAfter=3,withGameChangers=1,minRequiredPlayers=2):
         self.name = name
-        self.gameState    = "initialized"
+        self.gameState    = GAME_CREATED
         self.turnDuration = turnDuration
-        self.noGameChangers = noGameChangers
+        self.withGameChangers = withGameChangers
         self.pointsToWin  = pointsToWin
         self.maxPlayersPerTeam = maxPlayersPerTeam
         self.numberOfTeams = numberOfTeams
