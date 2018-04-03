@@ -117,14 +117,13 @@ def validate_game_start(data):
     gameID = data['gameID']
     teamID = data['teamID']
     playerEmail = data['player']
-    print_item(data,"data is")
 
     game = GameModel.get_game_by_id(session,gameID)
     initiator=game.initiator
     player = PlayerModel.find_player_by_email(session,playerEmail)
     initiatorEmail = initiator.email
-
     teamUnder = len(game.teams)
+
     for team in game.teams:
         # check if all teams have requisite 2 players.
         if(team.id == teamID):
@@ -136,16 +135,14 @@ def validate_game_start(data):
 
     session = Session()
     game = GameModel.get_game_by_id(session,gameID)
-    for game in games:
-        maxPlayersPerTeam = game.maxPlayersPerTeam
-        for team in game.teams:
-            playerCount = len(team.players)
-            tData = {'name':team.name,'id':team.id,'visible':True,'playerCount': playerCount,'maxPlayers':maxPlayersPerTeam}
-            if(game.maxPlayersPerTeam <= playerCount):
-                tData['disableTeamJoin']=True
-            emit('players_on_team',tData,broadcast=True)
-            if( playerCount >= game.minRequiredPlayers ):
-                teamUnder -= 1
+    for team in game.teams:
+        playerCount = len(team.players)
+        tData = {'name':team.name,'id':team.id,'visible':True,'playerCount': playerCount,'maxPlayers':game.maxPlayersPerTeam}
+        if(game.maxPlayersPerTeam <= playerCount):
+            tData['disableTeamJoin']=True
+        emit('players_on_team',tData,broadcast=True)
+        if( playerCount >= game.minRequiredPlayers ):
+            teamUnder -= 1
 
     if(teamUnder == 0):
         emit('show_game_start_button_enabled',room=socketIOClients[initiatorEmail],namespace='/io/view')
