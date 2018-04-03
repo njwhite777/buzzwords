@@ -15,17 +15,22 @@ angular.module('frontendApp')
     function(socketService,$state,debug){
     // This service listens to the created game event and adds a new game to the list when one is created.
     var socket = socketService.viewSocket;
-    var data = {};
+    var switchedElements ={
+      startButtonDisabled : true
+    };
 
     socket.on('swap_view',function(data){
-      if(debug) console.log("viewswapservice:swap_view");
-      if(debug) console.log(data);
-      console.log($state);
       $state.go(data['swapView']);
     });
 
+    socket.on('start_button_enabled',function(){
+        console.log("enable the start button.");
+        console.log(switchedElements);
+        switchedElements.startButtonDisabled = false;
+    });
+
     return {
-      data : data
+      switchedElements : switchedElements
     };
 
   }]);

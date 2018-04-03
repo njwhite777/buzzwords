@@ -8,11 +8,13 @@ class Player(Base):
 
     __tablename__ = 'player'
     id       = Column(Integer,primary_key=True)
-    nickname           = Column(String)
-    email           = Column(String)
+    nickname = Column(String)
+    email = Column(String)
     role = Column(Integer)
-    game = relationship("Game", lazy = False, uselist=False)
-    team_id = Column(Integer, ForeignKey('team.id'), nullable=True)
+    teamID = Column(Integer, ForeignKey('team.id'), nullable=True)
+
+    game = relationship("Game",lazy = False, uselist=False)
+
     turnTeller = relationship("Turn", foreign_keys='Turn.turn_teller_id', backref = "turnTeller", lazy = False, uselist=False)
     turnModerator = relationship("Turn", foreign_keys='Turn.turn_moderator_id', backref = "turnModerator", lazy = False, uselist=False)
 
@@ -23,25 +25,35 @@ class Player(Base):
         self.game = None
 
     @staticmethod
-    def email_exists(session, the_email):
-        player = session.query(Player).filter(Player.email==the_email).first()
-        return player is not None
+    def email_exists(session, email):
+        player = session.query(Player).filter(Player.email==email).first()
+        if(player != None and player.email):
+            return player.email
+        return False
+
+    @staticmethod
+    def find_player_by_email(session,email):
+        return session.query(Player).filter(Player.email==email).first()
 
     @staticmethod
     def is_logged_in():
-        http_session['email'] is not None
+        email = http_session.get('email', None)
+        return email is not None
 
     @staticmethod
     def find_player_by_id(session, id):
         player = session.query(Player).get(id)
-        return player 
+        return player
 
     def login(self):
         http_session['email'] = self.email
         http_session['player_id'] = self.id
 
+    def add_team_session(self):
+        http_session['team_id'] = self.team.id
+
 
 
     # TODO: what else will we need?
     def __repr__(self):
-        return "<Player(id='{}',fname='{}',lname='{}',email='{}',phone='{}')>".format(id,fname,lname,email,phone)
+        return "<Player(id='{}',name='{}',email='{}')>".format(self.id, self.nickname,self.email)

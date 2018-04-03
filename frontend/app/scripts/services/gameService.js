@@ -31,6 +31,12 @@ angular.module('frontendApp')
       socket.emit('validate_game_config',game);
     };
 
+
+
+    var playerJoinTeam = function(data){
+      socket.emit('validate_game_start',data);
+    };
+
     var initGame = function(){
       socket.emit('init_game',gameServiceData._validatedGame);
     }
@@ -73,9 +79,21 @@ angular.module('frontendApp')
     // The event listener which listens for game creation events.
     socket.on('created_game',function(data){
       if(debug) console.log("gameSocket:created_game");
+      gameServiceData.games.push(data)
+    });
+
+    socket.on('players_on_team',function(data){
+      var teamID = data['teamID'];
+      var count = data['playerCount'];
       console.log(data);
-      // TODO: Add new game to the list of games currently maintained.
-      // gameData.games.push()
+      angular.forEach(gameServiceData.games,function(gameObject){
+        angular.forEach(gameObject.teams,function(teamObject){
+          if(teamID == teamObject.id){
+            Object.assign(teamObject,data)
+          }
+
+        });
+      });
     });
 
     socket.on('deleted_game',function(){
@@ -84,6 +102,7 @@ angular.module('frontendApp')
     });
 
     return {
+      playerJoinTeam : playerJoinTeam,
       gameServiceData : gameServiceData,
       validateGameConfig : validateGameConfig,
       initGame: initGame,

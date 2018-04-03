@@ -12,29 +12,18 @@ angular.module('frontendApp')
     '$scope',
     '$mdPanel',
     'loginUser',
-    '$stateParams',
     'playerService',
+    '$stateParams',
     loginController]);
 
-function loginController ($scope,$mdPanel,loginUser,$stateParams,playerService){
-  this._mdPanel = $mdPanel;
-  this.disableParentScroll = false;
-  this._validUser = loginUser;
-  if(!loginUser.registeredEmailInStorage())
-  {
-    this.showDialog();
-  }
-  playerService.emitPlayerJoined();
-  // playerService.
-  // $scope.isEmailValid = function(){
-    // if( /(.+)@(.+){2,}\.(.+){2,}/.test($scope.ctrl.user.email) ){
-      // console.log("valid email");
-      // return true;
-// } else {
-    // return false;
-// }
-  // }();
-
+  function loginController ($scope,$mdPanel,loginUser,playerService,$stateParams){
+    this._mdPanel = $mdPanel;
+    this.disableParentScroll = false;
+    this._validUser = loginUser;
+    if(!loginUser.registeredEmailInStorage())
+    {
+      this.showDialog();
+    }
 }
 
 loginController.prototype.showDialog = function(){
@@ -70,7 +59,7 @@ loginController.prototype.showDialog = function(){
 
 var RegisterPanelController = function(mdPanelRef,loginUser){
   this._mdPanelRef = mdPanelRef;
-  this._validUser = loginUser;
+  this.loginUser = loginUser;
   this.user = {};
 
   var name = loginUser.getUsername();
@@ -88,6 +77,5 @@ RegisterPanelController.prototype.closeDialog = function() {
     angular.element(document.querySelector('.demo-dialog-open-button')).focus();
     panelRef.destroy();
   });
-  this._validUser.storeEmail(this.user.email);
-  this._validUser.storeUsername(this.user.name);
+  this.loginUser.createNewPlayer(this.user.email,this.user.name);
 };

@@ -13,8 +13,9 @@ angular.module('frontendApp')
     'gameService',
     '$state',
     '$http',
+    'loginUser',
     'debug',
-function ($scope,gameService,$state,$http,debug) {
+function ($scope,gameService,$state,$http,loginUser,debug) {
 
   if(debug) console.log("GM View controller");
 
@@ -23,12 +24,15 @@ function ($scope,gameService,$state,$http,debug) {
   $scope.gameServiceData = gameService.gameServiceData;
   console.log(gameService.gameServiceData.teams)
   $scope.gameData = {
-    maxNumberOfPlayers: 3,
-    turnDuration: 30,
-    teamNumber: 2,
-    turnModifiers: true,
-    name:"",
+    maxPlayersPerTeam: 3,
+    turnDuration : 30,
+    pointsToWin : 30,
+    numberOfTeams: 2,
+    skipPenaltyAfter : 3,
+    gameChangers : true,
+    name:""
   };
+  $scope.turnDurationOptions= [20,30,60];
 
   $scope.gameData.teamData = [];
   $scope.collapseAll = function(data) {
@@ -44,7 +48,7 @@ function ($scope,gameService,$state,$http,debug) {
   console.log($scope.accordingData);
 //TODO: get game list from socket, not hardcoding.
 
-  $scope.$watch('gameData.teamNumber', function (newVal,oldVal) {
+  $scope.$watch('gameData.numberOfTeams', function (newVal,oldVal) {
     console.log(newVal);
 
     $scope.gameData.teamData = (
@@ -56,18 +60,19 @@ function ($scope,gameService,$state,$http,debug) {
           return teams;
         })();
   });
-  $scope.joinButton = function(){
+  $scope.joinButton = function(game,team){
     //TODO: add team, game in player;
-    $state.go('gameplayerwait');
+    var player = loginUser.getPlayerDetails();
+    var data = {'gameID':game.id,'teamID': team.id,'player':player.email};
+    gameService.playerJoinTeam(data);
   }
 
   $scope.initiateGameButton = function(){
-    // TODO: when this happens should send a request to the api that kicks off the game.
     gameService.initGame();
   }
 
-  $scope.formFieldChanged = function(){
-    gameService.validateGameConfig($scope.gameData);
+  $scope.formFieldChanged = function(field){
+    if(field!="" || field != undefined) gameService.validateGameConfig($scope.gameData);
   }
 
   $scope.forceBack = function(object,fieldString,max,min){
@@ -80,10 +85,7 @@ function ($scope,gameService,$state,$http,debug) {
       alert(fieldString + " cannot less than" + min);
     }
   }
-  $scope.gameData.turnDuration = [10,20,30];
-  $scope.gameData.selectedDuration = 10;
-  $scope.gameData.freeSkips = ["infinite",0,3,5];
-  $scope.gameData.selectedFreeSkips = 3;
+
   $scope.getData = function(){
     if(debug){
       console.log($scope.gameData.selectedFreeSkips);

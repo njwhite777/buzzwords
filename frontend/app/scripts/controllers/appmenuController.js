@@ -11,11 +11,13 @@ angular.module('frontendApp')
   .controller('appmenuController', [
     '$scope',
     'loginUser',
-    function ($scope,loginUser) {
+    '$window',
+    function ($scope,loginUser,$window) {
       $scope.loginUser = loginUser;
-      
+
       $scope.userLogOut = function(){
         loginUser.deleteEmail();
+        $window.location.reload();
       };
 
   }]);
