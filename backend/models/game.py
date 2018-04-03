@@ -2,6 +2,7 @@
 import datetime
 from sqlalchemy import Column, Integer, String, Table, ForeignKey, DateTime
 from sqlalchemy.orm import sessionmaker, relationship
+from .card import Card
 from . import Base
 
 usedCards = Table('used_cards',
@@ -17,7 +18,7 @@ class Game(Base):
     name = Column(String)
     gameState = Column(String)
     turnDuration = Column(Integer)
-    gameChangers = Column(Integer)
+    noGameChangers = Column(Integer)
     pointsToWin = Column(Integer)
     maxPlayersPerTeam = Column(Integer)
     numberOfTeams = Column(Integer)
@@ -31,17 +32,18 @@ class Game(Base):
     rounds = relationship("Round",backref = "game", lazy = False)
     used_cards = relationship("Card",secondary=usedCards, lazy = False)
 
-    def __init__(self,initiator,name=None,turnDuration=30,numberOfTeams=2,maxPlayersPerTeam=5,pointsToWin=30,skipPenaltyAfter=3,gameChangers=1,minRequiredPlayers=2):
+    def __init__(self,initiator,name=None,turnDuration=30,numberOfTeams=2,maxPlayersPerTeam=5,pointsToWin=30,skipPenaltyAfter=3,noGameChangers=0,minRequiredPlayers=2):
         self.name = name
         self.gameState    = "initialized"
         self.turnDuration = turnDuration
-        self.gameChangers = gameChangers
+        self.noGameChangers = noGameChangers
         self.pointsToWin  = pointsToWin
         self.maxPlayersPerTeam = maxPlayersPerTeam
         self.numberOfTeams = numberOfTeams
         self.minRequiredPlayers = minRequiredPlayers
         self.skipPenaltyAfter = skipPenaltyAfter
         self.initiator = initiator
+        self.used_cards = []
 
     @staticmethod
     def number_of_rows(session):
@@ -62,6 +64,19 @@ class Game(Base):
     def add_team(self,team):
         self.teams.append(team)
 
+    def get_used_cards(self):
+        return self.used_cards
+
+    def get_used_cards_ids(self):
+        used_card_ids = []
+        for card in self.used_cards:
+            used_card_ids.append(card.id)
+        return used_card_ids
+
+    def get_unused_cards(self, session):
+        query = session.query(Card).filter(~(Card.id.in_(self.get_used_cards_ids())))
+        return query.all()
+
     def is_game_in_valid_state(self):
         if self.rounds == 0:
             return False
@@ -69,7 +84,6 @@ class Game(Base):
             if len(team.players) < 2:
                 return False
         return True
-
 
     def is_game_over(self):
         if not self.has_at_least_one_round():

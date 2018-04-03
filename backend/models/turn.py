@@ -36,7 +36,7 @@ class Turn(Base):
     def get_teams_not_on_turn(self, game):
         teams_not_on_turn = []
         for the_team in game.teams:
-            if team.id != the_team.id:
+            if self.team.id != the_team.id:
                 teams_not_on_turn.append(the_team)
         return teams_not_on_turn
 
@@ -52,6 +52,11 @@ class Turn(Base):
         random_player_index = random.randint(0, number_of_players - 1)
         return players[random_player_index]
 
+    def get_random_unused_card(self, cards):
+        number_of_cards = len(cards)
+        random_card_index = random.randint(0, number_of_cards - 1)
+        return cards[random_card_index]
+
     def set_moderator(self, game):
         teams_not_on_turn = self.get_teams_not_on_turn(game)
         random_team = self.get_random_team(teams_not_on_turn)
@@ -66,8 +71,16 @@ class Turn(Base):
         self.teller = teller
         return teller
 
-    def load_card(self):
-        total_number_of_cards = CardModel
+    def load_card(self, game):
+        unused_cards = game.get_unused_cards()
+        if len(unused_cards) == 0:
+            return None
+        # we might mind to implement a more elegant algorithm which picks a card depending on the stats
+        # like number of times gotten right or missed
+        return self.get_random_unused_card()
+
+    def can_skip(self):
+        
 
 
 

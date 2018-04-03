@@ -4,6 +4,15 @@ class GameChanger():
         self.game_changer_id = game_changer_id
         self.description = description
         self.weight = weight
+        self.min_width_index = -1
+        self.max_width_index = -1
+
+    def setWidthLimits(self, min):
+        self.min_width_index = min
+        self.max_width_index = min + self.weight
+
+    def isSelectedGameChanger(self, selectedIndex):
+        return self.min_width_index >= selectedIndex and self.max_width_index < selectedIndex
 
 
 class  GameChangers():
@@ -19,5 +28,5 @@ class  GameChangers():
         self.changers[6] = GameChanger("Round-killer: Current team missed its round completely. It is next team’s turn now.", 6)
         self.changers[7] = GameChanger("All guessers: Any member of the other team can also guess along with guessers. Whoever can guess the word will be rewarded with one point to his/her team.", 7)
 
-    def roll_die(self):
+    def rollDie(self):
         pass

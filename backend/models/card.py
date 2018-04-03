@@ -26,11 +26,15 @@ class Card(Base):
         self.lost_count         = lost_count
         self.source             = source
         self.source_page        = source_page
-        self.is_phrase = is_phrase
+        self.is_phrase          = is_phrase
 
     @staticmethod
     def number_of_rows(session):
         return session.query(Card).count()
+
+    @staticmethod
+    def find_card_by_id(session, id):
+        return session.query(Card).get(id)
 
     @staticmethod
     def load_card():
