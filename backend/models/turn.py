@@ -80,8 +80,7 @@ class Turn(Base):
         return self.get_random_unused_card()
 
     def can_skip(self):
-        
-
+        pass
 
 
     def __repr__(self):
