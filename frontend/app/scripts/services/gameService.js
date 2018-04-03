@@ -14,8 +14,10 @@ angular.module('frontendApp')
     if(debug) console.log("game Service!");
 
     var gameServiceData = {};
+    var gameCreateData = {};
+
     gameServiceData.games = [];
-    gameServiceData.showGameStartButton = false;
+    gameCreateData.showGameStartButton = false;
 
     var socket = socketService.gameSocket;
 
@@ -24,22 +26,20 @@ angular.module('frontendApp')
     //TODO: move the url definition into consts so that it can be in the same file as the
     //  rest of the config stuff
 
-    var validateGameConfig = function(game){
-      // This is bad. Introduces temporal coupling...
-      gameServiceData._checkGameName = game.name;
-      game._gameValid = true;
-      socket.emit('validate_game_config',game);
+    var playerJoinTeam = function(data){
+      socket.emit('join_team',data);
     };
 
-
-
-    var playerJoinTeam = function(data){
+    var validateGameStart = function(data){
       socket.emit('validate_game_start',data);
     };
 
-    var initGame = function(){
-      socket.emit('init_game',gameServiceData._validatedGame);
-    }
+    // Called with every update of for fields.
+    var validateGameConfig = function(game){
+      gameCreateData.game = game;
+      gameCreateData.game._gameValid = true;
+      socket.emit('validate_game_config',gameCreateData.game);
+    };
 
     // Gets the game list when a game view that needs it is rendered.
     socketService.notifySocketReady().then(
@@ -49,13 +49,19 @@ angular.module('frontendApp')
       function(result){}
     );
 
+    // Handles the event wherein the backend tells us the game is ready to go.
     socket.on('show_game_init_button_enabled',function(data){
-      if(data.name == gameServiceData._checkGameName){
-        gameServiceData.showGameStartButton=true;
-        gameServiceData._validatedGame = data;
+      if(data.name == gameCreateData.game.name){
+        console.log('game init button',data);
+        gameCreateData.showGameStartButton=true;
+        gameCreateData.backendValidatedGame=data;
       }
-
     });
+
+    // Called when player clicks the button to initialize the game
+    var initGame = function(){
+      socket.emit('init_game',gameCreateData.backendValidatedGame);
+    }
 
     // On a disconnect from the server set up a listener to notify when then
     //  socket is back up. When it is, request games.
@@ -91,7 +97,6 @@ angular.module('frontendApp')
           if(teamID == teamObject.id){
             Object.assign(teamObject,data)
           }
-
         });
       });
     });
@@ -104,8 +109,10 @@ angular.module('frontendApp')
     return {
       playerJoinTeam : playerJoinTeam,
       gameServiceData : gameServiceData,
+      gameCreateData : gameCreateData,
       validateGameConfig : validateGameConfig,
-      initGame: initGame,
+      validateGameStart : validateGameStart,
+      initGame: initGame
     };
 
   }]);

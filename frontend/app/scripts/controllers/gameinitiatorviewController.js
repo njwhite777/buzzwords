@@ -9,8 +9,15 @@
  */
 
 angular.module('frontendApp')
-      .controller('gameinitiatorviewController',['$scope','viewSwapService',function($scope,viewSwapService){
-        console.log("GameIV Controller");
-        $scope.switchedElements = viewSwapService.switchedElements;
-        
-}]);
+      .controller('gameinitiatorviewController',[
+        '$scope',
+        'viewSwapService',
+        'gameService',
+        function($scope,viewSwapService,gameService){
+          $scope.switchedElements = viewSwapService.switchedElements;
+          var game = gameService.gameCreateData.backendValidatedGame;
+
+          gameService.validateGameStart(game);
+        }
+
+      ]);
