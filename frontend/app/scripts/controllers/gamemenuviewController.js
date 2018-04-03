@@ -33,7 +33,7 @@ function ($scope,gameService,$state,$http,loginUser,debug) {
     name:""
   };
   $scope.turnDurationOptions= [20,30,60];
-  $scope.skipOptions = ['infinite',3,5,10];
+  $scope.skipOptions= ['infinite',0,3,5];
 
   $scope.gameData.teamData = [];
   $scope.collapseAll = function(data) {

@@ -69,5 +69,8 @@ package-lock.json
 #ignore the database
 *.sqlite
 
+#ignore idea files
+.idea/
+
 #ignore python files
 *__pycache__
