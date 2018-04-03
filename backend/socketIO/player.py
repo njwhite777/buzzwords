@@ -8,7 +8,7 @@ from flask import request
 @socketio.on('player_login',namespace='/io/player')
 def playerLogin(data):
     session = Session()
-    player=PlayerModel.find_player_by_email(session,data['email'])
+    player=PlayerModel.findPlayerByEmail(session,data['email'])
     if(player):
         socketIOClients[request.sid] = data['email']
         socketIOClients[player.id] = request.sid
@@ -26,13 +26,13 @@ def playerLogin(data):
 @socketio.on('player_join_team',namespace='/io/player')
 def playerJoinTeam(data):
     session = Session()
-    player_id = socketIOClients[request.sid]
-    player = PlayerModel.find_player_by_id(session, player_id)
+    playerId = socketIOClients[request.sid]
+    player = PlayerModel.findPlayerById(session, playerId)
     if player:
         print("the player does not exist")
         return
-    team_id = data['team_id']
-    team = TeamModel.find_team_by_id(session, team_id)
+    teamId = data['team_id']
+    team = TeamModel.findTeamById(session, teamId)
     if team is None:
         print("the team does not exist")
         return

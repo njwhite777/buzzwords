@@ -29,15 +29,15 @@ class Card(Base):
         self.is_phrase          = is_phrase
 
     @staticmethod
-    def number_of_rows(session):
+    def numberOfRows(session):
         return session.query(Card).count()
 
     @staticmethod
-    def find_card_by_id(session, id):
+    def findCardById(session, id):
         return session.query(Card).get(id)
 
     @staticmethod
-    def load_card():
+    def loadCard():
         pass
 
     def __repr__(self):

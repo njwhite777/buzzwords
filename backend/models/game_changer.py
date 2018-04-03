@@ -8,6 +8,7 @@ class GameChanger():
         self.weight = weight
         self.minWidthIndex = -1
         self.maxWidthIndex = -1
+        self.count = 0
 
     def setWidthLimits(self, min):
         self.minWidthIndex = min
@@ -33,20 +34,17 @@ class  GameChangers():
         self.changers[5] = GameChanger("One-person teller: The teller will explain to only one of the guessers. The remaining of the guessers will stay silent during the round.", 5, 16)
         self.changers[6] = GameChanger("Round-killer: Current team missed its round completely. It is next team’s turn now.", 6, 10)
         self.changers[7] = GameChanger("All guessers: Any member of the other team can also guess along with guessers. Whoever can guess the word will be rewarded with one point to his/her team.", 7, 10)
+        self.setGameChangerWidthLimits()
 
     def setGameChangerWidthLimits(self):
         startMinIndex = 0
         for key, value in self.changers.items():
             value.setWidthLimits(startMinIndex)
             startMinIndex = value.getMaxWidthIndex()
-        #print("max===================================================: " + str(self.maxWidthLimit))
         self.maxWidthLimit = startMinIndex
 
     def rollDie(self):
-        self.setGameChangerWidthLimits()
         selected = random.randint(0, self.maxWidthLimit - 1)
-        print("max===================================================: " + str(self.maxWidthLimit))
-        print("selected===================================================: " + str(selected))
         for key, value in self.changers.items():
             if value.isSelectedGameChanger(selected):
                 return value

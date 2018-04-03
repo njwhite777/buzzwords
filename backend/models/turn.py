@@ -13,77 +13,76 @@ class Turn(Base):
     number         = Column(Integer)
     numberOfSkips = Column(Integer)
     startTime = Column(DateTime)
-    game_changer_number = Column(Integer)
-    round_id = Column(Integer, ForeignKey('round.id'), nullable=False)
-    card_id = Column(Integer, ForeignKey('card.id'), nullable=True)
-    card = relationship("Card", foreign_keys=card_id, lazy = False)
-    team_id = Column(Integer, ForeignKey('team.id'), nullable=True)
-    # team = relationship("Team", foreign_keys=team_id), causes a backref problem because Team has this reference
-    turn_teller_id = Column(Integer, ForeignKey('player.id'), nullable=True)
-    turn_moderator_id = Column(Integer, ForeignKey('player.id'), nullable=True)
-    teller = relationship('Player', foreign_keys=turn_teller_id )
-    moderator = relationship('Player', foreign_keys=turn_moderator_id )
+    gameChangerNumber = Column(Integer)
+    roundId = Column(Integer, ForeignKey('round.id'), nullable=False)
+    cardId = Column(Integer, ForeignKey('card.id'), nullable=True)
+    card = relationship("Card", foreign_keys=cardId, lazy = False)
+    teamId = Column(Integer, ForeignKey('team.id'), nullable=True)
+    turnTellerId = Column(Integer, ForeignKey('player.id'), nullable=True)
+    turnModeratorId = Column(Integer, ForeignKey('player.id'), nullable=True)
+    teller = relationship('Player', foreign_keys=turnTellerId )
+    moderator = relationship('Player', foreign_keys=turnModeratorId )
 
     def __init__(self, number):
         self.number = number
         self.numberOfSkips = 0
         self.startTime = time.time()
-        self.game_changer_number = 3
+        self.gameChangerNumber = 3
         self.card = None
 
-    def set_team(self, team):
+    def setTeam(self, team):
         self.team = team
 
-    def get_teams_not_on_turn(self, game):
-        teams_not_on_turn = []
-        for the_team in game.teams:
-            if self.team.id != the_team.id:
-                teams_not_on_turn.append(the_team)
-        return teams_not_on_turn
+    def getTeamsNotOnTurn(self, game):
+        teamsNotOnTurn = []
+        for theTeam in game.teams:
+            if self.team.id != theTeam.id:
+                teamsNotOnTurn.append(theTeam)
+        return teamsNotOnTurn
 
-    def get_random_team(self, teams):
-        number_of_teams = len(teams_not_on_turn)
-        random_team_index = random.randint(0, number_of_teams - 1)
-        selected_team = teams_not_on_turn[random_team_index]
-        return selected_team
+    def getRandomTeam(self, teams):
+        numberOfTeams = len(teams)
+        randomTeamIndex = random.randint(0, numberOfTeams - 1)
+        selectedTeam = teamsNotOnTurn[randomTeamIndex]
+        return selectedTeam
 
-    def get_random_player(self, players):
+    def getRandomPlayer(self, players):
         players = selected_team.players
-        number_of_players = len(players)
-        random_player_index = random.randint(0, number_of_players - 1)
-        return players[random_player_index]
+        numberOfPlayers = len(players)
+        randomPlayerIndex = random.randint(0, numberOfPlayers - 1)
+        return players[randomPlayerIndex]
 
-    def get_random_unused_card(self, cards):
-        number_of_cards = len(cards)
-        random_card_index = random.randint(0, number_of_cards - 1)
-        return cards[random_card_index]
+    def getRandomUnusedCard(self, cards):
+        numberOfCards = len(cards)
+        randomCardIndex = random.randint(0, numberOfCards - 1)
+        return cards[randomCardIndex]
 
-    def set_moderator(self, game):
-        teams_not_on_turn = self.get_teams_not_on_turn(game)
-        random_team = self.get_random_team(teams_not_on_turn)
-        moderator = self.get_random_player(random_team.players)
+    def setModerator(self, game):
+        teamsNotOnTurn = self.getTeamsNotOnTurn(game)
+        randomTeam = self.getRandomTeam(teamsNotOnTurn)
+        moderator = self.getRandomPlayer(randomTeam.players)
         moderator.role = 2
         self.moderator = moderator
         return moderator
 
-    def set_teller(self):
-        teller = self.get_random_player(self.team.players)
+    def setTeller(self):
+        teller = self.getRandomPlayer(self.team.players)
         teller.role = 1
         self.teller = teller
         return teller
 
-    def load_card(self, game):
-        unused_cards = game.get_unused_cards()
-        if len(unused_cards) == 0:
+    def loadCard(self, game):
+        unusedCards = game.getUnusedCards()
+        if len(unusedCards) == 0:
             return None
         # we might mind to implement a more elegant algorithm which picks a card depending on the stats
         # like number of times gotten right or missed
-        card = self.get_random_unused_card()
+        card = self.getRandom_unusedCard()
         self.card = card # sets a new card to the turn
-        game.add_used_card(card)
+        game.addUsedCard(card)
         return card
 
-    def can_skip(self):
+    def canSkip(self):
         pass
 
 
