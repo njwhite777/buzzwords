@@ -7,6 +7,7 @@ from .player import Player as PlayerModel
 from .round import Round as RoundModel
 from .team import Team as TeamModel
 from .turn import Turn as TurnModel
+from .game_changer import GameChanger, GameChangers
 # from .gameround import GameRound as GameRoundModel
 # from .gameteam import GameTeam as GameTeamModel
 # from .round import Round as RoundModel

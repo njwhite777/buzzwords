@@ -8,7 +8,7 @@ class Round(Base):
     id = Column(Integer,primary_key=True)
     number       = Column(Integer)
     startTime = Column(DateTime)
-    game_id = Column(Integer, ForeignKey('game.id'), nullable=False)
+    gameId = Column(Integer, ForeignKey('game.id'), nullable=False)
     turns          = relationship("Turn", backref = "round", lazy = False)
 
 

@@ -18,7 +18,7 @@ def print_item(item,message):
 @socketio.on('request_games',namespace='/io/game')
 def request_games():
     session = Session()
-    games = GameModel.get_all_games(session)
+    games = GameModel.getAllGames(session)
     tGlist = list()
     for game in games:
         maxPlayersPerTeam = game.maxPlayersPerTeam
@@ -72,7 +72,7 @@ def init_game(data):
     #     initiator = PlayerModel.find_player_by_id(session, 1)
     # print ("The new game: " + str(data))
     session = Session()
-    initiator = PlayerModel.find_player_by_email(session, socketIOClients[request.sid]) #socketIOClients[request.sid].id
+    initiator = PlayerModel.find_playerByEmail(session, socketIOClients[request.sid]) #socketIOClients[request.sid].id
     gameArgs = {k:v for(k,v) in data.items() if k in ['name','turnDuration','numberOfTeams','maxPlayersPerTeam','pointsToWin','skipPenaltyAfter','withGameChangers'] }
     gameArgs['initiator'] = initiator
     game = GameModel(**gameArgs)
@@ -88,11 +88,11 @@ def init_game(data):
         teamName = teamObj['name']
 
         team = TeamModel(teamObj['name'])
-        game.add_team(team)
+        game.addTeam(team)
         session.commit()
 
         if(teamName == initiatorTeamName):
-            team.add_player(initiator)
+            team.addPlayer(initiator)
 
         tData['name'] = teamObj['name']
         tData['id'] = team.id
@@ -116,15 +116,15 @@ def join_team(data):
     gameID = data['gameID']
     teamID = data['teamID']
     playerEmail = data['player']
-    game = GameModel.get_game_by_id(session,gameID)
+    game = GameModel.getGameById(session,gameID)
     initiator = game.initiator
-    player = PlayerModel.find_player_by_email(session,playerEmail)
+    player = PlayerModel.findPlayerByEmail(session,playerEmail)
     initiatorEmail = initiator.email
 
     for team in game.teams:
         # check if all teams have requisite 2 players.
         if(team.id == teamID):
-            team.add_player(player)
+            team.addPlayer(player)
             session.commit()
             session.close()
             emit('swap_view',{'swapView':'gameplayerwait'},namespace='/io/view')

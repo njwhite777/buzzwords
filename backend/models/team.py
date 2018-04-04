@@ -10,22 +10,22 @@ class Team(Base):
     score = Column(Integer)
     players = relationship("Player", backref = "team", lazy = False)
     turns = relationship("Turn", backref = "team", lazy = False)
-    game_id = Column(Integer, ForeignKey('game.id'), nullable=True)
+    gameId = Column(Integer, ForeignKey('game.id'), nullable=True)
 
     def __init__(self, name):
         self.name = name
         self.score = 0
         self.turns = []
 
-    def add_player(self,player):
+    def addPlayer(self,player):
         self.players.append(player)
 
     @staticmethod
-    def get_team_by_id(session, id):
+    def getTeamById(session, id):
         team = session.query(Team).get(id)
         return team
 
-    def number_of_turns(self):
+    def numberOfTurns(self):
         return len(self.turns)
 
     # TODO: what else will we need?

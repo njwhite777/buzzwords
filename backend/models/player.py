@@ -26,33 +26,25 @@ class Player(Base):
         self.game = None
 
     @staticmethod
-    def email_exists(session, email):
+    def emailExists(session, email):
         player = session.query(Player).filter(Player.email==email).first()
         if(player != None and player.email):
             return player.email
         return False
 
     @staticmethod
-    def find_player_by_email(session,email):
+    def findPlayerByEmail(session,email):
         return session.query(Player).filter(Player.email==email).first()
 
     @staticmethod
-    def is_logged_in():
+    def isLoggedIn():
         email = http_session.get('email', None)
         return email is not None
 
     @staticmethod
-    def find_player_by_id(session, id):
+    def findPlayerById(session, id):
         player = session.query(Player).get(id)
         return player
-
-    def login(self):
-        http_session['email'] = self.email
-        http_session['player_id'] = self.id
-
-    def add_team_session(self):
-        http_session['team_id'] = self.team.id
-
 
 
     # TODO: what else will we need?

@@ -31,7 +31,7 @@ class Game(Base):
     initiator = relationship("Player", foreign_keys=initiatorID, lazy = False, uselist=False)
     teams = relationship("Team", backref = "game", lazy = False)
     rounds = relationship("Round",backref = "game", lazy = False)
-    used_cards = relationship("Card",secondary=usedCards, lazy = False)
+    usedCards = relationship("Card",secondary=usedCards, lazy = False)
 
     def __init__(self,initiator,name=None,turnDuration=30,numberOfTeams=2,maxPlayersPerTeam=5,pointsToWin=30,skipPenaltyAfter=3,withGameChangers=1,minRequiredPlayers=2):
         self.name = name
@@ -47,38 +47,38 @@ class Game(Base):
         self.used_cards = []
 
     @staticmethod
-    def number_of_rows(session):
+    def numberOfRows(session):
         return session.query(Game).count()
 
     @staticmethod
-    def get_game_by_id(session, game_id):
+    def getGameById(session, game_id):
         game = session.query(Game).get(1)
         return game
 
     @staticmethod
-    def get_all_games(session):
+    def getAllGames(session):
         return session.query(Game).all()
 
-    def add_used_card(self, card):
+    def addUsedCard(self, card):
         self.used_cards.append(card)
 
-    def add_team(self,team):
+    def addTeam(self,team):
         self.teams.append(team)
 
-    def get_used_cards(self):
+    def getUsedCards(self):
         return self.used_cards
 
-    def get_used_cards_ids(self):
-        used_card_ids = []
-        for card in self.used_cards:
-            used_card_ids.append(card.id)
-        return used_card_ids
+    def getUsedCardsIds(self):
+        usedCardIds = []
+        for card in self.usedCardIds:
+            usedCardIds.append(card.id)
+        return usedCardIds
 
-    def get_unused_cards(self, session):
+    def getUnusedCards(self, session):
         query = session.query(Card).filter(~(Card.id.in_(self.get_used_cards_ids())))
         return query.all()
 
-    def is_game_in_valid_state(self):
+    def isGameInValidState(self):
         if self.rounds == 0:
             return False
         for team in self.teams:
@@ -86,23 +86,23 @@ class Game(Base):
                 return False
         return True
 
-    def is_game_over(self):
-        if not self.has_at_least_one_round():
+    def isGameOver(self):
+        if not self.hasAtLeastOneRound():
             return False
-        elif self.teams_have_equal_turns():
+        elif self.teamsHaveEqualTurns():
             return False
 
-    def has_at_least_one_round(self):
+    def hasAtLeastOneRound(self):
         return self.rounds > 0
 
-    def teams_have_equal_turns(self):
-        turns = self.teams.number_of_turns()
+    def teamsHaveEqualTurns(self):
+        turns = self.teams.numberOfTurns()
         for team in self.teams:
-            if team.number_of_turns() != turns:
+            if team.numberOfTurns() != turns:
                 return False
         return True
 
-    def team_has_reached_threshold():
+    def teamHasReachedThreshold():
         pass
 
     def __repr__(self):
