@@ -94,6 +94,7 @@ def init_game(data):
         session.commit()
 
         if(teamName == initiatorTeamName):
+            game.addPlayer(initiator)
             team.addPlayer(initiator)
 
         tData['name'] = teamObj['name']
@@ -127,6 +128,7 @@ def join_team(data):
     for team in game.teams:
         # check if all teams have requisite 2 players.
         if(team.id == teamID):
+            game.addPlayer(player)
             team.addPlayer(player)
             session.commit()
             session.close()
@@ -162,6 +164,9 @@ def validate_game_start(data):
 
     session.close()
 
+# Listens for a start game event from clients.
+#  this should only be possible when a game configuration is valid.
+#
 @socketio.on('start_game',namespace='/io/game')
 def start_game(data):
     session = Session()
@@ -169,7 +174,32 @@ def start_game(data):
     gameID = data['gameID']
     game = GameModel.getGameById(session,gameID)
     print_item(data,'game item retrieved')
-    # Set game to start!
+    players = game.getAllPlayers()
+
+    # Puts the game in started state
+    game.setStateStart()
+
+    # Use game logic to set up first round and turn.
+    #
+    #  Figure out who is the teller, who is the moderator, who are the guesers, and who are the rest of the roles.
+    #  teller must be shown view to roll die. Others should just be waiting.
+    #
+    #  Frontend states are:
+    #    gameplayerturn
+    #    tellerrolldie
+    #    tellerturn
+    #    moderatorturn
+    #
+    # TODO: figure out who is teller:
+
+    emit('swap_view',{ 'swapView' : 'tellerrolldie' },room=socketIOClients[teller.email],namespace='/io/view')
+    emit('swap_view',{ 'swapView' : 'moderatorturn' },room=socketIOClients[moderator.email],namespace='/io/view')
+
+    for guesser in guessers:
+        emit('swap_view',{'swapView':'gameplayerturn'},room=socketIOClients[guesser.email],namespace='/io/view')
+
+    for observer in observers:
+        emit('swap_view',{'swapView':'gameplayerturn'},room=socketIOClients[player.email],namespace='/io/view')
 
     session.commit()
     session.close()

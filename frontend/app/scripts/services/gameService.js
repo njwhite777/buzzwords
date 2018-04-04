@@ -31,6 +31,7 @@ angular.module('frontendApp')
     };
 
     var validateGameStart = function(data){
+      console.log(data);
       socket.emit('validate_game_start',data);
     };
 
@@ -121,6 +122,7 @@ angular.module('frontendApp')
       gameCreateData : gameCreateData,
       validateGameConfig : validateGameConfig,
       validateGameStart : validateGameStart,
+      startGame : startGame,
       initGame: initGame
     };
 

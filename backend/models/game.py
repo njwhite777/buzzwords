@@ -31,7 +31,7 @@ class Game(Base):
     initiator = relationship("Player", foreign_keys=initiatorID, lazy = False, uselist=False)
     teams = relationship("Team", backref = "game", lazy = False)
     rounds = relationship("Round",backref = "game", lazy = False)
-    usedCards = relationship("Card",secondary=usedCards, lazy = False)
+    usedCards = relationship("Card",secondary=usedCards,lazy = False)
 
     def __init__(self,initiator,name=None,turnDuration=30,numberOfTeams=2,maxPlayersPerTeam=5,pointsToWin=30,skipPenaltyAfter=3,withGameChangers=1,minRequiredPlayers=2):
         self.name = name
@@ -45,6 +45,7 @@ class Game(Base):
         self.skipPenaltyAfter = skipPenaltyAfter
         self.initiator = initiator
         self.used_cards = []
+        self.players = []
 
     @staticmethod
     def numberOfRows(session):
@@ -52,10 +53,19 @@ class Game(Base):
 
     @staticmethod
     def getGameById(session, game_id):
-
-        # Whaaat? Noooo... this cost me (don't hardcode ids!)
-        # game = session.query(Game).get(1)
         return session.query(Game).get(int(game_id))
+
+    def setStatePaused(self):
+        self.gameState=GAME_PAUSED
+
+    def setStateComplete(self):
+        self.gameState=GAME_COMPLETE
+
+    def setStateStart(self):
+        self.gameState=GAME_PLAYING
+
+    def setStateReady(self):
+        self.gameState=GAME_READY
 
     @staticmethod
     def getAllGames(session):
@@ -69,6 +79,16 @@ class Game(Base):
 
     def getUsedCards(self):
         return self.used_cards
+
+    def addPlayer(self,player):
+        self.players.append(player)
+
+    def getAllPlayers(self):
+        players = list()
+        for team in teams:
+            for player in team.players:
+                players.append(player)
+        return players
 
     def getUsedCardsIds(self):
         usedCardIds = []
