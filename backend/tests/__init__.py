@@ -24,13 +24,13 @@ def start_game_db(Session):
         team=TeamModel(teamName)
 
         if(i == 0):
-            team.add_player(players[0])
-            team.add_player(players[1])
+            team.addPlayer(players[0])
+            team.addPlayer(players[1])
         else:
-            team.add_player(players[2])
-            team.add_player(players[3])
+            team.addPlayer(players[2])
+            team.addPlayer(players[3])
 
-        game.add_team(team)
+        game.addTeam(team)
     game.gameState = GAME_READY
 
     session.commit()

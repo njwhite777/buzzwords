@@ -16,8 +16,8 @@ class Player(Base):
 
     game = relationship("Game",lazy = False, uselist=False)
 
-    turnTeller = relationship("Turn", foreign_keys='Turn.turn_teller_id', backref = "turnTeller", lazy = False, uselist=False)
-    turnModerator = relationship("Turn", foreign_keys='Turn.turn_moderator_id', backref = "turnModerator", lazy = False, uselist=False)
+    turnTeller = relationship("Turn", foreign_keys='Turn.turnTellerId', backref = "turnTeller", lazy = False, uselist=False)
+    turnModerator = relationship("Turn", foreign_keys='Turn.turnModeratorId', backref = "turnModerator", lazy = False, uselist=False)
 
     def __init__(self, nickname, email, role):
         self.nickname = nickname

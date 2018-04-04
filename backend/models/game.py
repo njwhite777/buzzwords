@@ -52,8 +52,10 @@ class Game(Base):
 
     @staticmethod
     def getGameById(session, game_id):
-        game = session.query(Game).get(1)
-        return game
+
+        # Whaaat? Noooo... this cost me (don't hardcode ids!)
+        # game = session.query(Game).get(1)
+        return session.query(Game).get(int(game_id))
 
     @staticmethod
     def getAllGames(session):
@@ -78,11 +80,17 @@ class Game(Base):
         query = session.query(Card).filter(~(Card.id.in_(self.get_used_cards_ids())))
         return query.all()
 
+    def readyToStart(self):
+        for team in self.teams:
+            if not(team.validTeam()):
+                return False
+        return True
+
     def isGameInValidState(self):
         if self.rounds == 0:
             return False
         for team in self.teams:
-            if len(team.players) < 2:
+            if not(team.validTeam()):
                 return False
         return True
 

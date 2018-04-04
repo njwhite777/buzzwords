@@ -72,11 +72,13 @@ def init_game(data):
     #     initiator = PlayerModel.find_player_by_id(session, 1)
     # print ("The new game: " + str(data))
     session = Session()
-    initiator = PlayerModel.find_playerByEmail(session, socketIOClients[request.sid]) #socketIOClients[request.sid].id
+    initiator = PlayerModel.findPlayerByEmail(session, socketIOClients[request.sid]) #socketIOClients[request.sid].id
+    print_item(initiator,"Initiator is: ")
     gameArgs = {k:v for(k,v) in data.items() if k in ['name','turnDuration','numberOfTeams','maxPlayersPerTeam','pointsToWin','skipPenaltyAfter','withGameChangers'] }
     gameArgs['initiator'] = initiator
     game = GameModel(**gameArgs)
     initiatorTeamName = data['initiatorTeam']['name']
+    maxPlayersPerTeam=game.maxPlayersPerTeam
 
     print_item(data,"game")
     session.add(game)
@@ -87,7 +89,7 @@ def init_game(data):
         tData = dict()
         teamName = teamObj['name']
 
-        team = TeamModel(teamObj['name'])
+        team = TeamModel(name=teamName,maxPlayersPerTeam=maxPlayersPerTeam)
         game.addTeam(team)
         session.commit()
 
@@ -106,6 +108,7 @@ def init_game(data):
     session.close()
     viewData = {'swapView':'gameinitiatorwait'}
     emit('created_game',returnData,broadcast=True)
+    emit('created_your_game',returnData)
     emit('swap_view',viewData,namespace="/io/view")
 
 
@@ -113,13 +116,13 @@ def init_game(data):
 def join_team(data):
     # Join player to team. Check the game
     session = Session()
+    print_item(data,"Join Team: ")
     gameID = data['gameID']
     teamID = data['teamID']
     playerEmail = data['player']
     game = GameModel.getGameById(session,gameID)
     initiator = game.initiator
     player = PlayerModel.findPlayerByEmail(session,playerEmail)
-    initiatorEmail = initiator.email
 
     for team in game.teams:
         # check if all teams have requisite 2 players.
@@ -138,19 +141,35 @@ def join_team(data):
 @socketio.on('validate_game_start',namespace='/io/game')
 def validate_game_start(data):
     session = Session()
-
     gameID = data['gameID']
-    game = GameModel.get_game_by_id(session,gameID)
-    teamUnder = len(game.teams)
+    game = GameModel.getGameById(session,gameID)
+    initiator = game.initiator
+    initiatorEmail = initiator.email
+
+    # gData = {'id':'name':}
     for team in game.teams:
-        playerCount = len(team.players)
-        tData = {'name':team.name,'id':team.id,'visible':True,'playerCount': playerCount,'maxPlayers':game.maxPlayersPerTeam}
-        if(game.maxPlayersPerTeam <= playerCount):
-            tData['disableTeamJoin']=True
+        tData = {
+            'name' : team.name,
+            'id' : team.id,
+            'visible' : True,
+            'playerCount': team.numPlayers(),
+            'maxPlayers': game.maxPlayersPerTeam,
+            'disableTeamJoin': team.teamFull()
+        }
         emit('players_on_team',tData,broadcast=True)
-        if( playerCount >= game.minRequiredPlayers ):
-            teamUnder -= 1
-    if(teamUnder == 0):
+    if(game.readyToStart()):
         emit('show_game_start_button_enabled',room=socketIOClients[initiatorEmail],namespace='/io/view')
 
+    session.close()
+
+@socketio.on('start_game',namespace='/io/game')
+def start_game(data):
+    session = Session()
+    print_item(data,'data item to start_game')
+    gameID = data['gameID']
+    game = GameModel.getGameById(session,gameID)
+    print_item(data,'game item retrieved')
+    # Set game to start!
+
+    session.commit()
     session.close()

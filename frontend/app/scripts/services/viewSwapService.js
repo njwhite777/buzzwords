@@ -23,7 +23,7 @@ angular.module('frontendApp')
       $state.go(data['swapView']);
     });
 
-    socket.on('start_button_enabled',function(){
+    socket.on('show_game_start_button_enabled',function(){
         console.log("enable the start button.");
         console.log(switchedElements);
         switchedElements.startButtonDisabled = false;

@@ -1,24 +1,25 @@
+#!/usr/bin/env python
+
 from selenium.webdriver.common.keys import Keys
 from selenium import webdriver
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 import time
 
 
-capabilities = webdriver.DesiredCapabilities().FIREFOX
-capabilities["marionette"] = False
+# capabilities = webdriver.DesiredCapabilities().FIREFOX
+# capabilities["marionette"] = False
 binary = FirefoxBinary(r'/usr/bin/firefox')
 
 class multiClient():
     def __init__(self):
-        self.hostname = "localhost"
+        self.hostname = "http://localhost"
         self.port = 9000
-        self.gamename = "Game Start1"
+        self.gamename = "game2"
         self.teamname1 = "hard"
         self.teamname2 = "easy"
-        #self.driver = webdriver.Firefox(firefox_binary=binary, capabilities=capabilities)
 
     def newBrowserWindow(self):
-        return webdriver.Firefox(firefox_binary=binary, capabilities=capabilities)
+        return webdriver.Firefox(firefox_binary=binary)
 
     def openApplication(self,driver=None):
         if(not(driver)):
@@ -78,7 +79,7 @@ class multiClient():
         time.sleep(2)
         submit.click()
 
-        selectedGame = driver.find_element_by_xpath('//md-toolbar[@name="Game Start1"]')
+        selectedGame = driver.find_element_by_xpath('//md-toolbar[@name="{}"]'.format(self.gamename))
         time.sleep(2)
         selectedGame.click()
 
@@ -101,7 +102,7 @@ class multiClient():
         time.sleep(2)
         submit.click()
 
-        selectedGame = driver.find_element_by_xpath('//md-toolbar[@name="Game Start1"]')
+        selectedGame = driver.find_element_by_xpath('//md-toolbar[@name="{}"]'.format(self.gamename))
         time.sleep(2)
         selectedGame.click()
 
@@ -123,7 +124,7 @@ class multiClient():
         time.sleep(2)
         submit.click()
 
-        selectedGame = driver.find_element_by_xpath('//md-toolbar[@name="Game Start1"]')
+        selectedGame = driver.find_element_by_xpath('//md-toolbar[@name="{}"]'.format(self.gamename))
         time.sleep(2)
         selectedGame.click()
 

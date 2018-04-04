@@ -41,6 +41,10 @@ angular.module('frontendApp')
       socket.emit('validate_game_config',gameCreateData.game);
     };
 
+    var startGame = function(game){
+      socket.emit('start_game',gameCreateData.backendValidatedGame);
+    };
+
     // Gets the game list when a game view that needs it is rendered.
     socketService.notifySocketReady().then(
       function(result){
@@ -52,7 +56,6 @@ angular.module('frontendApp')
     // Handles the event wherein the backend tells us the game is ready to go.
     socket.on('show_game_init_button_enabled',function(data){
       if(data.name == gameCreateData.game.name){
-        console.log('game init button',data);
         gameCreateData.showGameStartButton=true;
         gameCreateData.backendValidatedGame=data;
       }
@@ -85,8 +88,12 @@ angular.module('frontendApp')
     // The event listener which listens for game creation events.
     socket.on('created_game',function(data){
       if(debug) console.log("created_game",data);
+      gameServiceData.games.push(data)
+    });
+
+    socket.on('created_your_game',function(data){
       if(gameCreateData.backendValidatedGame.name == data.name){
-        gameServiceData.games.push(data)
+        console.log("created your game: ",data);
         gameCreateData.backendValidatedGame.gameID = data.id;
       }
     });
@@ -94,7 +101,6 @@ angular.module('frontendApp')
     socket.on('players_on_team',function(data){
       var teamID = data['teamID'];
       var count = data['playerCount'];
-      console.log(data);
       angular.forEach(gameServiceData.games,function(gameObject){
         angular.forEach(gameObject.teams,function(teamObject){
           if(teamID == teamObject.id){
