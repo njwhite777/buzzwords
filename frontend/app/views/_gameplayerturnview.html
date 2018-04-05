@@ -1,16 +1,20 @@
-<md-container flex>
+<md-container flex layout="column">
 
   <md-content>
-    <div class="loading_text">
-      <p>Time Remaining: {{ secondsRemaining }} </p>
+    <div layout="row" layout-align="center" >
+      <div >
+        <countdown> </countdown>
+      </div>
     </div>
   </md-content>
-  <md-content>
-    <div layout="row">
-      <div>Team On Deck: {{ gameData.team }}</div>
-      <div>Teller: {{ gameData.teller }}</div>
-      <div>Moderator: {{ gameData.moderator }}</div>
-      <div>Turn Modifier: {{ gameData.modifier }}</div>
+  <md-content >
+    <div layout="row" layout-align="center">
+      <div layout="column">
+        <div layout-padding>Team On Deck: {{ gameData.team }}</div>
+        <div layout-padding>Teller: {{ gameData.teller }}</div>
+        <div layout-padding>Moderator: {{ gameData.moderator }}</div>
+        <div layout-padding>Turn Modifier: {{ gameData.modifier }}</div>
+      </div>
     </div>
   </md-content>
 </md-contaier>
