@@ -99,6 +99,23 @@ h3  {
 }
 
 
+// #####################################################
+// Fade animation. Used for adding games. TODO figure these out.
+
+.slide {
+  overflow: hidden;
+  transition: 1s;
+  // height: 30px;
+}
+
+.slide.ng-enter {
+  height: 0;
+}
+
+.slide.ng-enter.ng-enter-active {
+  // height: 30px;
+}
+
 // ######################################################
 /* Have to set height explicity on ui-view
 to prevent collapsing during animation*/

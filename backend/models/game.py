@@ -85,9 +85,6 @@ class Game(Base):
     def getUsedCards(self):
         return self.used_cards
 
-    def addPlayer(self,player):
-        self.players.append(player)
-
     def getAllPlayers(self):
         players = list()
         for team in teams:

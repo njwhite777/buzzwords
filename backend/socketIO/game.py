@@ -94,7 +94,6 @@ def init_game(data):
         session.commit()
 
         if(teamName == initiatorTeamName):
-            game.addPlayer(initiator)
             team.addPlayer(initiator)
 
         tData['name'] = teamObj['name']
@@ -128,7 +127,6 @@ def join_team(data):
     for team in game.teams:
         # check if all teams have requisite 2 players.
         if(team.id == teamID):
-            game.addPlayer(player)
             team.addPlayer(player)
             session.commit()
             session.close()

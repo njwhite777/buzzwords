@@ -8,15 +8,25 @@
  * Controller of the left drawer of the application
  */
 angular.module('frontendApp')
-  .controller('gameplayerturnviewController',['$scope',function ($scope) {
+  .controller('gameplayerturnviewController',['$scope','timerService',function ($scope,timerService) {
+    console.log(timerService.timer);
 
-    $scope.secondsRemaining = 30;
-    $scope.gameData = {
+    // Note: for the timer widget to work properly, this variable must be attached to the scope.
+    $scope.timer = timerService.timer;
 
+    $scope.showPlay= false;
+
+    $scope.pauseClicked = function(){
+      console.log(timerService.timer);
+      timerService.timer.pauseTime();
+      $scope.showPlay=true;
     };
-    // $scope.gameData.team
-    // gameData.teller
-    // gameData.moderator
-    // gameData.modifier
+
+    $scope.playClicked = function(){
+      console.log("play");
+      timerService.timer.resumeTime();
+      $scope.showPlay=false;
+    };
+    // Emit events on the timer service
 
 }]);
