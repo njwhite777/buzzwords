@@ -1,35 +1,35 @@
 from app import engine, Session
 from models import Base as AppModelBase
 from db import delete_db
-from models import CardModel, PlayerModel, TeamModel, GameModel, GameChanger, GameChangers
+from models import CardModel, PlayerModel, TeamModel, GameModel, GameChanger, GameChangers, RoundModel
+import random
 
 def testGameCreate():
     session = Session()
     initiator = PlayerModel.findPlayerById(session, 1)
     print ("Email: " + initiator.email)
-    game = GameModel("CS699", initiator, 60)
+    game = GameModel(initiator, "CS699", 60)
     team1 = TeamModel("Team 1")
     team2 = TeamModel("Team 2")
     teams = [team1, team2]
     initiator.team = team1
-    session.commit()
-    game.setTeams(teams)
-    initiator.game = game
+    session.flush()
+    game.teams = teams
     session.add(game)
     session.commit()
     session.close()
 
-def testCreatePlayer():
+def testCreatePlayers():
     session = Session()
-    email = "member3@yahoo.com"
-    if PlayerModel.emailExists(session, email):
-        print ("the entered email already exists")
-    else:
-        member1 = PlayerModel("Member 3", email, 3)
-        #member2 = PlayerModel("Member 2", "member2@yahoo.com", 3)
-        session.add(member1)
-        session.commit()
-        print ("account created")
+    for i in range(20):
+        email = "member" + str(i + 1) + "@bsu.edu"
+        if PlayerModel.emailExists(session, email):
+            print ("the entered email already exists")
+        else:
+            member1 = PlayerModel("Member " + str(i + 1), email, 3)
+            session.add(member1)
+            session.flush()
+    session.commit()
     session.close()
 
 def testIsLoggedIn():
@@ -40,21 +40,24 @@ def testIsLoggedIn():
 
 def testJoinTeam():
     session = Session()
-    playerId = 3 # should come from the http session
-    player = PlayerModel.findPlayerById(session, playerId)
-    if player is None:
-        print("the player does not exist")
-        return
-    teamId = 1 # should come from the client
-    team = TeamModel.findTeamById(session, teamId)
-    if team is None:
-        print("the team does not exist")
-        return
-    player.team = team
+    for i in range(1, 8):
+        playerId = i
+        player = PlayerModel.findPlayerById(session, playerId)
+        if player is None:
+            print("the player does not exist")
+            return
+        numberOfTeams = 7
+        teamId = random.randint(0, numberOfTeams - 1)
+        team = TeamModel.findTeamById(session, teamId)
+        if team is None:
+            print("the team does not exist")
+            return
+        player.team = team
+        session.flush()
     session.commit()
     session.close()
 
-def test_save_cards():
+def testSaveCards():
     session = Session()
     for index in range(50):
         forbidden = "{'word1', 'word2', 'word3', 'word4'}"
@@ -98,21 +101,29 @@ def testGameChanger():
         selectedGameChanger.count += 1
     for key, changer in gameChangers.changers.items():
         print("Weight: " + str(changer.weight) + ", Selected: " + str(changer.count))
-    #print(selectedGameChanger.description)
+
+def testRound():
+    session = Session()
+    game = GameModel.getGameById(session, 1)
+    newRound = RoundModel(0)
+    game.addRound(newRound)
+    session.commit(game)
+    session.close()
 
 
 
 
 
-#delete_db(engine)
-#AppModelBase.metadata.create_all(engine)
+# delete_db(engine)
+# AppModelBase.metadata.create_all(engine)
 
 #test_is_logged_in()
-#test_create_player()
-#test_game_create()
-#test_join_team()
-#test_save_cards()
-#test_add_used_card()
-#test_find_used_cards()
-# test_find_unused_cards()
-testGameChanger()
+# testCreatePlayers()
+# testGameCreate()
+testJoinTeam()
+#testSaveCards()
+#testAddUsedCard()
+#testFindUsedCards()
+# testFindUnusedCards()
+# testGameChanger()
+# testRound()

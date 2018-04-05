@@ -52,12 +52,18 @@ class Turn(Base):
         randomPlayerIndex = random.randint(0, numberOfPlayers - 1)
         return players[randomPlayerIndex]
 
-    def getRandomUnusedCard(self, cards):
+    def __getRandomUnusedCard(self, cards):
         numberOfCards = len(cards)
         randomCardIndex = random.randint(0, numberOfCards - 1)
         return cards[randomCardIndex]
 
-    def setModerator(self, game):
+    def updatePlayerRoles(self, game):
+        self.__setObservers(game)
+        self.__setGuessers(game)
+        self.__setTeller()
+        self.__setModerator(game)
+
+    def __setModerator(self, game):
         teamsNotOnTurn = self.getTeamsNotOnTurn(game)
         randomTeam = self.getRandomTeam(teamsNotOnTurn)
         moderator = self.getRandomPlayer(randomTeam.players)
@@ -65,11 +71,38 @@ class Turn(Base):
         self.moderator = moderator
         return moderator
 
-    def setTeller(self):
+    def __setTeller(self):
         teller = self.getRandomPlayer(self.team.players)
         teller.role = 1
         self.teller = teller
         return teller
+
+    def __setObservers(self, game):
+        teamsNotOnTurn = self.getTeamsNotOnTurn(game)
+        for team in teamsNotOnTurn:
+            players = team.members
+            for player in players:
+                player.role = OBSERVER
+
+    def __setGuessers(self, game):
+        if self.gameChangerNumber == ALL_GUESSERS:
+            guessers = game.getAllPlayers()
+        else:
+            guessers = self.team.players
+        for guesser in guessers:
+            guesser.setObserver()
+
+    def getGuessers(self, game):
+        return game.getGuessers()
+
+    def getObservers(self, game):
+        return game.getObservers()
+
+    def getTeller(self):
+        return self.teller
+
+    def getModerator(self):
+        return self.moderator
 
     def loadCard(self, game):
         unusedCards = game.getUnusedCards()
@@ -78,8 +111,11 @@ class Turn(Base):
         # we might mind to implement a more elegant algorithm which picks a card depending on the stats
         # like number of times gotten right or missed
         card = self.getRandom_unusedCard()
-        self.card = card # sets a new card to the turn
+        self.card = card
         game.addUsedCard(card)
+        # takes care of the no forbidden words game changer
+        if self.gameChangerNumber == NO_EXCLUDED_WORDS:
+            card.removeForbiddenWords()
         return card
 
     def canSkip(self):

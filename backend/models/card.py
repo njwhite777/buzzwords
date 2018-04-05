@@ -8,25 +8,24 @@ class Card(Base):
     __tablename__ = 'card'
     id          = Column(Integer, primary_key=True)
     buzzword    = Column(String)
-    forbidden_words   = Column(String)
-    skipped_count = Column(Integer)
-    won_count = Column(Integer)
-    lost_count = Column(Integer)
+    forbiddenWords   = Column(String)
+    skippedCount = Column(Integer)
+    wonCount = Column(Integer)
+    lostCount = Column(Integer)
     source      = Column(String)
-    source_page = Column(String)
-    source_page = Column(String)
-    is_phrase = Column(Integer)
+    sourcePage = Column(String)
+    isPhrase = Column(Integer)
     turn = relationship("Turn", lazy = False)
 
     def __init__(self,buzzword,forbidden_words,source,source_page,skipped_count=0,won_count=0,lost_count=0, is_phrase = 0):
         self.buzzword           = buzzword
-        self.forbidden_words    = forbidden_words
-        self.skipped_count      = skipped_count
-        self.won_count          = won_count
-        self.lost_count         = lost_count
+        self.forbiddenWords    = forbidden_words
+        self.skippedCount      = skipped_count
+        self.wonCount          = won_count
+        self.lostCount         = lost_count
         self.source             = source
-        self.source_page        = source_page
-        self.is_phrase          = is_phrase
+        self.sourcePage        = source_page
+        self.isPhrase          = is_phrase
 
     @staticmethod
     def numberOfRows(session):
@@ -39,6 +38,9 @@ class Card(Base):
     @staticmethod
     def loadCard():
         pass
+
+    def removeForbiddenWords(self):
+        self.forbiddenWords = dict()
 
     def __repr__(self):
         return "<Card(id='{}', buzzword='{}', source='{}')>".format(

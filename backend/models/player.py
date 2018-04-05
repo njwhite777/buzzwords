@@ -3,7 +3,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from flask import Flask, session as http_session
 from sqlalchemy.orm import sessionmaker, relationship
 from . import Base
-from app import TELLER,GUESSER,OBSERVER,MODERATOR
+from constants import TELLER,GUESSER,OBSERVER,MODERATOR
 
 class Player(Base):
 
@@ -45,6 +45,31 @@ class Player(Base):
     def findPlayerById(session, id):
         player = session.query(Player).get(id)
         return player
+
+    def setObserver(self):
+        self.role = OBSERVER
+
+    def setGuesser(self):
+        self.role = GUESSER
+
+    def setModerator(self):
+        self.role = MODERATOR
+
+    def setTeller(self):
+        self.role = TELLER
+
+    def isObserver(self):
+        return self.role == OBSERVER
+
+    def isGuesser(self):
+        return self.role == GUESSER
+
+    def isTeller(self):
+        return self.role == TELLER
+
+    def isModerator(self):
+        return self.role == MODERATOR
+
 
 
     # TODO: what else will we need?

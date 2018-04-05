@@ -25,16 +25,3 @@ create_db(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
 socketIOClients = dict()
-
-# Game Status Constants
-GAME_CREATED = 1 # the game has been created but is not ready / valid to start
-GAME_READY = 2 # the game can be started
-GAME_PLAYING = 3 # the game has been started and is in playing mode
-GAME_PAUSED = 4 # the game has been paused
-GAME_COMPLETE = 5 # the game is over
-
-# Player roles constants
-TELLER = 1
-MODERATOR = 2
-GUESSER = 3
-OBSERVER = 4 # if to be considered, player who is neither the moderator nor the teller and his team is not on deck

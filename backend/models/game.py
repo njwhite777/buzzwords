@@ -4,7 +4,7 @@ from sqlalchemy import Column, Integer, String, Table, ForeignKey, DateTime
 from sqlalchemy.orm import sessionmaker, relationship
 from .card import Card
 from . import Base
-from app import GAME_CREATED,GAME_READY,GAME_PLAYING,GAME_PAUSED,GAME_COMPLETE
+from constants import *
 
 usedCards = Table('used_cards',
     Base.metadata,
@@ -46,6 +46,8 @@ class Game(Base):
         self.initiator = initiator
         self.used_cards = []
         self.players = []
+        self.rounds = []
+        self.teams = []
 
     @staticmethod
     def numberOfRows(session):
@@ -77,6 +79,9 @@ class Game(Base):
     def addTeam(self,team):
         self.teams.append(team)
 
+    def addRound(self, round):
+        self.rounds.append(round)
+
     def getUsedCards(self):
         return self.used_cards
 
@@ -89,6 +94,20 @@ class Game(Base):
             for player in team.players:
                 players.append(player)
         return players
+
+    def getObservers(self):
+        observers = list()
+        for player in self.getAllPlayers():
+            if player.isObserver():
+                observers.append(player)
+        return observers
+
+    def getGuessers(self):
+        guessers = list()
+        for player in self.getAllPlayers():
+            if player.isGuesser():
+                guessers.append(player)
+        return guessers
 
     def getUsedCardsIds(self):
         usedCardIds = []
