@@ -28,6 +28,15 @@ angular.module('frontendApp')
         canvas.height = 200;
       }
 
+      scope.pauseClicked = function(){
+        timerService.timer.pauseTime();
+        scope.showPlay=true;
+      };
+      scope.playClicked = function(){
+        timerService.timer.resumeTime();
+        scope.showPlay=false;
+      };
+
       var cHelper = {};
       cHelper.centerCircle = function(){
           return canvas.height/4;

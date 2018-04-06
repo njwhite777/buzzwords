@@ -2,24 +2,27 @@
 
 /**
  * @ngdoc function
-<<<<<<< HEAD
- * @name frontendApp.controller:gameinitialorviewController
+ * @name frontendApp.controller:moderatorturnviewController
  * @description
- * # gameinitiatorviewController
- * Controller of the initial period of game
+ * # moderatorturnviewController
+ *
  */
  angular.module('frontendApp')
   .controller('moderatorturnviewController', [
       '$scope',
       '$state',
+      '$mdToast',
       'timerService',
       'debug',
-      function ($scope,$state,timerService,debug) {
+      function ($scope,$state,$mdToast,timerService,debug) {
         if(debug)  console.log("moderator View Controller");
 
+        $scope.it = {
+          size : 36,
+        };
+
         $scope.timer = timerService.timer;
-        $scope.showPlay= false;
-        $scope.role     = "Moderator";
+        $scope.role  = "Moderator";
 
         //change points for one team
         $scope.addPoints = function(team){
@@ -29,19 +32,21 @@
           //TODO: function to minus points to team
         }
 
-        $scope.pauseClicked = function(){
-          console.log(timerService.timer);
-          timerService.timer.pauseTime();
-          $scope.showPlay=true;
+        $scope.showSimpleToast = function() {
+          var pinTo = $scope.getToastPosition();
+
+          $mdToast.show(
+            $mdToast.simple()
+              .textContent('Simple Toast!')
+              .position(pinTo )
+              .hideDelay(3000)
+            );
         };
-        $scope.playClicked = function(){
-          console.log("play");
-          timerService.timer.resumeTime();
-          $scope.showPlay=false;
+
+        $scope.buzz = function(){
+          // TODO
+          var audio = document.getElementById("buzzer");
+          audio.play();
+          console.log("TODO: implement audio buzz.");
         };
-
-
-
-  // Do things in the drawer view.
-
 }]);

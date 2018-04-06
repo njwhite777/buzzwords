@@ -1,6 +1,6 @@
 #!/usr/bin/python
 from models import GameModel,PlayerModel,TeamModel
-from app import GAME_READY
+from constants import GAME_READY
 
 def start_game_db(Session):
 
