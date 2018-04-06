@@ -2,7 +2,7 @@
 // endbower
 /*Customize change size of Google Icon*/
 @import url('https://fonts.googleapis.com/css?family=Cabin|Dosis|Mina|Padauk|Quicksand|Rubik');
-@import "./clock";
+@import "./animate";
 
 $font-ubuntu: 'Ubuntu', sans-serif;
 $font-cabin: 'Cabin', sans-serif;
@@ -101,21 +101,65 @@ h3  {
 
 // #####################################################
 // Fade animation. Used for adding games. TODO figure these out.
+/* The starting CSS styles for the enter animation */
+// .card-slide.ng-enter {
+//   transition: 1s linear all;
+//   opacity:0;
+// }
+//
+// /* The finishing CSS styles for the enter animation */
+// .card-slide.ng-enter.ng-enter-active {
+//   transition: 1s linear all;
+//   opacity:1;
+// }
 
-.slide {
-  overflow: hidden;
-  transition: 1s;
-  // height: 30px;
+@keyframes added {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-.slide.ng-enter {
-  height: 0;
+@keyframes deleted {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 
-.slide.ng-enter.ng-enter-active {
-  // height: 30px;
+
+.card-slide.ng-enter {
+  animation: 0.2s added;
 }
 
+.card-slide.ng-leave {
+  animation: 0.2s deleted;
+}
+
+// .card-slide.ng-animate {
+//   transition: all ease 0.4s;
+//   position: absolute;
+// }
+//
+// .card-slide.ng-enter {
+//   top: 200px;
+//   opacity: 0;
+// }
+//
+// .card-slide.ng-leave,
+// .card-slide.ng-enter.ng-enter-active {
+//   top: 0;
+//   opacity: 1;
+// }
+//
+// .card-slide.ng-leave.ng-leave-active {
+//   top: -200px;
+//   opacity: 0;
+// }
 // ######################################################
 /* Have to set height explicity on ui-view
 to prevent collapsing during animation*/

@@ -138,6 +138,6 @@ angular.module('frontendApp')
     return {
       restrict: 'E',
       link : link,
-      template: '<canvas id="canvas"></canvas><div  layout="row" layout-align="center"><md-button  ng-click="pauseClicked()" class="" ng-show="!showPlay" ><md-icon class="material-icons">pause</md-icon></md-button><md-button ng-click="playClicked()" class="" ng-show="showPlay"><md-icon class="material-icons">play_arrow</md-icon></md-buttton></div>',
+      template: '<canvas id="canvas"></canvas>',
     };
 }]);
