@@ -3,6 +3,8 @@ import datetime
 from sqlalchemy import Column, Integer, String, Table, ForeignKey, DateTime
 from sqlalchemy.orm import sessionmaker, relationship
 from .card import Card
+from .round import Round
+from .turn import Turn
 from . import Base
 from constants import *
 
@@ -29,8 +31,8 @@ class Game(Base):
     initiatorID = Column(Integer, ForeignKey('player.id'), nullable=True)
 
     initiator = relationship("Player", foreign_keys=initiatorID, lazy = False, uselist=False)
-    teams = relationship("Team", backref = "game", lazy = False)
-    rounds = relationship("Round",backref = "game", lazy = False)
+    teams = relationship("Team", backref = "game", lazy = False, order_by = "Team.id")
+    rounds = relationship("Round", backref = "game", lazy = False)
     usedCards = relationship("Card",secondary=usedCards,lazy = False)
 
     def __init__(self,initiator,name=None,turnDuration=30,numberOfTeams=2,maxPlayersPerTeam=5,pointsToWin=30,skipPenaltyAfter=3,withGameChangers=1,minRequiredPlayers=2):
@@ -44,7 +46,7 @@ class Game(Base):
         self.minRequiredPlayers = minRequiredPlayers
         self.skipPenaltyAfter = skipPenaltyAfter
         self.initiator = initiator
-        self.used_cards = []
+        self.usedCards = []
         self.players = []
         self.rounds = []
         self.teams = []
@@ -74,7 +76,7 @@ class Game(Base):
         return session.query(Game).all()
 
     def addUsedCard(self, card):
-        self.used_cards.append(card)
+        self.usedCards.append(card)
 
     def addTeam(self,team):
         self.teams.append(team)
@@ -87,7 +89,7 @@ class Game(Base):
 
     def getAllPlayers(self):
         players = list()
-        for team in teams:
+        for team in self.teams:
             for player in team.players:
                 players.append(player)
         return players
@@ -108,12 +110,12 @@ class Game(Base):
 
     def getUsedCardsIds(self):
         usedCardIds = []
-        for card in self.usedCardIds:
+        for card in self.usedCards:
             usedCardIds.append(card.id)
         return usedCardIds
 
     def getUnusedCards(self, session):
-        query = session.query(Card).filter(~(Card.id.in_(self.get_used_cards_ids())))
+        query = session.query(Card).filter(~(Card.id.in_(self.getUsedCardsIds())))
         return query.all()
 
     def readyToStart(self):
@@ -145,6 +147,42 @@ class Game(Base):
             if team.numberOfTurns() != turns:
                 return False
         return True
+
+    def getCurrentRound(self):
+        if not self.rounds:
+            newRound = Round(0)
+            self.rounds.append(newRound)
+        return self.rounds[len(self.rounds) - 1]
+
+    def getRoundNextTeam(self, currentTeam):
+        index = 0
+        for team in self.teams:
+            if team.id == currentTeam.id:
+                nextIndex = (index + 1) % len(self.teams)
+                return self.teams[nextIndex]
+            index += 1
+        return None
+
+    def createTurn(self):
+        currentRound = self.getCurrentRound()
+        if self.isRoundOver(currentRound):
+            nextRoundNumber = self.currentRound.number + 1
+            newRound = Round(nextRoundNumber)
+            self.rounds.append(newRound)
+            currentRound = newRound
+        lastTurn = currentRound.getLastTurn()
+        if lastTurn:
+            lastTeam = lastTurn.team
+            nextTeam = self.getRoundNextTeam(lastTeam)
+        else:
+            nextTeam = self.teams[0]
+        turn = Turn(nextTeam)
+        turn.setPlayerRoles(self)
+        currentRound.addTurn(turn)
+        return turn
+
+    def isRoundOver(self, currentRound):
+        return len(currentRound.turns) == len(self.teams)
 
     def teamHasReachedThreshold():
         pass
