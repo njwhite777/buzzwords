@@ -13,20 +13,7 @@ angular.module('frontendApp')
 
     // Note: for the timer widget to work properly, this variable must be attached to the scope.
     $scope.timer = timerService.timer;
-
     $scope.showPlay= false;
-
-    $scope.pauseClicked = function(){
-      console.log(timerService.timer);
-      timerService.timer.pauseTime();
-      $scope.showPlay=true;
-    };
-
-    $scope.playClicked = function(){
-      console.log("play");
-      timerService.timer.resumeTime();
-      $scope.showPlay=false;
-    };
-    // Emit events on the timer service
+    $scope.role    = "Observer";
 
 }]);

@@ -23,7 +23,6 @@ angular.module('frontendApp')
 
     var game = gameService.gameCreateData.backendValidatedGame;
     var socket = socketService.timerSocket;
-
     socket.on('update_timer',function(data){
       timer.startTime = data.startTime;
       timer.duration = data.duration;

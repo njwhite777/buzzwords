@@ -3,11 +3,12 @@
     <div layout="row" layout-align="center" >
       <div >
         <countdown > </countdown>
+        <div  layout="row" layout-align="center"><md-button  ng-click="pauseClicked()" class="" ng-show="!showPlay" ><md-icon class="material-icons">pause</md-icon></md-button><md-button ng-click="playClicked()" class="" ng-show="showPlay"><md-icon class="material-icons">play_arrow</md-icon></md-buttton></div>
       </div>
     </div>
   </md-content>
   <div layout="row" layout-align="center center">
-    <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" md-theme-watch style="width: 400px">
+    <md-card id="cardAnimated" md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" md-theme-watch style="width: 400px">
          <md-card-title>
            <md-card-title-text>
              <span class="md-headline"> {{ card.buzzword }} </span>
