@@ -26,16 +26,16 @@ angular.module('frontendApp')
     socket.on('update_timer',function(data){
       timer.startTime = data.startTime;
       timer.duration = data.duration;
-      timer.transpired = data.duration;
+      timer.transpired = data.transpired;
     });
 
     var pauseTime = function(){
       // TODO insert game id here
-      // socket.emit('puase_time',{ gameID : game.id, action : 'pause'} );
+      // socket.emit('puase_timer',{ gameID : game.id, action : 'pause'} );
     };
 
     var resumeTime = function(){
-      // socket.emit('resume_time',{ gameID : game.id, action : 'resume'} );
+      // socket.emit('resume_timer',{ gameID : game.id, action : 'resume'} );
     };
 
     timer.pauseTime = pauseTime;

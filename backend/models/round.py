@@ -10,7 +10,8 @@ class Round(Base):
     number       = Column(Integer)
     startTime = Column(DateTime, default=datetime.datetime.utcnow)
     gameId = Column(Integer, ForeignKey('game.id'), nullable=False)
-    turns          = relationship("Turn", backref = "round", lazy = False)
+    turns          = relationship("Turn", lazy = False) # relationship("Turn", backref = "round", lazy = False)
+    #game = relationship("Game", foreign_keys=gameId, lazy = False, uselist=False)
 
     def __init__(self, number):
         self.number = number
@@ -18,6 +19,12 @@ class Round(Base):
 
     def addTurn(self, turn):
         self.turns.append(turn)
+
+    def getLastTurn(self):
+        if len(self.turns) == 0:
+            return None
+        return self.turns[len(self.turns) - 1]
+
 
     # TODO: what else will we need?
     def __repr__(self):

@@ -1,18 +1,19 @@
 #!/usr/bin/env python
-import time
+import datetime
 import random
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import sessionmaker, relationship
 from .player import Player
+from .game_changer import *
 from . import Base
+from constants import *
 
 class Turn(Base):
 
     __tablename__ = 'turn'
     id          = Column(Integer,primary_key=True)
-    number         = Column(Integer)
     numberOfSkips = Column(Integer)
-    startTime = Column(DateTime)
+    startTime = Column(DateTime, default=datetime.datetime.utcnow)
     gameChangerNumber = Column(Integer)
     roundId = Column(Integer, ForeignKey('round.id'), nullable=False)
     cardId = Column(Integer, ForeignKey('card.id'), nullable=True)
@@ -23,12 +24,11 @@ class Turn(Base):
     teller = relationship('Player', foreign_keys=turnTellerId )
     moderator = relationship('Player', foreign_keys=turnModeratorId )
 
-    def __init__(self, number):
-        self.number = number
+    def __init__(self, team):
         self.numberOfSkips = 0
-        self.startTime = time.time()
-        self.gameChangerNumber = 3
+        self.gameChangerNumber = 1 # don't change, __setGuessers depends on this as of now
         self.card = None
+        self.team = team
 
     def setTeam(self, team):
         self.team = team
@@ -43,21 +43,35 @@ class Turn(Base):
     def getRandomTeam(self, teams):
         numberOfTeams = len(teams)
         randomTeamIndex = random.randint(0, numberOfTeams - 1)
-        selectedTeam = teamsNotOnTurn[randomTeamIndex]
+        selectedTeam = teams[randomTeamIndex]
         return selectedTeam
 
     def getRandomPlayer(self, players):
-        players = selected_team.players
         numberOfPlayers = len(players)
+        print("players:>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + str(numberOfPlayers))
         randomPlayerIndex = random.randint(0, numberOfPlayers - 1)
         return players[randomPlayerIndex]
+
+    def setGameChanger(self):
+        gameChangers = GameChangers()
+        selectedGameChanger = gameChangers.rollDie()
+        self.gameChangerNumber = selectedGameChanger.gameChangerId
+
+    '''
+    if the ALL_GUESSERS game changer is selected we have to change all observers to guessers
+    '''
+    def updatePlayerRoles(self, game):
+        if self.gameChangerNumber == ALL_GUESSERS:
+            observers = self.getObservers(game)
+            for observer in observers:
+                observer.role = GUESSER
 
     def __getRandomUnusedCard(self, cards):
         numberOfCards = len(cards)
         randomCardIndex = random.randint(0, numberOfCards - 1)
         return cards[randomCardIndex]
 
-    def updatePlayerRoles(self, game):
+    def setPlayerRoles(self, game):
         self.__setObservers(game)
         self.__setGuessers(game)
         self.__setTeller()
@@ -80,7 +94,7 @@ class Turn(Base):
     def __setObservers(self, game):
         teamsNotOnTurn = self.getTeamsNotOnTurn(game)
         for team in teamsNotOnTurn:
-            players = team.members
+            players = team.players
             for player in players:
                 player.role = OBSERVER
 
@@ -90,7 +104,7 @@ class Turn(Base):
         else:
             guessers = self.team.players
         for guesser in guessers:
-            guesser.setObserver()
+            guesser.role = GUESSER
 
     def getGuessers(self, game):
         return game.getGuessers()
@@ -104,13 +118,13 @@ class Turn(Base):
     def getModerator(self):
         return self.moderator
 
-    def loadCard(self, game):
-        unusedCards = game.getUnusedCards()
+    def loadCard(self, session, game):
+        unusedCards = game.getUnusedCards(session)
         if len(unusedCards) == 0:
             return None
         # we might mind to implement a more elegant algorithm which picks a card depending on the stats
         # like number of times gotten right or missed
-        card = self.getRandom_unusedCard()
+        card = self.__getRandomUnusedCard(unusedCards)
         self.card = card
         game.addUsedCard(card)
         # takes care of the no forbidden words game changer
