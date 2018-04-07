@@ -28,4 +28,4 @@ class Round(Base):
 
     # TODO: what else will we need?
     def __repr__(self):
-        return "<Round(id='{}',team_id='{}',team_score='{}',round_modifier='{}')>".format(id,team_id,team_score,round_modifier)
+        return "<Round(id='{}')>".format(id)

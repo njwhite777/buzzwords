@@ -39,6 +39,9 @@ if __name__ == '__main__':
         if(db == 'startgame'):
             start_game_db(Session)
 
+    # from IPython import embed
+    # embed()
+
     socketio.run(app,debug=True,port=5000,host='localhost')
     # app.run(port=port, debug=False)
 
