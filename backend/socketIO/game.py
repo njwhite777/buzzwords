@@ -168,35 +168,20 @@ def validate_game_start(data):
 @socketio.on('start_game',namespace='/io/game')
 def start_game(data):
     session = Session()
-    print_item(data,"GAME DATA IS: ")
     gameID = data['gameID']
     game = GameModel.getGameById(session,gameID)
-    print_item(data,'game item retrieved')
     players = game.getAllPlayers()
 
     # Puts the game in started state
     game.setStateStart()
     turn = game.createTurn()
-    session.flush()
+    session.commit()
 
     moderator = turn.getModerator()
     teller = turn.getTeller()
     observers = turn.getObservers()
     guesers = turn.getGuessers()
     teamOnDeck = turn.team
-
-    # Use game logic to set up first round and turn.
-    #
-    #  Figure out who is the teller, who is the moderator, who are the guesers, and who are the rest of the roles.
-    #  teller must be shown view to roll die. Others should just be waiting.
-    #
-    #  Frontend states are:
-    #    gameplayerturn
-    #    tellerrolldie
-    #    tellerturn
-    #    moderatorturn
-    #
-    # TODO: figure out who is teller:
 
     emit('swap_view',{ 'swapView' : 'tellerrolldie' },room=socketIOClients[teller.email],namespace='/io/view')
     emit('swap_view',{ 'swapView' : 'moderatorturn' },room=socketIOClients[moderator.email],namespace='/io/view')

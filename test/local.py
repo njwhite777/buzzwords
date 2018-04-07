@@ -15,6 +15,9 @@ class multiClient():
         self.hostname = "http://localhost"
         self.port = 9000
         self.gamename = "game2"
+        self.teams = []
+        self.usernames = []
+        self.emails = []
         self.teamname1 = "hard"
         self.teamname2 = "easy"
 
