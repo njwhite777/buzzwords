@@ -168,12 +168,22 @@ def validate_game_start(data):
 @socketio.on('start_game',namespace='/io/game')
 def start_game(data):
     session = Session()
+    print_item(data,'data item to start_game')
     gameID = data['gameID']
     game = GameModel.getGameById(session,gameID)
+    print_item(data,'game item retrieved')
     players = game.getAllPlayers()
 
     # Puts the game in started state
     game.setStateStart()
+    turn = game.createTurn()
+    session.flush()
+
+    moderator = turn.getModerator()
+    teller = turn.getTeller()
+    observers = turn.getObservers()
+    guesers = turn.getGuessers()
+    teamOnDeck = turn.team
 
     # Use game logic to set up first round and turn.
     #
