@@ -110,8 +110,14 @@ def testGameChanger():
 def testCreateTurn():
     session = Session()
     game = GameModel.getGameById(session, 1)
-    game.createTurn()
+    turn = game.createTurn()
     session.commit()
+    obervers = turn.getObservers(game)
+    guessers = turn.getGuessers(game)
+    moderator = turn.getModerator()
+    teller = turn.getTeller()
+    teamOnDeck = turn.team
+    print("On deck: " + teamOnDeck.name)
     session.close()
 
 def testAddGameChanger():
@@ -134,18 +140,21 @@ def testLoadCard():
     session.commit()
     session.close()
 
-# delete_db(engine)
-# AppModelBase.metadata.create_all(engine)
-#
-# testCreatePlayers()
-# testGameCreate()
-# testJoinTeam()
-# testSaveCards()
-# testCreateTurn()
+def testSkip():
+    pass
+
+delete_db(engine)
+AppModelBase.metadata.create_all(engine)
+
+testCreatePlayers()
+testGameCreate()
+testJoinTeam()
+testSaveCards()
+testCreateTurn()
 # testAddUsedCard()
 # testFindUsedCards()
 # testFindUnusedCards()
 # testGameChanger()
 # test_is_logged_in()
 # testAddGameChanger()
-testLoadCard()
+# testLoadCard()
