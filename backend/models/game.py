@@ -148,10 +148,11 @@ class Game(Base):
                 return False
         return True
 
-    def getCurrentRound(self):
+    def getCurrentRound(self,session):
         if not self.rounds:
             newRound = Round(0)
             self.rounds.append(newRound)
+            session.commit()
         return self.rounds[len(self.rounds) - 1]
 
     def getRoundNextTeam(self, currentTeam):
@@ -163,13 +164,15 @@ class Game(Base):
             index += 1
         return None
 
-    def createTurn(self):
-        currentRound = self.getCurrentRound()
+    def createTurn(self,session):
+        currentRound = self.getCurrentRound(session)
         if self.isRoundOver(currentRound):
             nextRoundNumber = self.currentRound.number + 1
             newRound = Round(nextRoundNumber)
             self.rounds.append(newRound)
             currentRound = newRound
+            session.add(currentRound)
+            session.commit()
         lastTurn = currentRound.getLastTurn()
         if lastTurn:
             lastTeam = lastTurn.team
@@ -177,8 +180,10 @@ class Game(Base):
         else:
             nextTeam = self.teams[0]
         turn = Turn(nextTeam)
+        session.add(turn)
         turn.setPlayerRoles(self)
         currentRound.addTurn(turn)
+        session.commit()
         return turn
 
     def isRoundOver(self, currentRound):
