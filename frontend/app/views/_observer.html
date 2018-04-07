@@ -1,0 +1,22 @@
+<md-container flex layout="column">
+  <md-content>
+    <div layout-margin layout="row" layout-align="center center">
+      <div class="text-med">You are an observer!</div>
+    </div>
+    <div layout="row" layout-align="center" >
+      <div >
+        <countdown> </countdown>
+      </div>
+    </div>
+  </md-content>
+  <md-content >
+    <div layout="row" layout-align="center">
+      <div layout="column">
+        <div layout-padding>Team On Deck: {{ gameService.gameCreateData.backendValidatedGame.turn.team }}</div>
+        <div layout-padding>Teller: {{ gameService.gameCreateData.backendValidatedGame.roles.teller.nickname }}</div>
+        <div layout-padding>Moderator: {{ gameService.gameCreateData.backendValidatedGame.roles.moderator.nickname }}</div>
+        <div layout-padding>Turn Modifier: {{ gameService.gameCreateData.backendValidatedGame.turn.modifier || "Waiting for teller to roll." }}</div>
+      </div>
+    </div>
+  </md-content>
+</md-contaier>

@@ -90,8 +90,7 @@ class Game(Base):
     def getAllPlayers(self):
         players = list()
         for team in self.teams:
-            for player in team.players:
-                players.append(player)
+            players += team.players
         return players
 
     def getObservers(self):

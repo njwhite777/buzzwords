@@ -140,10 +140,16 @@ app.config(function($stateProvider,$urlRouterProvider,localStorageServiceProvide
      controller: 'gameinitiatorviewController'
    }
 
-   var gameplayerturnState = {
-     url: '/play_turn',
-     templateUrl: './views/_gameplayerturnview.html',
-     controller: 'gameplayerturnviewController'
+   var observerState = {
+     url: '/observer_turn',
+     templateUrl: './views/_observer.html',
+     controller: 'observerController'
+   };
+
+   var guesserState = {
+     url: '/guesser_turn',
+     templateUrl: './views/_guesser.html',
+     controller: 'guesserController'
    };
 
    var tellerrolldieState = {
@@ -152,23 +158,24 @@ app.config(function($stateProvider,$urlRouterProvider,localStorageServiceProvide
      controller:'tellerrolldieviewController'
    };
 
-   var tellerturnState = {
-     url: '/play_teller_turn',
+   var tellerState = {
+     url: '/teller_turn',
      templateUrl :'./views/_tellerturnview.html',
      controller:'tellerturnviewController'
    }
 
-   var moderatorturnState = {
-     url: '/play_moderator_turn',
+   var moderatorState = {
+     url: '/moderator_turn',
      templateUrl : './views/_moderatorturnview.html',
-     controller : 'moderatorturnviewController'
+     controller : 'moderatorController'
    };
 
    $stateProvider.state('root',mainState);
    $stateProvider.state('gameinitiatorwait',gameinitiatorwaitState);
    $stateProvider.state('gameplayerwait',gameplayerwait);
-   $stateProvider.state('gameplayerturn',gameplayerturnState);
+   $stateProvider.state('observer',observerState);
+   $stateProvider.state('guesser',guesserState);
    $stateProvider.state('tellerrolldie',tellerrolldieState);
-   $stateProvider.state('tellerturn',tellerturnState);
-   $stateProvider.state('moderatorturn',moderatorturnState);
+   $stateProvider.state('teller',tellerState);
+   $stateProvider.state('moderator',moderatorState);
 });

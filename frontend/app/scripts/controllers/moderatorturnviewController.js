@@ -8,7 +8,7 @@
  *
  */
  angular.module('frontendApp')
-  .controller('moderatorturnviewController', [
+  .controller('moderatorController', [
       '$scope',
       '$state',
       '$mdToast',

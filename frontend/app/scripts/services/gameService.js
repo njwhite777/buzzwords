@@ -50,6 +50,15 @@ angular.module('frontendApp')
       socket.emit('start_game',sendGame);
     };
 
+    socket.on('game_started',function(data){
+      var gameID = data['gameID'];
+      for(var i=0; i < gameServiceData.games.length; i++){
+        if(gameServiceData.games[i].id == gameID){
+          gameServiceData.games.splice(i,1)
+        }
+      }
+    });
+
     // Gets the game list when a game view that needs it is rendered.
     socketService.notifySocketReady().then(
       function(result){
@@ -65,12 +74,10 @@ angular.module('frontendApp')
         gameCreateData.backendValidatedGame=data;
       }
     });
-
     // Called when player clicks the button to initialize the game
     var initGame = function(){
       socket.emit('init_game',gameCreateData.backendValidatedGame);
     }
-
     // On a disconnect from the server set up a listener to notify when then
     //  socket is back up. When it is, request games.
     socket.on('disconnect',function(){
@@ -88,6 +95,18 @@ angular.module('frontendApp')
     socket.on('game_list',function(data){
       if(debug) console.log("games list",data);
       gameServiceData.games = data;
+    });
+
+    //  {
+    //       'teller': {'email': teller.email,'name':teller.name},
+    //       'moderator':{'email': moderator.email,'name':moderator.name},
+    //       'observers':[{'email': observer.email,'name':observer.name} for observer in observers ],
+    //       'guessers': [{'email': guesser.email,'name': guesser.name} for guesser in guessers ]
+    //   }
+    socket.on('turn_roles',function(data){
+      console.log("Data:",data);
+      gameCreateData.backendValidatedGame.roles = data;
+      console.log("Backend Validated Game:",gameCreateData.backendValidatedGame);
     });
 
     // The event listener which listens for game creation events.

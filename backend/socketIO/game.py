@@ -169,19 +169,17 @@ def start_game(data):
     session = Session()
     gameID = data['gameID']
     game = GameModel.getGameById(session,gameID)
-
     # Puts the game in started state
     game.setStateStart()
     session.commit()
-    # TODO: Broadcast game has started. Remove from game view!
+    emit('game_started',{ 'gameID':game.id },broadcast=True)
     session.close()
-    start_new_turn()
+    start_new_turn(data)
 
-
-
-
-def start_new_turn():
+def start_new_turn(data):
     session = Session()
+    gameID = data['gameID']
+    game = GameModel.getGameById(session,gameID)
     turn = game.createTurn(session)
     session.commit()
     moderator = turn.getModerator()
@@ -191,21 +189,25 @@ def start_new_turn():
     teamOnDeck = turn.team
 
     turnRolesData = {
-        'teller':None,
-        'guesser':None,
-        'observers':None,
-        'guessers':None
+        'teller': {'email': teller.email,'nickname':teller.nickname},
+        'moderator':{'email': moderator.email,'nickname':moderator.nickname},
+        'observers':[{'email': observer.email,'nickname':observer.nickname} for observer in observers ],
+        'guessers': [{'email': guesser.email,'nickname': guesser.nickname} for guesser in guessers ]
     }
 
     emit('swap_view',{ 'swapView' : 'tellerrolldie' },room=socketIOClients[teller.email],namespace='/io/view')
-    emit('swap_view',{ 'swapView' : 'moderatorturn' },room=socketIOClients[moderator.email],namespace='/io/view')
+    # If round modifiers are off, use the following.
+    # emit('swap_view',{ 'swapView' : 'teller' },room=socketIOClients[teller.email],namespace='/io/view')
+    emit('swap_view',{ 'swapView' : 'moderator' },room=socketIOClients[moderator.email],namespace='/io/view')
     for guesser in guessers:
-        emit('swap_view',{'swapView':'gameplayerturn'},room=socketIOClients[guesser.email],namespace='/io/view')
+        emit('swap_view',{'swapView':'guesser'},room=socketIOClients[guesser.email],namespace='/io/view')
     for observer in observers:
-        emit('swap_view',{'swapView':'observerturn'},room=socketIOClients[observer.email],namespace='/io/view')
+        emit('swap_view',{'swapView':'observer'},room=socketIOClients[observer.email],namespace='/io/view')
 
-    # TODO: Loop and send roles dictionary to all players involved in this game.
-    emit('turn_roles',turnRolesData,room=socketIOClients[],namespace='/io/games',)
+    players = game.getAllPlayers()
+    for player in players:
+        print
+        emit('turn_roles',turnRolesData,room=socketIOClients[player.email],namespace='/io/game',)
 
     session.commit()
     session.close()
