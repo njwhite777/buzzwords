@@ -43,8 +43,9 @@ angular.module('frontendApp')
     };
 
     var startGame = function(game){
+      console.log(game);
       var sendGame = {
-        gameID: game.id
+        'gameID': game.id
       };
       socket.emit('start_game',sendGame);
     };
@@ -98,6 +99,7 @@ angular.module('frontendApp')
     socket.on('created_your_game',function(data){
       if(gameCreateData.backendValidatedGame.name == data.name){
         console.log("created your game: ",data);
+        gameCreateData.backendValidatedGame.id = data.id;
         gameCreateData.backendValidatedGame.gameID = data.id;
       }
     });
