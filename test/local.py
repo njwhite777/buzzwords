@@ -6,8 +6,8 @@ from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 import time
 
 
-# capabilities = webdriver.DesiredCapabilities().FIREFOX
-# capabilities["marionette"] = False
+capabilities = webdriver.DesiredCapabilities().FIREFOX
+capabilities["marionette"] = False
 binary = FirefoxBinary(r'/usr/bin/firefox')
 
 class multiClient():
