@@ -168,6 +168,7 @@ def validate_game_start(data):
 @socketio.on('start_game',namespace='/io/game')
 def start_game(data):
     session = Session()
+    print_item(data,"GAME DATA IS: ")
     gameID = data['gameID']
     game = GameModel.getGameById(session,gameID)
     players = game.getAllPlayers()
