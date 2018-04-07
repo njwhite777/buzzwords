@@ -15,7 +15,6 @@ class Card(Base):
     source      = Column(String)
     sourcePage = Column(String)
     isPhrase = Column(Integer)
-    turn = relationship("Turn", lazy = False)
 
     def __init__(self,buzzword,forbidden_words,source,source_page,skipped_count=0,won_count=0,lost_count=0, is_phrase = 0):
         self.buzzword           = buzzword

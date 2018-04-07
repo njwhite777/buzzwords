@@ -17,14 +17,16 @@ class Turn(Base):
     gameChangerNumber = Column(Integer)
     roundId = Column(Integer, ForeignKey('round.id'), nullable=False)
     cardId = Column(Integer, ForeignKey('card.id'), nullable=True)
-    card = relationship("Card", foreign_keys=cardId, lazy = False)
+
+    card = relationship("Card", foreign_keys=cardId, lazy = False,post_update=True)
     teamId = Column(Integer, ForeignKey('team.id'), nullable=True)
 
     turnTellerId = Column(Integer, ForeignKey('player.id'), nullable=True)
-    turnModeratorId = Column(Integer, ForeignKey('player.id'), nullable=True)
+    teller = relationship('Player', foreign_keys=turnTellerId,post_update=True)
 
-    teller = relationship('Player', foreign_keys=turnTellerId )
-    moderator = relationship('Player', foreign_keys=turnModeratorId )
+    turnModeratorId = Column(Integer, ForeignKey('player.id'), nullable=True)
+    moderator = relationship('Player', foreign_keys=turnModeratorId,post_update=True )
+
 
     def __init__(self, team):
         self.numberOfSkips = 0

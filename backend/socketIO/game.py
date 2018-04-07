@@ -134,7 +134,6 @@ def join_team(data):
             break
 
     validate_game_start(data)
-
 # 'validate_game_start': once a game is in a waiting state, joining clients should emit
 #  this message.  If the game is indeed ready to start, the server should emit to the starting
 #  client that the game is ready to start and the the start game button should become clickable.
@@ -168,29 +167,46 @@ def validate_game_start(data):
 @socketio.on('start_game',namespace='/io/game')
 def start_game(data):
     session = Session()
+    print_item(data,'data item to start_game')
     gameID = data['gameID']
     game = GameModel.getGameById(session,gameID)
-    players = game.getAllPlayers()
 
     # Puts the game in started state
     game.setStateStart()
-    turn = game.createTurn()
     session.commit()
+    # TODO: Broadcast game has started. Remove from game view!
+    session.close()
+    start_new_turn()
 
+
+
+
+def start_new_turn():
+    session = Session()
+    turn = game.createTurn(session)
+    session.commit()
     moderator = turn.getModerator()
     teller = turn.getTeller()
-    observers = turn.getObservers()
-    guesers = turn.getGuessers()
+    observers = turn.getObservers(game)
+    guessers = turn.getGuessers(game)
     teamOnDeck = turn.team
+
+    turnRolesData = {
+        'teller':None,
+        'guesser':None,
+        'observers':None,
+        'guessers':None
+    }
 
     emit('swap_view',{ 'swapView' : 'tellerrolldie' },room=socketIOClients[teller.email],namespace='/io/view')
     emit('swap_view',{ 'swapView' : 'moderatorturn' },room=socketIOClients[moderator.email],namespace='/io/view')
-
     for guesser in guessers:
         emit('swap_view',{'swapView':'gameplayerturn'},room=socketIOClients[guesser.email],namespace='/io/view')
-
     for observer in observers:
-        emit('swap_view',{'swapView':'gameplayerturn'},room=socketIOClients[player.email],namespace='/io/view')
+        emit('swap_view',{'swapView':'observerturn'},room=socketIOClients[observer.email],namespace='/io/view')
+
+    # TODO: Loop and send roles dictionary to all players involved in this game.
+    emit('turn_roles',turnRolesData,room=socketIOClients[],namespace='/io/games',)
 
     session.commit()
     session.close()
