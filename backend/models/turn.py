@@ -26,7 +26,7 @@ class Turn(Base):
 
     def __init__(self, team):
         self.numberOfSkips = 0
-        self.gameChangerNumber = 1 # don't change, __setGuessers depends on this as of now
+        self.gameChangerNumber = -1
         self.card = None
         self.team = team
 
@@ -48,7 +48,6 @@ class Turn(Base):
 
     def getRandomPlayer(self, players):
         numberOfPlayers = len(players)
-        print("players:>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + str(numberOfPlayers))
         randomPlayerIndex = random.randint(0, numberOfPlayers - 1)
         return players[randomPlayerIndex]
 
@@ -133,8 +132,26 @@ class Turn(Base):
         return card
 
     def canSkip(self):
-        pass
+        return self.numberOfSkips < 3 or self.gameChangerNumber == UNLIMITED_SKIPS
 
+    def skip(self, session, game):
+        if self.canSkip():
+            currentCard = self.card
+            currentCard.skippedCount += 1
+            self.numberOfSkips += 1
+            newCard = self.loadCard(session, game)
+            return newCard
+        return None
+
+    def awardTeam(self, session, game):
+        self.card.wonCount += 1
+        self.team.score += 1
+        return self.loadCard(session, game)
+
+    def penaliseTeam(self, session, game):
+        self.card.lostCount += 1
+        self.team.score -= 1
+        return self.loadCard(session, game)
 
     def __repr__(self):
         return "<GameRound()>".format()
