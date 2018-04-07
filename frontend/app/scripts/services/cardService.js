@@ -8,7 +8,7 @@
  */
 
 angular.module('frontendApp')
-  .service('cardService',['socketService','$http','$timeout','debug',function(socketService,$http,$timeout,debug){
+  .service('cardService',['socketService','$timeout','debug',function(socketService,$timeout,debug){
     // This service listens to the created game event and adds a new game to the list when one is created.
     var otherCards = [{buzzword:'alphabet1',forbiddenwords : ['a','b','c','d','notes 1123'] },{buzzword:'alphabet2',forbiddenwords : ['a','b','c','d','notes 1123'] },{buzzword:'alphabet3',forbiddenwords : ['a','b','c','d','notes 1123'] }];
     var cardData = {card : {buzzword:'alphabet',forbiddenwords : ['a','b','c','d','notes 1123']},showCard: true };
