@@ -44,11 +44,11 @@ angular.module('frontendApp')
 
     var startGame = function(game){
       var sendGame = {
-        gameID: game.id;
+        gameID: game.id
       };
       socket.emit('start_game',sendGame);
     };
-    
+
     // Gets the game list when a game view that needs it is rendered.
     socketService.notifySocketReady().then(
       function(result){
