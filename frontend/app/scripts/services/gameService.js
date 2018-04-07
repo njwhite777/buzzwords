@@ -43,9 +43,12 @@ angular.module('frontendApp')
     };
 
     var startGame = function(game){
-      socket.emit('start_game',gameCreateData.backendValidatedGame);
+      var sendGame = {
+        gameID: game.id;
+      };
+      socket.emit('start_game',sendGame);
     };
-
+    
     // Gets the game list when a game view that needs it is rendered.
     socketService.notifySocketReady().then(
       function(result){
