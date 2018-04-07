@@ -4,10 +4,11 @@ from selenium.webdriver.common.keys import Keys
 from selenium import webdriver
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 import time
+import threading
 
 
-# capabilities = webdriver.DesiredCapabilities().FIREFOX
-# capabilities["marionette"] = False
+capabilities = webdriver.DesiredCapabilities().FIREFOX
+capabilities["marionette"] = False
 binary = FirefoxBinary(r'/usr/bin/firefox')
 
 class multiClient():
@@ -136,6 +137,9 @@ class multiClient():
         selectedTeam.click()
 
 
+
+
+
 if __name__ == "__main__":
 
     mul = multiClient()
@@ -143,3 +147,4 @@ if __name__ == "__main__":
     mul.client2()
     mul.client3()
     mul.client4()
+    #

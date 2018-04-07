@@ -118,6 +118,8 @@ def testCreateTurn():
     teller = turn.getTeller()
     teamOnDeck = turn.team
     print("On deck: " + teamOnDeck.name)
+    print("Moderator: " + moderator.nickname)
+    print("Teller: " + teller.nickname)
     session.close()
 
 def testAddGameChanger():
@@ -140,17 +142,35 @@ def testLoadCard():
     session.commit()
     session.close()
 
+def testSocketTurnCreate():
+    session = Session()
+    gameID = 1
+    game = GameModel.getGameById(session,1)
+    players = game.getAllPlayers()
+
+    # Puts the game in started state
+    game.setStateStart()
+    turn = game.createTurn()
+    session.flush()
+
+    moderator = turn.getModerator()
+    teller = turn.getTeller()
+    observers = turn.getObservers(game)
+    guesers = turn.getGuessers(game)
+    teamOnDeck = turn.team
+
 def testSkip():
     pass
 
-delete_db(engine)
-AppModelBase.metadata.create_all(engine)
-
-testCreatePlayers()
-testGameCreate()
-testJoinTeam()
-testSaveCards()
-testCreateTurn()
+# delete_db(engine)
+# AppModelBase.metadata.create_all(engine)
+#
+# testCreatePlayers()
+# testGameCreate()
+# testJoinTeam()
+# testSaveCards()
+# testCreateTurn()
+testSocketTurnCreate()
 # testAddUsedCard()
 # testFindUsedCards()
 # testFindUnusedCards()
