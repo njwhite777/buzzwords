@@ -8,16 +8,18 @@
  * Controller of the left drawer of the application
  */
 angular.module('frontendApp')
-  .controller('tellerturnviewController',['$scope',function ($scope) {
+  .controller('tellerturnviewController',[
+    '$scope',
+    '$timeout',
+    'timerService',
+    function ($scope,$timeout,timerService) {
 
-    console.log("gp turn view controller.");
-    $scope.card = {
-      buzzword : 'alphabet',
-      forbiddenwords : ['a','b','c','d']
-    };
+    $scope.timer    = timerService.timer;
+    $scope.showPlay = false;
+    $scope.role     = "Teller";
 
-    $scope.skipCard = function(){
-
+    $scope.it = {
+      size : 36,
     };
 
 

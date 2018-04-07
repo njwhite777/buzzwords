@@ -3,8 +3,10 @@ import datetime
 from sqlalchemy import Column, Integer, String, Table, ForeignKey, DateTime
 from sqlalchemy.orm import sessionmaker, relationship
 from .card import Card
+from .round import Round
+from .turn import Turn
 from . import Base
-from app import GAME_CREATED,GAME_READY,GAME_PLAYING,GAME_PAUSED,GAME_COMPLETE
+from constants import *
 
 usedCards = Table('used_cards',
     Base.metadata,
@@ -29,9 +31,9 @@ class Game(Base):
     initiatorID = Column(Integer, ForeignKey('player.id'), nullable=True)
 
     initiator = relationship("Player", foreign_keys=initiatorID, lazy = False, uselist=False)
-    teams = relationship("Team", backref = "game", lazy = False)
-    rounds = relationship("Round",backref = "game", lazy = False)
-    used_cards = relationship("Card",secondary=usedCards, lazy = False)
+    teams = relationship("Team", backref = "game", lazy = False, order_by = "Team.id")
+    rounds = relationship("Round", backref = "game", lazy = False)
+    usedCards = relationship("Card",secondary=usedCards,lazy = False)
 
     def __init__(self,initiator,name=None,turnDuration=30,numberOfTeams=2,maxPlayersPerTeam=5,pointsToWin=30,skipPenaltyAfter=3,withGameChangers=1,minRequiredPlayers=2):
         self.name = name
@@ -44,65 +46,145 @@ class Game(Base):
         self.minRequiredPlayers = minRequiredPlayers
         self.skipPenaltyAfter = skipPenaltyAfter
         self.initiator = initiator
-        self.used_cards = []
+        self.usedCards = []
+        self.players = []
+        self.rounds = []
+        self.teams = []
 
     @staticmethod
-    def number_of_rows(session):
+    def numberOfRows(session):
         return session.query(Game).count()
 
     @staticmethod
-    def get_game_by_id(session, game_id):
-        game = session.query(Game).get(1)
-        return game
+    def getGameById(session, game_id):
+        return session.query(Game).get(int(game_id))
+
+    def setStatePaused(self):
+        self.gameState=GAME_PAUSED
+
+    def setStateComplete(self):
+        self.gameState=GAME_COMPLETE
+
+    def setStateStart(self):
+        self.gameState=GAME_PLAYING
+
+    def setStateReady(self):
+        self.gameState=GAME_READY
 
     @staticmethod
-    def get_all_games(session):
+    def getAllGames(session):
         return session.query(Game).all()
 
-    def add_used_card(self, card):
-        self.used_cards.append(card)
+    def addUsedCard(self, card):
+        self.usedCards.append(card)
 
-    def add_team(self,team):
+    def addTeam(self,team):
         self.teams.append(team)
 
-    def get_used_cards(self):
+    def addRound(self, round):
+        self.rounds.append(round)
+
+    def getUsedCards(self):
         return self.used_cards
 
-    def get_used_cards_ids(self):
-        used_card_ids = []
-        for card in self.used_cards:
-            used_card_ids.append(card.id)
-        return used_card_ids
+    def getAllPlayers(self):
+        players = list()
+        for team in self.teams:
+            for player in team.players:
+                players.append(player)
+        return players
 
-    def get_unused_cards(self, session):
-        query = session.query(Card).filter(~(Card.id.in_(self.get_used_cards_ids())))
+    def getObservers(self):
+        observers = list()
+        for player in self.getAllPlayers():
+            if player.isObserver():
+                observers.append(player)
+        return observers
+
+    def getGuessers(self):
+        guessers = list()
+        for player in self.getAllPlayers():
+            if player.isGuesser():
+                guessers.append(player)
+        return guessers
+
+    def getUsedCardsIds(self):
+        usedCardIds = []
+        for card in self.usedCards:
+            usedCardIds.append(card.id)
+        return usedCardIds
+
+    def getUnusedCards(self, session):
+        query = session.query(Card).filter(~(Card.id.in_(self.getUsedCardsIds())))
         return query.all()
 
-    def is_game_in_valid_state(self):
+    def readyToStart(self):
+        for team in self.teams:
+            if not(team.validTeam()):
+                return False
+        return True
+
+    def isGameInValidState(self):
         if self.rounds == 0:
             return False
         for team in self.teams:
-            if len(team.players) < 2:
+            if not(team.validTeam()):
                 return False
         return True
 
-    def is_game_over(self):
-        if not self.has_at_least_one_round():
+    def isGameOver(self):
+        if not self.hasAtLeastOneRound():
             return False
-        elif self.teams_have_equal_turns():
+        elif self.teamsHaveEqualTurns():
             return False
 
-    def has_at_least_one_round(self):
+    def hasAtLeastOneRound(self):
         return self.rounds > 0
 
-    def teams_have_equal_turns(self):
-        turns = self.teams.number_of_turns()
+    def teamsHaveEqualTurns(self):
+        turns = self.teams.numberOfTurns()
         for team in self.teams:
-            if team.number_of_turns() != turns:
+            if team.numberOfTurns() != turns:
                 return False
         return True
 
-    def team_has_reached_threshold():
+    def getCurrentRound(self):
+        if not self.rounds:
+            newRound = Round(0)
+            self.rounds.append(newRound)
+        return self.rounds[len(self.rounds) - 1]
+
+    def getRoundNextTeam(self, currentTeam):
+        index = 0
+        for team in self.teams:
+            if team.id == currentTeam.id:
+                nextIndex = (index + 1) % len(self.teams)
+                return self.teams[nextIndex]
+            index += 1
+        return None
+
+    def createTurn(self):
+        currentRound = self.getCurrentRound()
+        if self.isRoundOver(currentRound):
+            nextRoundNumber = self.currentRound.number + 1
+            newRound = Round(nextRoundNumber)
+            self.rounds.append(newRound)
+            currentRound = newRound
+        lastTurn = currentRound.getLastTurn()
+        if lastTurn:
+            lastTeam = lastTurn.team
+            nextTeam = self.getRoundNextTeam(lastTeam)
+        else:
+            nextTeam = self.teams[0]
+        turn = Turn(nextTeam)
+        turn.setPlayerRoles(self)
+        currentRound.addTurn(turn)
+        return turn
+
+    def isRoundOver(self, currentRound):
+        return len(currentRound.turns) == len(self.teams)
+
+    def teamHasReachedThreshold():
         pass
 
     def __repr__(self):

@@ -1,0 +1,6 @@
+TODO: see if we can do ui-view transitions
+TODO: show game status on player wait view and game initiator view
+TODO: make sure games cannot have the same names (game validation)
+TODO: try to make the things that get returned on various events look like the things they modify in the views.
+TODO: remove game from game menu when started!
+TODO: fix wacky issues where the input menu on main screen splits values from same height.

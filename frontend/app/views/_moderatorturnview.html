@@ -1,48 +1,27 @@
-<div layout="column">
-  <div layout="row" flex=20>
-    <div flex=33>
-      <md-card>
-        <img src="./images/BuzzWords.jpg" class="md-card-image" alt="image caption">
-        <md-card-content>
-          <h2>CS690 Software Engineer</h2>
-
-   <p>Corrent Words</p>
-   <p>Forbidden Words</p>
- </md-card-content>
- <md-card-footer>
-   hints: source of the words
- </md-card-footer>
-</md-card>
+<md-container>
+  <md-content>
+    <div layout-margin layout="row" layout-align="center center">
+      <div class="text-med">You are the Moderator!</div>
     </div>
-    <div flex=33 id="vc">
-    <i class="material-icons md-icon-72"  >query_builder</i>
-    <div id="vci"><div id="content">
-      00:00
-        </div></div>
-    </div>
-  <div flex=33>
-    <md-button class = "md-fab" aria-label="Create">
-
-
-      <i class="material-icons md-48">pause_circle_filled</i>
-
-    </md-button>
-  </div>
-</div>
-
-    <md-list>
-      <md-list-item np-repeat="team in data.team" onclick="" class="">
-        <div layout="row">
-          <md-button class="md-fab" aria-label="add" ng-click = "addPoints(team)">
-            <div flex=33> <i class="material-icons md-48">add</i></div>
+    <div layout="row" layout-align="center" >
+      <div >
+        <countdown > </countdown>
+        <div  layout="row" layout-align="center">
+          <md-button  layout-padding ng-click="pauseClicked()"  ng-show="!showPlay" >
+            <md-icon   ng-style="{'font-size': it.size + 'px', height: it.size + 'px',width:it.size+'px'}">pause</md-icon>
           </md-button>
-          <div flex=33> {{team.name}}</div>
-          <md-button class="md-fab" aria-label="minus" ng-click = "minusPoints(team)">
-            <div flex=33> <i class="material-icons md-48">indeterminate_check_box</i></div>
+          <md-button layout-padding ng-click="playClicked()" ng-show="showPlay">
+            <md-icon  ng-style="{'font-size': it.size + 'px', height: it.size + 'px',width:it.size+'px'}">play_arrow</md-icon>
           </md-button>
+          <buzzer ng-mousedown="mouseDown()" ng-mouseup="mouseUp()" ></buzzer>
         </div>
-      </md-list-item>
-  </md-list>
-
-  <div layout="row"></div>
-</div>
+      </div>
+    </div>
+  </md-content>
+  <div layout="row" layout-align="center center" style="min-height:270px;">
+    <buzzcards></buzzcards>
+  </div>
+  <div layout="row" layout-align="center center">
+    <teampoints></teampoints>
+  </div>
+</md-container>

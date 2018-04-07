@@ -3,7 +3,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from flask import Flask, session as http_session
 from sqlalchemy.orm import sessionmaker, relationship
 from . import Base
-from app import TELLER,GUESSER,OBSERVER,MODERATOR
+from constants import TELLER,GUESSER,OBSERVER,MODERATOR
 
 class Player(Base):
 
@@ -16,8 +16,8 @@ class Player(Base):
 
     game = relationship("Game",lazy = False, uselist=False)
 
-    turnTeller = relationship("Turn", foreign_keys='Turn.turn_teller_id', backref = "turnTeller", lazy = False, uselist=False)
-    turnModerator = relationship("Turn", foreign_keys='Turn.turn_moderator_id', backref = "turnModerator", lazy = False, uselist=False)
+    turnTeller = relationship("Turn", foreign_keys='Turn.turnTellerId', backref = "turnTeller", lazy = False, uselist=False)
+    turnModerator = relationship("Turn", foreign_keys='Turn.turnModeratorId', backref = "turnModerator", lazy = False, uselist=False)
 
     def __init__(self, nickname, email, role):
         self.nickname = nickname
@@ -26,32 +26,49 @@ class Player(Base):
         self.game = None
 
     @staticmethod
-    def email_exists(session, email):
+    def emailExists(session, email):
         player = session.query(Player).filter(Player.email==email).first()
         if(player != None and player.email):
             return player.email
         return False
 
     @staticmethod
-    def find_player_by_email(session,email):
+    def findPlayerByEmail(session,email):
         return session.query(Player).filter(Player.email==email).first()
 
     @staticmethod
-    def is_logged_in():
+    def isLoggedIn():
         email = http_session.get('email', None)
         return email is not None
 
     @staticmethod
-    def find_player_by_id(session, id):
+    def findPlayerById(session, id):
         player = session.query(Player).get(id)
         return player
 
-    def login(self):
-        http_session['email'] = self.email
-        http_session['player_id'] = self.id
+    def setObserver(self):
+        self.role = OBSERVER
 
-    def add_team_session(self):
-        http_session['team_id'] = self.team.id
+    def setGuesser(self):
+        self.role = GUESSER
+
+    def setModerator(self):
+        self.role = MODERATOR
+
+    def setTeller(self):
+        self.role = TELLER
+
+    def isObserver(self):
+        return self.role == OBSERVER
+
+    def isGuesser(self):
+        return self.role == GUESSER
+
+    def isTeller(self):
+        return self.role == TELLER
+
+    def isModerator(self):
+        return self.role == MODERATOR
 
 
 

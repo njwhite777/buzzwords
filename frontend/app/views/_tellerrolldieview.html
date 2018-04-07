@@ -1,8 +1,17 @@
-<div layout = "column">
-
-  <div flex=50>
-    <md-button ng-click = "rollDie()">
-        Roll Die
-    </md-button>
+<md-container>
+  <md-content>
+  <div layout-margin layout="row" layout-align="center center">
+    <div class="text-med">You are the Teller!</div>
   </div>
-</div>
+  <div layout-margin layout="row" layout-align="center center">
+  </div>
+  <div layout="row" layout-align="center" >
+    <div >
+      <winwheel></winwheel>
+    </div>
+  </div>
+  <div layout-margin layout-padding layout="row" layout-align="center" >
+    <md-button class="md-primary md-raised text-medsmall" ng-click="rollWheel()">Roll Wheel</md-button>
+  </div>
+  </md-content>
+</md-container>

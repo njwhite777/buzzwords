@@ -1,10 +1,10 @@
-<md-content layout="row" layout-xs="column">
-  <div flex=50 class="text" layout-margin>
+<md-content layout="column" layout-gt-sm="row">
+  <div flex="100" flex-gt-sm="45" class="text" layout-margin>
     <div class="text-med"> Choose a Game </div>
     <div>
-      <div class="md-accordion" ng-repeat="game in gameServiceData.games">
-        <div md-theme="{{dynamicTheme}}" md-theme-watch>
-        <md-toolbar class="md-primary" name = "{{game.name}}" ng-init="game.expanded = false" ng-click="collapseAll(game)">
+      <div class="md-accordion" ng-repeat="game in gameServiceData.games" >
+        <div md-theme="{{dynamicTheme}}" md-theme-watch class="slide">
+        <md-toolbar  class="md-primary" name = "{{game.name}}" ng-init="game.expanded = false" ng-click="collapseAll(game)">
           <div class="md-toolbar-tools">
             <div class="text-medsmall"> {{ game.name }} </div>
             <span flex=""></span>
@@ -32,19 +32,20 @@
       </div>
     </div>
   </div>
-  <div layout = "column">
-  <div flex=33 layout-margin>
+  <div  flex-gt-sm="45" layout="column">
+  <div  layout-margin>
   <form name="createGameForm" novalidate ng-submit="createGameForm.$valid && gameStateValid()">
-    <!-- TODO: frontend form validation! --> layout-xs="column"
+    <!-- TODO: frontend form validation! -->
     <div class="text-med">Create a Game</div>
     <div layout="row" layout-sm="column">
     <md-input-container class="md-block" flex-gt-sm>
       <label>Game Name</label>
-      <input name="gamename"ng-model="gameData.name" ng-change="formFieldChanged(gameData.name)" ng-model-options='{ debounce: 1000 }'>
+      <input name="gamename"ng-model="gameData.name" ng-change="formFieldChanged(gameData.name)" ng-model-options='{ debounce: 500 }'>
     </md-input-container>
 
     <md-input-container class="md-block" flex-gt-sm>
-      Number of Teams <input name="numberOfTeams" id="gameData.numberOfTeams" type = "number" ng-model ="gameData.numberOfTeams" ng-change="forceBack(gameData,'numberOfTeams',5,1)" ng-model-options='{debounce:1000}'>
+      <label>Number of Teams </label>
+      <input name="numberOfTeams" id="gameData.numberOfTeams" type = "number" ng-model ="gameData.numberOfTeams" ng-change="forceBack(gameData,'numberOfTeams',5,1)" ng-model-options='{debounce:1000}'>
     </md-input-container>
   </div>
     <md-list>
@@ -79,9 +80,6 @@
   <md-option ng-value="opt" ng-repeat="opt in skipOptions" >{{ opt }}</md-option>
 </md-select>
 </md-input-container>
-
-
-
     <md-input-container class="md-block" flex-gt-sm>
       Game Changers:
       <md-checkbox ng-model="gameData.gameChangers" aria-label="With Turn Modifiers"></md-checkbox>
@@ -91,8 +89,6 @@
       <i class="material-icons">add</i>
     </md-button>
   </form>
-</div>
-<div flex=33>
 </div>
 </div>
 </md-content>

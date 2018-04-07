@@ -17,6 +17,10 @@
     <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
+    <audio id="wilhelm" src="sounds/wilhelm.mp3" autostart="false" ></audio>
+    <audio id="firetruck" src="sounds/firetruck.mp3" autostart="false" ></audio>
+    <audio id="buzzer" src="sounds/buzzer.mp3" autostart="false" ></audio>
+
   </head>
   <body ng-app="frontendApp" ng-controller="indexController">
     <div ng-controller="loginController"></div>
@@ -53,7 +57,7 @@
         </md-sidenav>
 
       </section>
-      <md-content flex layout-padding>
+      <md-content class="ui-view-container" flex layout-padding>
         <div flex ui-view></div>
       </md-content>
     </div>    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -70,6 +74,7 @@
     <script src="bower_components/socket.io-client/dist/socket.io.js"></script>
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/angular-aria/angular-aria.js"></script>
@@ -86,6 +91,7 @@
     <!-- endbuild -->
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
+        <script src="Winwheel.min.js"></script>
         <script src="scripts/services/socketService.js"></script>
         <script src="scripts/controllers/indexController.js"></script>
         <script src="scripts/controllers/drawerLeftController.js"></script>
@@ -102,8 +108,14 @@
         <script src="scripts/services/viewSwapService.js"></script>
         <script src="scripts/services/playerService.js"></script>
         <script src="scripts/services/loginUser.js"></script>
+        <script src="scripts/services/timerService.js"></script>
+        <script src="scripts/services/cardService.js"></script>
         <script src="scripts/controllers/loginController.js"></script>
-        <script src="scripts/directives/ngClock.js"></script>
+        <script src="scripts/directives/countdown.js"></script>
+        <script src="scripts/directives/teampoints.js"></script>
+        <script src="scripts/directives/winwheel.js"></script>
+        <script src="scripts/directives/buzzcards.js"></script>
+        <script src="scripts/directives/buzzer.js"></script>
         <!-- endbuild -->
 </body>
 </html>

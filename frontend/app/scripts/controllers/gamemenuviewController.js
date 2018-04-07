@@ -62,6 +62,7 @@ function ($scope,gameService,$state,$http,loginUser,debug) {
   $scope.joinButton = function(game,team){
     //TODO: add team, game in player;
     var player = loginUser.getPlayerDetails();
+    console.log("Player Joining Team: ",game,team);
     var data = {'gameID':game.id,'teamID': team.id,'player':player.email};
     gameService.playerJoinTeam(data);
   }

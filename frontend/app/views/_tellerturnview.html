@@ -1,20 +1,22 @@
 <md-container>
   <md-content>
-    <div class="loading_text">
-      <p>Time Remaining: {{ secondsRemaining }} </p>
+    <div layout-margin layout="row" layout-align="center center">
+      <div class="text-med">You are the Teller!</div>
+    </div>
+    <div layout="row" layout-align="center" >
+      <div >
+        <countdown></countdown>
+        <div  layout="row" layout-align="center">
+          <md-button  layout-padding ng-click="pauseClicked()"  ng-show="!showPlay" >
+            <md-icon ng-style="{'font-size': it.size + 'px', height: it.size + 'px',width:it.size+'px'}">pause</md-icon>
+          </md-button>
+          <md-button ng-click="playClicked()"  layout-padding ng-show="showPlay" >
+            <md-icon ng-style="{'font-size': it.size + 'px', height: it.size + 'px',width:it.size+'px'}">play_arrow</md-icon>
+          </md-buttton></div>
+      </div>
     </div>
   </md-content>
   <div layout="row" layout-align="center center">
-    <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" md-theme-watch style="width: 400px">
-         <md-card-title>
-           <md-card-title-text>
-             <span class="md-headline"> {{ card.buzzword }} </span>
-             <span ng-repeat="forbiddenword in card.forbiddenwords" class="md-subhead">{{ forbiddenword }}</span>
-           </md-card-title-text>
-         </md-card-title>
-       <md-card-actions layout="row" layout-align="end center">
-           <md-button ng-click="skipCard()" class="md-primary">Skip Card</md-button>
-       </md-card-actions>
-    </md-card>
+    <buzzcards role="teller"> </buzzcards>
   </div>
-</md-contaier>
+</md-container>

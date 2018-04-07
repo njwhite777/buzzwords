@@ -2,21 +2,27 @@
 
 /**
  * @ngdoc function
-<<<<<<< HEAD
- * @name frontendApp.controller:gameinitialorviewController
+ * @name frontendApp.controller:moderatorturnviewController
  * @description
- * # gameinitiatorviewController
- * Controller of the initial period of game
+ * # moderatorturnviewController
+ *
  */
  angular.module('frontendApp')
   .controller('moderatorturnviewController', [
       '$scope',
-      'viewSwapService',
       '$state',
+      '$mdToast',
+      'timerService',
       'debug',
-      function ($scope,viewSwapService,$state,debug) {
+      function ($scope,$state,$mdToast,timerService,debug) {
         if(debug)  console.log("moderator View Controller");
-        $scope.data = viewSwapService.data
+
+        $scope.it = {
+          size : 36,
+        };
+
+        $scope.timer = timerService.timer;
+        $scope.role  = "Moderator";
 
         //change points for one team
         $scope.addPoints = function(team){
@@ -26,8 +32,21 @@
           //TODO: function to minus points to team
         }
 
+        $scope.showSimpleToast = function() {
+          var pinTo = $scope.getToastPosition();
 
+          $mdToast.show(
+            $mdToast.simple()
+              .textContent('Simple Toast!')
+              .position(pinTo )
+              .hideDelay(3000)
+            );
+        };
 
-  // Do things in the drawer view.
-
+        $scope.buzz = function(){
+          // TODO
+          var audio = document.getElementById("buzzer");
+          audio.play();
+          console.log("TODO: implement audio buzz.");
+        };
 }]);

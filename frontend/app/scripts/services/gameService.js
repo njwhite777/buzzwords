@@ -31,6 +31,7 @@ angular.module('frontendApp')
     };
 
     var validateGameStart = function(data){
+      console.log(data);
       socket.emit('validate_game_start',data);
     };
 
@@ -39,6 +40,14 @@ angular.module('frontendApp')
       gameCreateData.game = game;
       gameCreateData.game._gameValid = true;
       socket.emit('validate_game_config',gameCreateData.game);
+    };
+
+    var startGame = function(game){
+      console.log(game);
+      var sendGame = {
+        'gameID': game.id
+      };
+      socket.emit('start_game',sendGame);
     };
 
     // Gets the game list when a game view that needs it is rendered.
@@ -52,7 +61,6 @@ angular.module('frontendApp')
     // Handles the event wherein the backend tells us the game is ready to go.
     socket.on('show_game_init_button_enabled',function(data){
       if(data.name == gameCreateData.game.name){
-        console.log('game init button',data);
         gameCreateData.showGameStartButton=true;
         gameCreateData.backendValidatedGame=data;
       }
@@ -84,14 +92,21 @@ angular.module('frontendApp')
 
     // The event listener which listens for game creation events.
     socket.on('created_game',function(data){
-      if(debug) console.log("gameSocket:created_game");
+      if(debug) console.log("created_game",data);
       gameServiceData.games.push(data)
+    });
+
+    socket.on('created_your_game',function(data){
+      if(gameCreateData.backendValidatedGame.name == data.name){
+        console.log("created your game: ",data);
+        gameCreateData.backendValidatedGame.id = data.id;
+        gameCreateData.backendValidatedGame.gameID = data.id;
+      }
     });
 
     socket.on('players_on_team',function(data){
       var teamID = data['teamID'];
       var count = data['playerCount'];
-      console.log(data);
       angular.forEach(gameServiceData.games,function(gameObject){
         angular.forEach(gameObject.teams,function(teamObject){
           if(teamID == teamObject.id){
@@ -112,6 +127,7 @@ angular.module('frontendApp')
       gameCreateData : gameCreateData,
       validateGameConfig : validateGameConfig,
       validateGameStart : validateGameStart,
+      startGame : startGame,
       initGame: initGame
     };
 
