@@ -28,6 +28,11 @@ class Round(Base):
             return None
         return self.turns[len(self.turns) - 1]
 
+    def getCurrentTurn(self):
+        if len(self.turns) == 0:
+            return None
+        return self.turns[len(self.turns) - 1]
+
 
     # TODO: what else will we need?
     def __repr__(self):

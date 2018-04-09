@@ -70,6 +70,10 @@ class Turn(Base):
         self.gameChangerNumber = selectedGameChanger.gameChangerId
         return selectedGameChanger
 
+    def getGameChanger(self):
+        gameChangers = GameChangers()
+        return gameChangers.getGameChanger(self.gameChangerNumber)
+
     '''
     if the ALL_GUESSERS game changer is selected we have to change all observers to guessers
     '''
@@ -133,14 +137,14 @@ class Turn(Base):
 
     def loadCard(self):
         # game. should work in this context because of the backref to turn from game.
-        unusedCards = self.game.getUnusedCards()
+        unusedCards = self.round.game.getUnusedCards()
         if len(unusedCards) == 0:
             return None
         # we might mind to implement a more elegant algorithm which picks a card depending on the stats
         # like number of times gotten right or missed
         card = self.__getRandomUnusedCard(unusedCards)
         self.card = card
-        self.game.addUsedCard(card)
+        self.round.game.addUsedCard(card)
         # takes care of the no forbidden words game changer
         if self.gameChangerNumber == NO_EXCLUDED_WORDS:
             card.removeForbiddenWords()

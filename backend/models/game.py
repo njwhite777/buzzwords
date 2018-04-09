@@ -183,7 +183,6 @@ class Game(Base):
         else:
             nextTeam = self.teams[0]
         turn = Turn(team=nextTeam,round=currentRound,game=self)
-        self.turns.append(turn)
         session.add(turn)
         session.commit()
         turn.setPlayerRoles(self)

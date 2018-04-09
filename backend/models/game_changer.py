@@ -47,6 +47,9 @@ class  GameChangers():
             startMinIndex = value.getMaxWidthIndex()
         self.maxWidthLimit = startMinIndex
 
+    def getGameChanger(self,id):
+        return self.changers[id]
+
     def rollDie(self):
         selected = random.randint(0, self.maxWidthLimit - 1)
         for key, value in self.changers.items():
