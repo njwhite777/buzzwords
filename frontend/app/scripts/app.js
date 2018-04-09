@@ -34,6 +34,7 @@ app
       'viewSocketName' : 'view',
       'timerSocketName' : 'timer',
       'playerSocketName' : 'player',
+      'cardSocketName' : 'card',
       'getSocketNameHelper' :
         function(){
           return this.proto + this.host + ":"+ this.port+"/"+this.namespace;
@@ -54,6 +55,9 @@ app
           }
           if(whichSocket == 'player'){
             return this.getSocketNameHelper() + '/' + this.playerSocketName;
+          }
+          if(whichSocket == 'card'){
+            return this.getSocketNameHelper() + '/' + this.cardSocketName;
           }
         }
     });

@@ -13,8 +13,9 @@ angular.module('frontendApp')
         '$scope',
         'viewSwapService',
         'gameService',
-        function($scope,viewSwapService,gameService) {
-          $scope.gameService = gameService;
+        'currentGameService',
+        function($scope,viewSwapService,gameService,currentGameService) {
+          $scope.currentGameService = currentGameService;
           $scope.switchedElements = viewSwapService.switchedElements;
         }
       ]);

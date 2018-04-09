@@ -12,10 +12,10 @@
   <md-content >
     <div layout="row" layout-align="center">
       <div layout="column">
-        <div layout-padding>Team On Deck: {{ gameService.gameCreateData.backendValidatedGame.turn.team }}</div>
-        <div layout-padding>Teller: {{ gameService.gameCreateData.backendValidatedGame.roles.teller.nickname }}</div>
-        <div layout-padding>Moderator: {{ gameService.gameCreateData.backendValidatedGame.roles.moderator.nickname }}</div>
-        <div layout-padding>Turn Modifier: {{ gameService.gameCreateData.backendValidatedGame.turn.modifier || "Waiting for teller to roll." }}</div>
+        <div layout-padding>Team On Deck: {{ turn.team.name }}</div>
+        <div layout-padding>Teller: {{ turn.roles.teller.nickname }}</div>
+        <div layout-padding>Moderator: {{ turn.roles.moderator.nickname }}</div>
+        <div layout-padding>Turn Modifier: {{ turn.modifier.name || "Waiting for teller to roll." }}</div>
       </div>
     </div>
   </md-content>
