@@ -6,8 +6,8 @@ import time
 import threading
 
 
-capabilities = webdriver.DesiredCapabilities().FIREFOX
-capabilities["marionette"] = False
+#capabilities = webdriver.DesiredCapabilities().FIREFOX
+#capabilities["marionette"] = False
 binary = FirefoxBinary(r'/usr/bin/firefox')
 
 class CreateGame(threading.Thread):
@@ -124,8 +124,8 @@ if __name__ == "__main__":
 
 
     client1 = JoinGame()
-    client2 = JoinGame(teamname="easy")
-    client3 = JoinGame(teamname="easy")
+    client2 = JoinGame(username="aron",useremail="aron@bsu.edu",teamname="easy")
+    client3 = JoinGame(username="aron2",useremail="aron2@bsu.edu",teamname="easy")
 
     client1.start()
     client2.start()

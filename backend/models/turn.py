@@ -15,11 +15,17 @@ class Turn(Base):
     numberOfSkips = Column(Integer)
     startTime = Column(DateTime, default=datetime.datetime.utcnow)
     gameChangerNumber = Column(Integer)
-    roundId = Column(Integer, ForeignKey('round.id'), nullable=False)
     cardId = Column(Integer, ForeignKey('card.id'), nullable=True)
 
-    card = relationship("Card", foreign_keys=cardId, lazy = False,post_update=True)
+    gameId = Column(Integer, ForeignKey('game.id'), nullable=False)
+    # Don't need to do this. Should already exist cause of backref.
+    # game = relationship("Game", foreign_keys=gameId, lazy = False, uselist=False)
+
+    roundId = Column(Integer, ForeignKey('round.id'), nullable=True)
+    round = relationship("Round", foreign_keys=roundId, lazy = False, uselist=False)
+
     teamId = Column(Integer, ForeignKey('team.id'), nullable=True)
+    card = relationship("Card", foreign_keys=cardId, lazy = False,post_update=True)
 
     turnTellerId = Column(Integer, ForeignKey('player.id'), nullable=True)
     teller = relationship('Player', foreign_keys=turnTellerId,post_update=True)
@@ -28,10 +34,13 @@ class Turn(Base):
     moderator = relationship('Player', foreign_keys=turnModeratorId,post_update=True )
 
 
-    def __init__(self, team):
+    def __init__(self,game,round,team):
         self.numberOfSkips = 0
         self.gameChangerNumber = -1
         self.card = None
+        self.game = game
+        self.gameId = game.id
+        self.round = round
         self.team = team
 
     def setTeam(self, team):
@@ -59,6 +68,7 @@ class Turn(Base):
         gameChangers = GameChangers()
         selectedGameChanger = gameChangers.rollDie()
         self.gameChangerNumber = selectedGameChanger.gameChangerId
+        return selectedGameChanger
 
     '''
     if the ALL_GUESSERS game changer is selected we have to change all observers to guessers
@@ -121,15 +131,16 @@ class Turn(Base):
     def getModerator(self):
         return self.moderator
 
-    def loadCard(self, session, game):
-        unusedCards = game.getUnusedCards(session)
+    def loadCard(self):
+        # game. should work in this context because of the backref to turn from game.
+        unusedCards = self.game.getUnusedCards()
         if len(unusedCards) == 0:
             return None
         # we might mind to implement a more elegant algorithm which picks a card depending on the stats
         # like number of times gotten right or missed
         card = self.__getRandomUnusedCard(unusedCards)
         self.card = card
-        game.addUsedCard(card)
+        self.game.addUsedCard(card)
         # takes care of the no forbidden words game changer
         if self.gameChangerNumber == NO_EXCLUDED_WORDS:
             card.removeForbiddenWords()

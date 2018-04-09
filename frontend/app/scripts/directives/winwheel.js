@@ -83,7 +83,7 @@ angular.module('frontendApp')
           scope.myWheel.startAnimation();
           $timeout(function(){
             Object.assign(scope.turn.modifier,data);
-          }, duration);
+          }, scope.duration*1000 );
         });
 
         socket.on('enable_start_turn_button',function(){

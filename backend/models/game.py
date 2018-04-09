@@ -2,6 +2,7 @@
 import datetime
 from sqlalchemy import Column, Integer, String, Table, ForeignKey, DateTime
 from sqlalchemy.orm import sessionmaker, relationship
+from app import Session
 from .card import Card
 from .round import Round
 from .turn import Turn
@@ -113,9 +114,12 @@ class Game(Base):
             usedCardIds.append(card.id)
         return usedCardIds
 
-    def getUnusedCards(self, session):
+    def getUnusedCards(self):
+        session=Session()
         query = session.query(Card).filter(~(Card.id.in_(self.getUsedCardsIds())))
-        return query.all()
+        all = query.all()
+        session.close()
+        return all
 
     def readyToStart(self):
         for team in self.teams:
@@ -149,7 +153,7 @@ class Game(Base):
 
     def getCurrentRound(self,session):
         if not self.rounds:
-            newRound = Round(0)
+            newRound = Round(number=0,game=self)
             self.rounds.append(newRound)
             session.commit()
         return self.rounds[len(self.rounds) - 1]
@@ -167,7 +171,7 @@ class Game(Base):
         currentRound = self.getCurrentRound(session)
         if self.isRoundOver(currentRound):
             nextRoundNumber = self.currentRound.number + 1
-            newRound = Round(nextRoundNumber)
+            newRound = Round(number=nextRoundNumber,game=self)
             self.rounds.append(newRound)
             currentRound = newRound
             session.add(currentRound)
@@ -178,8 +182,10 @@ class Game(Base):
             nextTeam = self.getRoundNextTeam(lastTeam)
         else:
             nextTeam = self.teams[0]
-        turn = Turn(nextTeam)
+        turn = Turn(team=nextTeam,round=currentRound,game=self)
+        self.turns.append(turn)
         session.add(turn)
+        session.commit()
         turn.setPlayerRoles(self)
         currentRound.addTurn(turn)
         session.commit()
