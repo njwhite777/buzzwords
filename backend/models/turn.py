@@ -137,7 +137,9 @@ class Turn(Base):
 
     def loadCard(self):
         # game. should work in this context because of the backref to turn from game.
+        print(self.round.game)
         unusedCards = self.round.game.getUnusedCards()
+        print(unusedCards)
         if len(unusedCards) == 0:
             return None
         # we might mind to implement a more elegant algorithm which picks a card depending on the stats

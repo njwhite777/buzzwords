@@ -3,10 +3,12 @@ import argparse
 from app import app,socketio,engine,Session
 from flask_cors import CORS
 from db import create_db,delete_db
-from models import Base as AppModelBase
+from models import Base as AppModelBase,CardModel
 from socketIO import *
-
 from tests import *
+import quizlet
+import json
+
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-e','--env',default='dev',help="Pass the environment : dev, test, prod")
@@ -18,10 +20,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     CORS(app)
 
-    #  Flask is only responsible for implementing the game logic and the socket communications.
-    #   Don't need to launch the frontend from here.
-    #   it is completely decoupled and handled by the grunt serve process for the time being.
-    #   Eventually, will just be served by a static server like nginx or apache.
+
 
     environment = args.env
     db = args.db
@@ -29,11 +28,22 @@ if __name__ == '__main__':
     if(environment in ['test','debug','dev']):
         delete_db(engine)
 
-
-        # if(db == 'midgamestate'):
-        #     mid_game_db(Session)
-
     AppModelBase.metadata.create_all(engine)
+
+    # Getting the cards from quizlet.
+    session=Session()
+    quizletClient = quizlet.QuizletClient(client_id='SN77uEA94G', login='Nathan_White34')
+    data = quizletClient.sets.endpoint.get("258934949")
+    count = 0
+    for term in data['terms']:
+        count+=1
+        definitions = term['definition'].split('\n')
+        buzzword = term['term'].strip()
+        buzzword.split()
+        card = CardModel(buzzword=buzzword,forbidden_words=json.dumps(definitions[:-1]),source=definitions[-1],source_page=' '.join(definitions[-1].split()[-2:]),is_phrase=(len(buzzword.split())>1) )
+        session.add(card)
+    session.commit()
+    session.close()
 
     if(db):
         if(db == 'startgame'):

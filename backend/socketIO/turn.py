@@ -1,8 +1,12 @@
 #!/usr/bin/env python
 from models import *
-from app import session,socketio
+from app import Session,socketio, socketIOClients
+from flask_socketio import emit
+from flask import request
+import sys
+import time
 
-# This defines the sockets that will be availible.
-def update_timer(message):
-    print(message)
-    emit('update_timer', {'data': message['data']},broadcast=True)
+
+# @socketio.on('starting_turn',namespace='/io/game')
+# def start_turn(data):
+#     print(data)
