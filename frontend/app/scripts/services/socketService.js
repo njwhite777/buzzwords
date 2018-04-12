@@ -30,12 +30,14 @@ angular.module('frontendApp')
     var viewSocketName = socketIOConfig.getSocketName('view');
     var timerSocketName = socketIOConfig.getSocketName('timer');
     var playerSocketName = socketIOConfig.getSocketName('player');
+    var cardSocketName = socketIOConfig.getSocketName('card');
 
     var ioSocketConnect = io.connect(IOsocketName);
     var gameSocketConnect = io.connect(gameSocketName);
     var viewSocketConnect = io.connect(viewSocketName);
     var timerSocketConnect = io.connect(timerSocketName);
     var playerSocketConnect = io.connect(playerSocketName);
+    var cardSocketConnect = io.connect(cardSocketName);
 
     var socket = socketFactory({
       ioSocket: ioSocketConnect
@@ -57,6 +59,10 @@ angular.module('frontendApp')
       ioSocket: timerSocketConnect
     });
 
+    var cardSocket = socketFactory({
+      ioSocket: cardSocketConnect
+    });
+
     var notifySocketReady = function() {
       var deferred = $q.defer();
       socket.on('connect',function(message){
@@ -72,7 +78,8 @@ angular.module('frontendApp')
       viewSocket: viewSocket,
       timerSocket: timerSocket,
       playerSocket: playerSocket,
-      notifySocketReady : notifySocketReady
+      notifySocketReady : notifySocketReady,
+      cardSocket: cardSocket
     };
 
 }]);

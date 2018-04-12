@@ -9,22 +9,27 @@
 
 angular.module('frontendApp')
   .service('cardService',['socketService','$timeout','debug',function(socketService,$timeout,debug){
-    // This service listens to the created game event and adds a new game to the list when one is created.
-    var otherCards = [{buzzword:'alphabet1',forbiddenwords : ['a','b','c','d','notes 1123'] },{buzzword:'alphabet2',forbiddenwords : ['a','b','c','d','notes 1123'] },{buzzword:'alphabet3',forbiddenwords : ['a','b','c','d','notes 1123'] }];
-    var cardData = {card : {buzzword:'alphabet',forbiddenwords : ['a','b','c','d','notes 1123']},showCard: true };
+    var socket = socketService.cardSocket;
+
+
+    // var otherCards = [{buzzword:'alphabet1',forbiddenwords : ['a','b','c','d','notes 1123'] },{buzzword:'alphabet2',forbiddenwords : ['a','b','c','d','notes 1123'] },{buzzword:'alphabet3',forbiddenwords : ['a','b','c','d','notes 1123'] }];
+    var cardData = { card : { buzzword : 'test', forbiddenwords : ['1','2','3','4'] }, showCard : false };
 
     var skipCard = function(){
-      console.log("TODO: implement backend call to move to next card.");
+      console.log("TODO: call backend for next card.")
       nextCard();
     };
 
-    var nextCard =  function(){
+    var getNextCard = function(){
+      socket.emit('load_next_card');
+    };
+
+    var nextCard =  function(card){
       cardData.showCard = false;
       $timeout(function(){
-        cardData.card = otherCards.pop();
+        Object.assign(cardData.card,card.card);
         cardData.showCard = true;
       },400);
-      console.log("TODO: implement backend call to move to next card.");
     };
 
     var awardPoint =  function(){
@@ -36,6 +41,10 @@ angular.module('frontendApp')
       console.log("TODO: implement backend call to awardPenalty");
       nextCard();
     };
+
+    socket.on('load_card',function(data){
+      nextCard(data);
+    });
 
     return{
       cardData : cardData,

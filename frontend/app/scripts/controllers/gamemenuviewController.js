@@ -21,7 +21,8 @@ function ($scope,gameService,$state,$http,loginUser,debug) {
 
   // Note: The games service is responsible for keeping the gameData object up to date.
   //  as long as we are using an object e.g. "{}" changes are automatically detected and synchronzied!
-  $scope.gameServiceData = gameService.gameServiceData;
+  $scope.games = gameService.games;
+
   $scope.gameCreateData = gameService.gameCreateData;
   $scope.gameData = {
     maxPlayersPerTeam: 3,
@@ -46,7 +47,6 @@ function ($scope,gameService,$state,$http,loginUser,debug) {
   };
 
 
-  $scope.accordingData = $scope.gameServiceData.games;
   $scope.$watch('gameData.numberOfTeams', function (newVal,oldVal) {
     console.log(newVal);
 

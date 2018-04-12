@@ -8,31 +8,19 @@
  */
 
 angular.module('frontendApp')
-  .service('gameService',['socketService','$http','debug',function(socketService,$http,debug){
+  .service('gameService',['socketService','$http','currentGameService','debug',function(socketService,$http,currentGameService,debug){
     // This service listens to the created game event and adds a new game to the list when one is created.
 
-    if(debug) console.log("game Service!");
-
-    var gameServiceData = {};
+    var games = {};
     var gameCreateData = {};
 
-    gameServiceData.games = [];
     gameCreateData.showGameStartButton = false;
 
     var socket = socketService.gameSocket;
 
-    //TODO: when this service is initialized, should request a list of games from the API.
-    //  game updates come over the games socket.
-    //TODO: move the url definition into consts so that it can be in the same file as the
-    //  rest of the config stuff
-
+    // Handles joining a team for a client.
     var playerJoinTeam = function(data){
       socket.emit('join_team',data);
-    };
-
-    var validateGameStart = function(data){
-      console.log(data);
-      socket.emit('validate_game_start',data);
     };
 
     // Called with every update of for fields.
@@ -42,13 +30,11 @@ angular.module('frontendApp')
       socket.emit('validate_game_config',gameCreateData.game);
     };
 
-    var startGame = function(game){
-      console.log(game);
-      var sendGame = {
-        'gameID': game.id
-      };
-      socket.emit('start_game',sendGame);
-    };
+    // Called as soon as a game is started in the  backend. Removesthe game maching this id.
+    socket.on('game_started',function(data){
+        var gameID = data['gameID'];
+        delete games[gameID];
+    });
 
     // Gets the game list when a game view that needs it is rendered.
     socketService.notifySocketReady().then(
@@ -58,7 +44,9 @@ angular.module('frontendApp')
       function(result){}
     );
 
-    // Handles the event wherein the backend tells us the game is ready to go.
+    // #############################################################
+    // Game initialization:
+    // Handles the event wherein the backend tells us the game is ready to be initialized.
     socket.on('show_game_init_button_enabled',function(data){
       if(data.name == gameCreateData.game.name){
         gameCreateData.showGameStartButton=true;
@@ -70,6 +58,7 @@ angular.module('frontendApp')
     var initGame = function(){
       socket.emit('init_game',gameCreateData.backendValidatedGame);
     }
+    // #############################################################
 
     // On a disconnect from the server set up a listener to notify when then
     //  socket is back up. When it is, request games.
@@ -86,48 +75,33 @@ angular.module('frontendApp')
     });
 
     socket.on('game_list',function(data){
-      if(debug) console.log("games list",data);
-      gameServiceData.games = data;
+      angular.forEach(data,function(gameDetails,idx){
+        games[idx] = gameDetails;
+      });
     });
 
     // The event listener which listens for game creation events.
     socket.on('created_game',function(data){
-      if(debug) console.log("created_game",data);
-      gameServiceData.games.push(data)
-    });
-
-    socket.on('created_your_game',function(data){
-      if(gameCreateData.backendValidatedGame.name == data.name){
-        console.log("created your game: ",data);
-        gameCreateData.backendValidatedGame.id = data.id;
-        gameCreateData.backendValidatedGame.gameID = data.id;
-      }
+      angular.forEach(data,function(gameDetails,idx){
+        games[idx] = gameDetails;
+      });
     });
 
     socket.on('players_on_team',function(data){
       var teamID = data['teamID'];
       var count = data['playerCount'];
-      angular.forEach(gameServiceData.games,function(gameObject){
-        angular.forEach(gameObject.teams,function(teamObject){
-          if(teamID == teamObject.id){
-            Object.assign(teamObject,data)
-          }
+      angular.forEach(data,function(gameObject,oIdx){
+        angular.forEach(gameObject.teams,function(teamObject,idx){
+          Object.assign(games[oIdx].teams[idx],teamObject);
         });
       });
     });
 
-    socket.on('deleted_game',function(){
-      if(debug) console.log("gameSocket:deleted_game");
-      // TODO: Remove the game
-    });
-
     return {
       playerJoinTeam : playerJoinTeam,
-      gameServiceData : gameServiceData,
+      games : games,
       gameCreateData : gameCreateData,
       validateGameConfig : validateGameConfig,
-      validateGameStart : validateGameStart,
-      startGame : startGame,
       initGame: initGame
     };
 

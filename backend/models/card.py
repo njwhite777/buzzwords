@@ -39,7 +39,7 @@ class Card(Base):
         pass
 
     def removeForbiddenWords(self):
-        self.forbiddenWords = dict()
+        self.forbiddenWords = ""
 
     def __repr__(self):
         return "<Card(id='{}', buzzword='{}', source='{}')>".format(
