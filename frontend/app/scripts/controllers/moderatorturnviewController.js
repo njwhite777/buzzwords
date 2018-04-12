@@ -12,16 +12,14 @@
       '$scope',
       '$state',
       '$mdToast',
-      'timerService',
       'debug',
-      function ($scope,$state,$mdToast,timerService,debug) {
+      function ($scope,$state,$mdToast,debug) {
         if(debug)  console.log("moderator View Controller");
 
         $scope.it = {
           size : 36,
         };
 
-        $scope.timer = timerService.timer;
         $scope.role  = "Moderator";
 
         //change points for one team

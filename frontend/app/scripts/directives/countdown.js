@@ -11,7 +11,12 @@ angular.module('frontendApp')
       var textColor = attrs.textColor;
 
       // Set up $scope.timer in controller.
-      var timer = scope.timer;
+      scope.timer = timerService.timer;
+      var start = null;
+      scope.$watch('timer.countdown',function(newval,oldval){
+        window.requestAnimationFrame(draw);
+        start = null;
+      });
 
       if(!attrs.timercolor) timerColor = 'rgb(30, 136, 229)';
       if(!attrs.centercolor) centerColor = '#263238';
@@ -29,11 +34,11 @@ angular.module('frontendApp')
       }
 
       scope.pauseClicked = function(){
-        timerService.timer.pauseTime();
+        timer.pauseTime();
         scope.showPlay=true;
       };
       scope.playClicked = function(){
-        timerService.timer.resumeTime();
+        timer.resumeTime();
         scope.showPlay=false;
       };
 
@@ -69,11 +74,11 @@ angular.module('frontendApp')
       function draw(now)
       {
         // Give the start time its initial value.
-        if(!start)start = now;
+        if( !start ) start = now;
         // This will be zero the first time it is called.
         var progress = now - start;
-        var transpired = timer.transpired;
-        var duration =  timer.duration;
+        var transpired = scope.timer.transpired;
+        var duration =  scope.timer.duration;
         // Use the milliseconds to calculate the distance in degrees.
         function degCalc(duration,transpired){
           return (360*(transpired*1000))/(duration*1000);
@@ -86,21 +91,23 @@ angular.module('frontendApp')
         var displayRemainSec = duration - transpired;
         var displayRemainMins = Math.floor( displayRemainSec / 60 );
 
+        var textXconst = 36;
+        var textYconst = 10;
         drawRect(0, 0, canvas.width, canvas.height, '#FAFAFA');
         // x, y, radius, start, end, clockwise, color, type, thickness
-        if(timer.status=='running'){
+        if(scope.timer.status=='running'){
           drawCircle(cHelper.centerX(), cHelper.centerY(), cHelper.outerCircle(), cHelper.start, rad(degCalc(duration,transpired)) + cHelper.start, false, timerColor, 'stroke', cHelper.thickness()); //hour
         }
-        if(timer.status == 'initializing'){
+        if(scope.timer.status == 'initializing'){
           drawCircle(cHelper.centerX(), cHelper.centerY(), cHelper.outerCircle(), cHelper.start, rad(360) + cHelper.start, false, timerColor, 'stroke', cHelper.thickness()); //hour
         }
         drawCircle(cHelper.centerX(), cHelper.centerY(), cHelper.centerCircle(), cHelper.zeroStart, cHelper.fullCircle, false, centerColor, 'fill', cHelper.centerCircleThickness); //inner
 
-        if(timer.status=='running'){
-          drawText(`${displayRemainMins.toString().length == 1?'0'+displayRemainMins:displayRemainMins}:${displayRemainSec.toString().length == 1?'0'+displayRemainSec:displayRemainSec}`, canvas.width / 2 - 42, canvas.height / 2 + 15, textColor, cHelper.fontSize);
+        if(scope.timer.status=='running'){
+          drawText(`${displayRemainMins.toString().length == 1?'0'+displayRemainMins:displayRemainMins}:${displayRemainSec.toString().length == 1?'0'+displayRemainSec:displayRemainSec}`, canvas.width / 2 - textXconst, canvas.height / 2 + textYconst, textColor, cHelper.fontSize);
         }
-        if(timer.status=='initializing'){
-          drawText(`00:00`, canvas.width / 2 - 36, canvas.height / 2 + 10, textColor, cHelper.fontSize);
+        if(scope.timer.status=='initializing'){
+          drawText(`00:00`, canvas.width / 2 - textXconst, canvas.height / 2 + textYconst, textColor, cHelper.fontSize);
         }
         if(progress < 975){
           window.requestAnimationFrame(draw);
@@ -141,7 +148,7 @@ angular.module('frontendApp')
         }
       }
       // Kicks things off.
-      init();
+      // init();
     }
 
     return {

@@ -12,8 +12,9 @@ angular.module('frontendApp')
     'socketService',
     'gameService',
     '$state',
+    '$q',
     'debug',
-    function(socketService,gameService,$state,debug){
+    function(socketService,gameService,$state,$q,debug){
 
       console.log("in timerService");
     // Timer is an object so that it can be utilized by our front end to update if need be.
@@ -23,10 +24,10 @@ angular.module('frontendApp')
 
     var game = gameService.gameCreateData.backendValidatedGame;
     var socket = socketService.timerSocket;
+
     socket.on('update_timer',function(data){
-      timer.startTime = data.startTime;
-      timer.duration = data.duration;
-      timer.transpired = data.transpired;
+      console.log("UPDATING TIMER: ",data);
+      Object.assign(timer,data);
     });
 
     var pauseTime = function(){

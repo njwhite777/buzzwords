@@ -13,20 +13,23 @@ angular.module('frontendApp')
 
 
     // var otherCards = [{buzzword:'alphabet1',forbiddenwords : ['a','b','c','d','notes 1123'] },{buzzword:'alphabet2',forbiddenwords : ['a','b','c','d','notes 1123'] },{buzzword:'alphabet3',forbiddenwords : ['a','b','c','d','notes 1123'] }];
-    var cardData = {card : {buzzword:'',forbiddenwords : ['','','','']},showCard: true };
+    var cardData = { card : { buzzword : 'test', forbiddenwords : ['1','2','3','4'] }, showCard : false };
 
     var skipCard = function(){
-      console.log("TODO: implement backend call to move to next card.");
+      console.log("TODO: call backend for next card.")
       nextCard();
+    };
+
+    var getNextCard = function(){
+      socket.emit('load_next_card');
     };
 
     var nextCard =  function(card){
       cardData.showCard = false;
       $timeout(function(){
-        cardData.card = card;
+        Object.assign(cardData.card,card.card);
         cardData.showCard = true;
       },400);
-      console.log("TODO: implement backend call to move to next card.");
     };
 
     var awardPoint =  function(){

@@ -11,7 +11,6 @@ angular.module('frontendApp')
   .controller('guesserController',['$scope','timerService','gameService','currentGameService',function ($scope,timerService,gameService,currentGameService) {
     console.log(timerService.timer);
     // Note: for the timer widget to work properly, this variable must be attached to the scope.
-    $scope.timer = timerService.timer;
     $scope.showPlay= false;
     $scope.role    = "Guesser";
     $scope.game = currentGameService.currentGame;

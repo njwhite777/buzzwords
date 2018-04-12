@@ -11,10 +11,8 @@ angular.module('frontendApp')
   .controller('tellerturnviewController',[
     '$scope',
     '$timeout',
-    'timerService',
-    function ($scope,$timeout,timerService) {
+    function ($scope,$timeout) {
 
-    $scope.timer    = timerService.timer;
     $scope.showPlay = false;
     $scope.role     = "Teller";
 
