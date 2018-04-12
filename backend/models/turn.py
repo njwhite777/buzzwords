@@ -54,7 +54,7 @@ class Turn(Base):
     def getTeamsNotOnTurn(self, game):
         teamsNotOnTurn = []
         for theTeam in game.teams:
-            if self.team.id != theTeam.id:
+            if theTeam.id != self.team.id:
                 teamsNotOnTurn.append(theTeam)
         return teamsNotOnTurn
 
@@ -165,7 +165,7 @@ class Turn(Base):
         return cardData
 
     def canSkip(self):
-        return self.numberOfSkips < 3 or self.gameChangerNumber == UNLIMITED_SKIPS
+        return self.numberOfSkips < 3 or self.gameChangerNumber == UNLIMITED_SKIPS # number of skips from the game
 
     def skip(self,session):
         if self.canSkip():

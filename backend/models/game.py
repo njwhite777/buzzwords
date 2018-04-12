@@ -60,6 +60,10 @@ class Game(Base):
     def getGameById(game_id,session):
         return session.query(Game).get(int(game_id))
 
+    @staticmethod
+    def gameNameExists(session, name):
+        game = session.query(Game).get(int(game_id))
+
     def setStatePaused(self):
         self.gameState=GAME_PAUSED
 

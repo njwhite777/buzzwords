@@ -162,14 +162,14 @@ def testSocketTurnCreate():
 def testSkip():
     pass
 
-# delete_db(engine)
-# AppModelBase.metadata.create_all(engine)
-#
-# testCreatePlayers()
-# testGameCreate()
-# testJoinTeam()
-# testSaveCards()
-# testCreateTurn()
+delete_db(engine)
+AppModelBase.metadata.create_all(engine)
+
+testCreatePlayers()
+testGameCreate()
+testJoinTeam()
+testSaveCards()
+testCreateTurn()
 testSocketTurnCreate()
 # testAddUsedCard()
 # testFindUsedCards()
