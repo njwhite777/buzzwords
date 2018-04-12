@@ -7,10 +7,10 @@
       <div >
         <countdown > </countdown>
         <div  layout="row" layout-align="center">
-          <md-button  layout-padding ng-click="pauseClicked()"  ng-show="!showPlay" >
+          <md-button  layout-padding ng-disabled="disabled" ng-click="pauseClicked()"  ng-show="!showPlay" >
             <md-icon   ng-style="{'font-size': it.size + 'px', height: it.size + 'px',width:it.size+'px'}">pause</md-icon>
           </md-button>
-          <md-button layout-padding ng-click="playClicked()" ng-show="showPlay">
+          <md-button layout-padding ng-disabled="disabled" ng-click="playClicked()" ng-show="showPlay">
             <md-icon  ng-style="{'font-size': it.size + 'px', height: it.size + 'px',width:it.size+'px'}">play_arrow</md-icon>
           </md-button>
           <buzzer ng-mousedown="mouseDown()" ng-mouseup="mouseUp()" ></buzzer>

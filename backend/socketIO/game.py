@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 from models import *
-from app import Session,socketio, socketIOClients
+from app import Session,socketio, socketIOClients,turnTimers
 from flask_socketio import emit
 from flask import request
 import sys
 import time
-import json
 from constants import ROUND_KILLER
 
 def print_item(item,message):
@@ -335,6 +334,45 @@ def load_next_card():
     cardData['showCard'] = True
     emit('load_card',cardData,room=socketIOClients[teller.email],namespace='/io/card')
     emit('load_card',cardData,room=socketIOClients[moderator.email],namespace='/io/card')
-
     session.commit()
     session.close()
+
+@socketio.on("pause_timer",namespace="/io/timer")
+def pause_timer(data):
+    session = Session()
+    print_item(data,"PAUSING TIMER")
+    gameID = data['gameID']
+    game = GameModel.getGameById(gameID,session)
+    round = game.getCurrentRound(session)
+    turn = round.getCurrentTurn()
+    turnID = turn.id
+    timer = turnTimers[turnID]
+    timer.pause()
+    session.close()
+
+
+@socketio.on("resume_timer",namespace="/io/timer")
+def resume_timer(data):
+    session = Session()
+    print_item(data,"RESUMING TIMER")
+    gameID = data['gameID']
+    game = GameModel.getGameById(gameID,session)
+    round = game.getCurrentRound(session)
+    turn = round.getCurrentTurn()
+    turnID = turn.id
+    timer = turnTimers[turnID]
+    timer.resume()
+    session.close()
+
+@socketio.on("timer_notify_turn_complete",namespace="/io/game")
+def timer_notify_turn_complete(data):
+    session = Session()
+    print_item(data,"TURN COMPLETE")
+    # TODO: notify clients of game completion.
+    # TODO: sleep for a second.
+    # TODO: start next turn!
+    gameID = data['gameID']
+    game = GameModel.getGameById(gameID,session)
+    round = game.getCurrentRound(session)
+    turn = round.getCurrentTurn()
+    print_item(turn,"TURN ITEM TO BE REPLACED")

@@ -189,7 +189,7 @@ class Turn(Base):
     def startTimer(self):
         players=self.round.game.getAllPlayers()
         playerEmails = [ player.email for player in players ]
-        timer = Timer(duration=self.duration,playerEmails=playerEmails)
+        timer = Timer(duration=self.duration,playerEmails=playerEmails,gameID=self.round.game.id)
         turnTimers[self.id]=timer
         timer.start()
 
