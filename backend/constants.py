@@ -32,3 +32,7 @@ ALL_GUESSERS_WEIGHT = 14
 # game "game changers" constants
 WITH_GAME_CHANGERS = 1
 WITHOUT_GAME_CHANGERS = 2
+
+# card phrase
+IS_PHRASE = 0
+NOT_PHRASE = 1
