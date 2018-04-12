@@ -74,7 +74,7 @@ def testSaveCards():
 
 def testAddUsedCard():
     session = Session()
-    game = GameModel.getGameById(session, 1)
+    game = GameModel.getGameById(1,session)
     for i in range(5):
         card = CardModel.findCardById(session, i + 1)
         game.addUsedCard(card)
@@ -83,7 +83,7 @@ def testAddUsedCard():
 
 def testFindUsedCards():
     session = Session()
-    game = GameModel.getGameById(session, 1)
+    game = GameModel.getGameById(1,session)
     usedCards = game.getUsedCards()
     for card in usedCards:
         print(card.buzzword)
@@ -92,7 +92,7 @@ def testFindUsedCards():
 
 def testFindUnusedCards():
     session = Session()
-    game = GameModel.getGameById(session, 1)
+    game = GameModel.getGameById(1,session)
     unusedCards = game.getUnusedCards(session)
     for card in unusedCards:
         print(card.buzzword)
@@ -109,7 +109,7 @@ def testGameChanger():
 
 def testCreateTurn():
     session = Session()
-    game = GameModel.getGameById(session, 1)
+    game = GameModel.getGameById(1,session)
     turn = game.createTurn()
     session.commit()
     obervers = turn.getObservers(game)
@@ -124,9 +124,9 @@ def testCreateTurn():
 
 def testAddGameChanger():
     session = Session()
-    game = GameModel.getGameById(session, 1)
-    round = game.getCurrentRound()
-    turn = round.getLastTurn()
+    game = GameModel.getGameById(1,session)
+    round = game.getCurrentRound(session)
+    turn = round.getLastTurn(session)
     turn.setGameChanger()
     turn.updatePlayerRoles(game) # roles have to be updated if the all-guessers game changer is selected
     session.commit()
@@ -134,18 +134,18 @@ def testAddGameChanger():
 
 def testLoadCard():
     session = Session()
-    game = GameModel.getGameById(session, 1)
-    round = game.getCurrentRound()
-    turn = round.getLastTurn()
-    card = turn.loadCard(session, game)
-    print("buzzword: " + card.buzzword)
+    game = GameModel.getGameById(1,session)
+    round = game.getCurrentRound(session)
+    turn = round.getLastTurn(session)
+    cardData = turn.loadCard()
+    print("buzzword: " + cardData['card']['buzzword'])
     session.commit()
     session.close()
 
 def testSocketTurnCreate():
     session = Session()
     gameID = 1
-    game = GameModel.getGameById(session,1)
+    game = GameModel.getGameById(1,session)
     players = game.getAllPlayers()
 
     # Puts the game in started state

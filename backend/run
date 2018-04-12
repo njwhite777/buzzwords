@@ -9,18 +9,14 @@ from tests import *
 import quizlet
 import json
 
-
 parser = argparse.ArgumentParser()
 parser.add_argument('-e','--env',default='dev',help="Pass the environment : dev, test, prod")
 parser.add_argument('-d','--db',default=None,help="Pass a flag to set up a db for every time the server restarts.")
 args = parser.parse_args()
 
-
 if __name__ == '__main__':
     args = parser.parse_args()
     CORS(app)
-
-
 
     environment = args.env
     db = args.db
@@ -49,12 +45,4 @@ if __name__ == '__main__':
         if(db == 'startgame'):
             start_game_db(Session)
 
-    # from IPython import embed
-    # embed()
-
     socketio.run(app,debug=True,port=5000,host='localhost')
-    # app.run(port=port, debug=False)
-
-    # try:
-    # except KeyboardInterrupt as e:
-    #     print("Keyboard interrupt! Shutting down server.")

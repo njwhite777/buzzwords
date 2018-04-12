@@ -5,8 +5,11 @@ from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import sessionmaker, relationship
 from .player import Player
 from .game_changer import *
+from .timer import Timer
 from . import Base
 from constants import *
+from app import turnTimers
+import json
 
 class Turn(Base):
 
@@ -15,6 +18,7 @@ class Turn(Base):
     numberOfSkips = Column(Integer)
     startTime = Column(DateTime, default=datetime.datetime.utcnow)
     gameChangerNumber = Column(Integer)
+    duration = Column(Integer)
     cardId = Column(Integer, ForeignKey('card.id'), nullable=True)
 
     gameId = Column(Integer, ForeignKey('game.id'), nullable=False)
@@ -34,9 +38,10 @@ class Turn(Base):
     moderator = relationship('Player', foreign_keys=turnModeratorId,post_update=True )
 
 
-    def __init__(self,game,round,team):
+    def __init__(self,game,round,team,duration=30):
         self.numberOfSkips = 0
         self.gameChangerNumber = -1
+        self.duration = duration
         self.card = None
         self.game = game
         self.gameId = game.id
@@ -137,42 +142,62 @@ class Turn(Base):
 
     def loadCard(self):
         # game. should work in this context because of the backref to turn from game.
-        print(self.round.game)
         unusedCards = self.round.game.getUnusedCards()
-        print(unusedCards)
         if len(unusedCards) == 0:
             return None
         # we might mind to implement a more elegant algorithm which picks a card depending on the stats
         # like number of times gotten right or missed
         card = self.__getRandomUnusedCard(unusedCards)
         self.card = card
+
+        cardData = {
+            'card': {
+                'buzzword' : card.buzzword,
+                'forbiddenwords': json.loads(card.forbiddenWords),
+                'phrase' : card.isPhrase,
+            },
+            'showCard' : True
+        }
+
         self.round.game.addUsedCard(card)
-        # takes care of the no forbidden words game changer
         if self.gameChangerNumber == NO_EXCLUDED_WORDS:
-            card.removeForbiddenWords()
-        return card
+            cardData['forbiddenwords'] = ""
+        return cardData
 
     def canSkip(self):
         return self.numberOfSkips < 3 or self.gameChangerNumber == UNLIMITED_SKIPS
 
-    def skip(self, session, game):
+    def skip(self,session):
         if self.canSkip():
             currentCard = self.card
             currentCard.skippedCount += 1
             self.numberOfSkips += 1
-            newCard = self.loadCard(session, game)
+            newCard = self.loadCard()
             return newCard
         return None
 
-    def awardTeam(self, session, game):
+    def awardTeam(self, session):
         self.card.wonCount += 1
         self.team.score += 1
-        return self.loadCard(session, game)
+        return self.loadCard()
 
-    def penaliseTeam(self, session, game):
+    def penaliseTeam(self, session):
         self.card.lostCount += 1
         self.team.score -= 1
-        return self.loadCard(session, game)
+        return self.loadCard()
+
+    def startTimer(self):
+        players=self.round.game.getAllPlayers()
+        playerEmails = [ player.email for player in players ]
+        timer = Timer(duration=self.duration,playerEmails=playerEmails)
+        turnTimers[self.id]=timer
+        timer.start()
+
+    def getTimer(self):
+        return turnTimers[self.id]
+
+    def removeTimer(self):
+        del turnTimers[self.id]
 
     def __repr__(self):
         return "<GameRound()>".format()

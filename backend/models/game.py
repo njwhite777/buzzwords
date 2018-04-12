@@ -57,7 +57,7 @@ class Game(Base):
         return session.query(Game).count()
 
     @staticmethod
-    def getGameById(session, game_id):
+    def getGameById(game_id,session):
         return session.query(Game).get(int(game_id))
 
     def setStatePaused(self):

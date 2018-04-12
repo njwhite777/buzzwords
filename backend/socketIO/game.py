@@ -5,7 +5,8 @@ from flask_socketio import emit
 from flask import request
 import sys
 import time
-
+import json
+from constants import ROUND_KILLER
 
 def print_item(item,message):
     print("#################################")
@@ -126,7 +127,7 @@ def join_team(data):
     gameID = data['gameID']
     teamID = data['teamID']
     playerEmail = data['player']
-    game = GameModel.getGameById(session,gameID)
+    game = GameModel.getGameById(gameID,session)
     initiator = game.initiator
     player = PlayerModel.findPlayerByEmail(session,playerEmail)
 
@@ -157,7 +158,7 @@ def join_team(data):
 def validate_game_start(data):
     session = Session()
     gameID = data['gameID']
-    game = GameModel.getGameById(session,gameID)
+    game = GameModel.getGameById(gameID,session)
     initiator = game.initiator
     initiatorEmail = initiator.email
 
@@ -193,7 +194,7 @@ def start_game(data):
     session = Session()
     print_item(data,'data item to start_game')
     gameID = data['gameID']
-    game = GameModel.getGameById(session,gameID)
+    game = GameModel.getGameById(gameID,session)
     # Puts the game in started state
     game.setStateStart()
     session.commit()
@@ -204,7 +205,7 @@ def start_game(data):
 def start_new_turn(data):
     session = Session()
     gameID = data['gameID']
-    game = GameModel.getGameById(session,gameID)
+    game = GameModel.getGameById(gameID,session)
     session.commit()
     turn = game.createTurn(session)
     session.commit()
@@ -252,7 +253,7 @@ def roll_wheel(data):
     gameID = data['gameID']
     duration = data['duration']
     print_item(data,"Rolling wheel: ")
-    game = GameModel.getGameById(session,gameID)
+    game = GameModel.getGameById(gameID,session)
     round = game.getCurrentRound(session)
     turn = round.getCurrentTurn()
     gameChanger = turn.setGameChanger()
@@ -282,9 +283,11 @@ def roll_wheel(data):
 def start_turn(data):
     session = Session()
     gameID = data['gameID']
-    game = GameModel.getGameById(session,gameID)
+
+    game = GameModel.getGameById(gameID,session)
     round = game.getCurrentRound(session)
     turn = round.getCurrentTurn()
+
     moderator = turn.getModerator()
     teller = turn.getTeller()
     gameChanger = turn.getGameChanger()
@@ -294,18 +297,44 @@ def start_turn(data):
         'description' : gameChanger.description,
         'name': gameChanger.name
     }
-    print_item(rollWheel,"ROLLWHEEL TO PLAYERS: ")
+
+    if( gameChanger.gameChangerId == ROUND_KILLER ):
+        start_new_turn(data)
+        session.commit()
+        session.close()
+        return
+
     players = game.getAllPlayers()
     for player in players:
         emit('roll_result',rollWheel,room=socketIOClients[player.email],namespace='/io/game')
+    cardData = turn.loadCard()
+    cardData['showCard'] = True
+    emit('swap_view',{'swapView':'teller'},room=socketIOClients[teller.email],namespace='/io/view')
+    time.sleep(1)
 
-    card = turn.loadCard()
-    print_item(card,"CARD IS")
-    # TODO:
-    # card = turn
-    # emit('load_card',cardData,room=socketIOClients[teller.email],namespace='/io/card')
-    # emit('load_card',cardData,room=socketIOClients[moderator.email],namespace='/io/card')
+    emit('load_card',cardData,room=socketIOClients[teller.email],namespace='/io/card')
+    emit('load_card',cardData,room=socketIOClients[moderator.email],namespace='/io/card')
+    turn.startTimer()
 
+    session.commit()
+    session.close()
+
+@socketio.on('load_next_card',namespace='/io/game')
+def load_next_card():
+    session = Session()
+    gameID = data['gameID']
+
+    game = GameModel.getGameById(gameID,session)
+    round = game.getCurrentRound(session)
+    # TODO: check to make sure turn time has not run out!
+    turn = round.getCurrentTurn()
+
+    moderator = turn.getModerator()
+    teller = turn.getTeller()
+    cardData = turn.loadCard()
+    cardData['showCard'] = True
+    emit('load_card',cardData,room=socketIOClients[teller.email],namespace='/io/card')
+    emit('load_card',cardData,room=socketIOClients[moderator.email],namespace='/io/card')
 
     session.commit()
     session.close()
