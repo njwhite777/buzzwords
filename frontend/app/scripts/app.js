@@ -144,16 +144,10 @@ app.config(function($stateProvider,$urlRouterProvider,localStorageServiceProvide
      controller: 'gameinitiatorviewController'
    }
 
-   var observerState = {
-     url: '/observer_turn',
-     templateUrl: './views/_observer.html',
-     controller: 'observerController'
-   };
-
-   var guesserState = {
-     url: '/guesser_turn',
-     templateUrl: './views/_guesser.html',
-     controller: 'guesserController'
+   var gameplayerturnState = {
+     url: '/turn',
+     templateUrl: './views/_gameplayer.html',
+     controller: 'gameplayerController'
    };
 
    var tellerrolldieState = {
@@ -174,12 +168,17 @@ app.config(function($stateProvider,$urlRouterProvider,localStorageServiceProvide
      controller : 'moderatorController'
    };
 
+   var waitforturnState = {
+     url: '/waitforturn',
+     templateUrl : './views/_turnwaitview.html'
+   };
+
    $stateProvider.state('root',mainState);
    $stateProvider.state('gameinitiatorwait',gameinitiatorwaitState);
    $stateProvider.state('gameplayerwait',gameplayerwait);
-   $stateProvider.state('observer',observerState);
-   $stateProvider.state('guesser',guesserState);
+   $stateProvider.state('gameplayerturn',gameplayerturnState);
    $stateProvider.state('tellerrolldie',tellerrolldieState);
    $stateProvider.state('teller',tellerState);
    $stateProvider.state('moderator',moderatorState);
+   $stateProvider.state('waitforturn',waitforturnState);
 });

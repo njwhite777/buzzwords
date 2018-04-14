@@ -22,17 +22,8 @@
 
         $scope.role  = "Moderator";
 
-        //change points for one team
-        $scope.addPoints = function(team){
-          //TODO: function to put points to team
-        }
-        $scope.minusPoints = function(team){
-          //TODO: function to minus points to team
-        }
-
         $scope.showSimpleToast = function() {
           var pinTo = $scope.getToastPosition();
-
           $mdToast.show(
             $mdToast.simple()
               .textContent('Simple Toast!')

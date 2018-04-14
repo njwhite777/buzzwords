@@ -8,7 +8,7 @@
  */
 
 angular.module('frontendApp')
-  .service('cardService',['socketService','$timeout','debug',function(socketService,$timeout,debug){
+  .service('cardService',['socketService','$timeout','currentGameService','debug',function(socketService,$timeout,currentGameService,debug){
     var socket = socketService.cardSocket;
 
 
@@ -16,8 +16,13 @@ angular.module('frontendApp')
     var cardData = { card : { buzzword : 'test', forbiddenwords : ['1','2','3','4'] }, showCard : false };
 
     var skipCard = function(){
-      console.log("TODO: call backend for next card.")
-      nextCard();
+      var data = {
+        gameID : currentGameService.currentGame.gameID,
+        turnID : currentGameService.currentTurn.team.turnID
+      };
+      console.log("PRESSED SKIP",data);
+      console.log("PRESSED SKIP",currentGameService.currentTurn);
+      socket.emit('skip_card',data);
     };
 
     var getNextCard = function(){
@@ -33,13 +38,21 @@ angular.module('frontendApp')
     };
 
     var awardPoint =  function(){
-      console.log("TODO: implement backend call to award point");
-      nextCard();
+      var data = {
+        gameID : currentGameService.currentGame.gameID,
+        turnID : currentGameService.currentTurn.turnID
+      };
+      console.log("AWARDING POINT:",data);
+      socket.emit('award_point',data);
     };
 
     var awardPenalty =  function(){
-      console.log("TODO: implement backend call to awardPenalty");
-      nextCard();
+      var data = {
+        gameID : currentGameService.currentGame.gameID,
+        turnID : currentGameService.currentTurn.turnID
+      };
+      console.log("AWARDING PENALTY:",data);
+      socket.emit('award_penalty',data);
     };
 
     socket.on('load_card',function(data){

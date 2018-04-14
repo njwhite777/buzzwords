@@ -112,8 +112,8 @@ def testCreateTurn():
     game = GameModel.getGameById(1,session)
     turn = game.createTurn()
     session.commit()
-    obervers = turn.getObservers(game)
-    guessers = turn.getGuessers(game)
+    obervers = turn.getObservers()
+    guessers = turn.getGuessers()
     moderator = turn.getModerator()
     teller = turn.getTeller()
     teamOnDeck = turn.team
@@ -125,7 +125,8 @@ def testCreateTurn():
 def testAddGameChanger():
     session = Session()
     game = GameModel.getGameById(1,session)
-    round = game.getCurrentRound(session)
+    round = game.getCurrentRound()
+    session.commit()
     turn = round.getLastTurn(session)
     turn.setGameChanger()
     turn.updatePlayerRoles(game) # roles have to be updated if the all-guessers game changer is selected
@@ -135,7 +136,8 @@ def testAddGameChanger():
 def testLoadCard():
     session = Session()
     game = GameModel.getGameById(1,session)
-    round = game.getCurrentRound(session)
+    round = game.getCurrentRound()
+    session.commit()
     turn = round.getLastTurn(session)
     cardData = turn.loadCard()
     print("buzzword: " + cardData['card']['buzzword'])
@@ -155,8 +157,8 @@ def testSocketTurnCreate():
 
     moderator = turn.getModerator()
     teller = turn.getTeller()
-    observers = turn.getObservers(game)
-    guesers = turn.getGuessers(game)
+    observers = turn.getObservers()
+    guesers = turn.getGuessers()
     teamOnDeck = turn.team
 
 def testSkip():

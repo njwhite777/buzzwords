@@ -8,7 +8,7 @@ from .game_changer import *
 from .timer import Timer
 from . import Base
 from constants import *
-from app import turnTimers
+from app import turnTimers,Session
 import json
 
 class Turn(Base):
@@ -20,6 +20,7 @@ class Turn(Base):
     gameChangerNumber = Column(Integer)
     duration = Column(Integer)
     cardId = Column(Integer, ForeignKey('card.id'), nullable=True)
+    turnDuration = Column(Integer)
 
     gameId = Column(Integer, ForeignKey('game.id'), nullable=False)
     # Don't need to do this. Should already exist cause of backref.
@@ -38,15 +39,19 @@ class Turn(Base):
     moderator = relationship('Player', foreign_keys=turnModeratorId,post_update=True )
 
 
-    def __init__(self,game,round,team,duration=30):
+    def __init__(self,game,round,team,turnDuration=30):
         self.numberOfSkips = 0
         self.gameChangerNumber = -1
-        self.duration = duration
+        self.turnDuration = turnDuration
         self.card = None
         self.game = game
         self.gameId = game.id
         self.round = round
         self.team = team
+
+    @staticmethod
+    def getTurnById(turnID,session):
+        return session.query(Turn).get(int(turnID))
 
     def setTeam(self, team):
         self.team = team
@@ -73,6 +78,7 @@ class Turn(Base):
         gameChangers = GameChangers()
         selectedGameChanger = gameChangers.rollDie()
         self.gameChangerNumber = selectedGameChanger.gameChangerId
+        self.updatePlayerRoles()
         return selectedGameChanger
 
     def getGameChanger(self):
@@ -82,11 +88,13 @@ class Turn(Base):
     '''
     if the ALL_GUESSERS game changer is selected we have to change all observers to guessers
     '''
-    def updatePlayerRoles(self, game):
+    def updatePlayerRoles(self):
+        session = Session.object_session(self)
         if self.gameChangerNumber == ALL_GUESSERS:
-            observers = self.getObservers(game)
+            observers = self.getObservers()
             for observer in observers:
                 observer.role = GUESSER
+            session.commit()
 
     def __getRandomUnusedCard(self, cards):
         numberOfCards = len(cards)
@@ -128,11 +136,11 @@ class Turn(Base):
         for guesser in guessers:
             guesser.role = GUESSER
 
-    def getGuessers(self, game):
-        return game.getGuessers()
+    def getGuessers(self):
+        return self.round.game.getGuessers()
 
-    def getObservers(self, game):
-        return game.getObservers()
+    def getObservers(self):
+        return self.round.game.getObservers()
 
     def getTeller(self):
         return self.teller
@@ -164,32 +172,37 @@ class Turn(Base):
             cardData['forbiddenwords'] = ""
         return cardData
 
-    def canSkip(self):
-        return self.numberOfSkips < 3 or self.gameChangerNumber == UNLIMITED_SKIPS # number of skips from the game
+    # def canSkip(self):
+    #     if():
+    #         return
+    #     elif(self.numberOfSkips < 3):
+    #     return self.gameChangerNumber == UNLIMITED_SKIPS # number of skips from the game
 
-    def skip(self,session):
-        if self.canSkip():
-            currentCard = self.card
-            currentCard.skippedCount += 1
-            self.numberOfSkips += 1
-            newCard = self.loadCard()
-            return newCard
-        return None
+    def skip(self):
+        currentCard = self.card
+        currentCard.skippedCount += 1
+        self.numberOfSkips += 1
+        skipPenaltyAfter = self.round.game.skipPenaltyAfter
+        if(self.numberOfSkips > skipPenaltyAfter):
+            self.penaliseTeam()
 
-    def awardTeam(self, session):
+    def awardTeam(self):
         self.card.wonCount += 1
         self.team.score += 1
-        return self.loadCard()
 
-    def penaliseTeam(self, session):
+    def penaliseTeam(self):
         self.card.lostCount += 1
         self.team.score -= 1
-        return self.loadCard()
 
-    def startTimer(self):
+    def startTimer(self,callback=None):
         players=self.round.game.getAllPlayers()
         playerEmails = [ player.email for player in players ]
-        timer = Timer(duration=self.duration,playerEmails=playerEmails,gameID=self.round.game.id)
+        duration = self.turnDuration
+        if( DOUBLE_ROUND_TIME == self.gameChangerNumber ):
+            duration*=2
+        elif( HALF_ROUND_TIME == self.gameChangerNumber ):
+            duration*=.5
+        timer = Timer(duration=duration,playerEmails=playerEmails,gameID=self.round.game.id,completeCallback=callback)
         turnTimers[self.id]=timer
         timer.start()
 
@@ -200,4 +213,4 @@ class Turn(Base):
         del turnTimers[self.id]
 
     def __repr__(self):
-        return "<GameRound()>".format()
+        return "<Turn(id:{})>".format(self.id)
