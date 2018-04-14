@@ -6,8 +6,8 @@ import time
 import threading
 
 
-capabilities = webdriver.DesiredCapabilities().FIREFOX
-capabilities["marionette"] = False
+# capabilities = webdriver.DesiredCapabilities().FIREFOX
+# capabilities["marionette"] = False
 binary = FirefoxBinary(r'/usr/bin/firefox')
 
 class CreateGame(threading.Thread):
