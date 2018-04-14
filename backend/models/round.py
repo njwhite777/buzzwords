@@ -9,7 +9,7 @@ class Round(Base):
     id = Column(Integer,primary_key=True)
     number       = Column(Integer)
     startTime = Column(DateTime, default=datetime.datetime.utcnow)
-    turns          = relationship("Turn", lazy = False) # relationship("Turn", backref = "round", lazy = False)
+    turns          = relationship("Turn", backref = "round", lazy = False)
 
     gameId = Column(Integer, ForeignKey('game.id'), nullable=False)
     # Don't need to do this round.game should already exist because of abckref

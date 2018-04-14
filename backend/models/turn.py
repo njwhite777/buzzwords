@@ -117,7 +117,9 @@ class Turn(Base):
         return moderator
 
     def __setTeller(self):
-        teller = self.getRandomPlayer(self.team.players)
+        tellerID = self.round.number % len(self.team.players)
+        teller = self.team.players[tellerID]
+        # teller = self.getRandomPlayer(self.team.players)
         teller.role = 1
         self.teller = teller
         return teller
