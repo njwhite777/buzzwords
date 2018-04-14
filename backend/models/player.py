@@ -4,6 +4,7 @@ from flask import Flask, session as http_session
 from sqlalchemy.orm import sessionmaker, relationship
 from . import Base
 from constants import TELLER,GUESSER,OBSERVER,MODERATOR
+from validator import *
 
 class Player(Base):
 
@@ -26,8 +27,9 @@ class Player(Base):
         self.game = None
 
     @staticmethod
-    def numberOfRows(session):
-        return session.query(Player).count()
+    def isValidPlayer(data):
+        feedback = Validator.isValidPlayer(data):
+        return feedback
 
     @staticmethod
     def emailExists(session, email):
