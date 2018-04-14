@@ -70,16 +70,15 @@ class Validator():
         minNumberOfPointsToWin = 10
         maxNumberOfPointsToWin = 60
 
-        if (!Validator.isLengthBetween(data['name'], minGameLength, maxGameLength)) {
+        if (not Validator.isLengthBetween(data['name'], minGameLength, maxGameLength)):
             return {'valid' : False, 'message' : 'game name must be between ' + str(minGameLength) + ' and ' + str(maxGameLength) + ' characters'}
-        } elif (!Validator.isBetween(data['numberOfTeams'])) {
+        elif (not Validator.isBetween(data['numberOfTeams'])):
             return {'valid' : False, 'message' : 'turn duration must be between ' + str(minTurnDuration) + ' and ' + str(maxTurnDuration) + ' inclusive'}
-        } elif (!Validator.isBetween(data['numberOfTeams'])) {
+        elif (not Validator.isBetween(data['numberOfTeams'])):
             return {'valid' : False, 'message' : 'number of teams must be between ' + str(minNumberOfTeams) + ' and ' + str(maxNumberOfTeams) + ' inclusive'}
-        } elif (!Validator.isBetween(data['maxPlayersPerTeam'])) {
+        elif (not Validator.isBetween(data['maxPlayersPerTeam'])):
             return {'valid' : False, 'message' : 'number of players in a team must be between ' + str(minNumberOfPlayersPerTeam) + ' and ' + str(maxNumberOfPlayersPerTeam) + ' inclusive'}
-        } elif (!Validator.isBetween(data['pointsToWin'])) {
+        elif (not Validator.isBetween(data['pointsToWin'])):
             return {'valid' : False, 'message' : 'points to win must be between ' + str(minNumberOfPointsToWin) + ' and ' + str(minNumberOfPointsToWin) + ' inclusive'}
-        } else {
+        else:
             return {'valid' : True, 'message' : 'Valid'}
-        }

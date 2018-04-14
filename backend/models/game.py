@@ -105,7 +105,7 @@ class Game(Base):
         self.rounds.append(round)
 
     def getUsedCards(self):
-        return self.used_cards
+        return self.usedCards
 
     def getAllPlayers(self):
         players = list()
@@ -134,10 +134,9 @@ class Game(Base):
         return usedCardIds
 
     def getUnusedCards(self):
-        session=Session()
+        session = Session.object_session(self)
         query = session.query(Card).filter(~(Card.id.in_(self.getUsedCardsIds())))
         all = query.all()
-        session.close()
         return all
 
     def readyToStart(self):

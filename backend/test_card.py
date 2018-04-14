@@ -27,8 +27,14 @@ class TestCard(unittest.TestCase):
         card = CardModel.findCardById(self.session, 1)
         self.assertEqual(card.buzzword, "unit test")
 
-    def testJoinGame(self,driver=None):
-        pass
+    def testCountCard(self):
+        self.assertEqual(CardModel.numberOfRows(self.session),1)
+
+    def testRemoveForbiddenWords(self):
+        card = CardModel.findCardById(self.session, 1)
+        card.removeForbiddenWords()
+        self.assertEqual(card.forbiddenWords,"")
+
 
 
 if __name__ == "__main__":
