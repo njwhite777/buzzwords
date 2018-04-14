@@ -105,7 +105,7 @@ class Game(Base):
         self.rounds.append(round)
 
     def getUsedCards(self):
-        return self.usedCards
+        return self.used_cards
 
     def getAllPlayers(self):
         players = list()
@@ -134,9 +134,10 @@ class Game(Base):
         return usedCardIds
 
     def getUnusedCards(self):
-        session = Session.object_session(self)
+        session=Session()
         query = session.query(Card).filter(~(Card.id.in_(self.getUsedCardsIds())))
         all = query.all()
+        session.close()
         return all
 
     def readyToStart(self):
@@ -158,12 +159,13 @@ class Game(Base):
             return False
         elif self.teamsHaveEqualTurns():
             return False
+        return self.teamHasReachedThreshold()
 
     def hasAtLeastOneRound(self):
         return self.rounds > 0
 
     def teamsHaveEqualTurns(self):
-        turns = self.teams.numberOfTurns()
+        turns = self.teams[0].numberOfTurns()
         for team in self.teams:
             if team.numberOfTurns() != turns:
                 return False
@@ -214,7 +216,10 @@ class Game(Base):
         return len(currentRound.turns) == len(self.teams)
 
     def teamHasReachedThreshold():
-        pass
+        for team in self.teams:
+            if team.score >= self.pointsToWin:
+                return True
+        return False
 
     def __repr__(self):
         return "<Game(id='{}', name='{}', pointsToWin='{}')>".format(
