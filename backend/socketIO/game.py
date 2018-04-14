@@ -435,6 +435,11 @@ def timer_notify_turn_complete(data):
     round = game.getCurrentRound()
     turn = round.getCurrentTurn()
     teamScoreData = turn.getAllTeamScores()
+
+    if(game.isGameOver()):
+        for player in players:
+            socketio.emit('swap_view',{ 'swapView' : 'endgame'},room=socketIOClients[player.email],namespace='/io/view')
+
     waitDuration = 2
     for player in players:
         # TODO: ADD SCORE INFO TO turn_finished
