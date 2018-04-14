@@ -18,7 +18,9 @@ angular.module('frontendApp')
     var currentTurn = {
       roles:    {},
       team:     {},
-      modifier: {}
+      teams: {},
+      modifier: {},
+      assignedRole : {}
     };
 
     var deferred = $q.defer();
@@ -42,8 +44,6 @@ angular.module('frontendApp')
 
     // Sets the current game and resolves it imediately.
     var setGame = function(game){
-      console.log("SETTING GAME:",game)
-      console.log("CURRENT GAME:",currentGame)
       Object.assign(currentGame,game);
       deferred.resolve(game);
     }
@@ -52,11 +52,16 @@ angular.module('frontendApp')
       return deferred.promise;
     };
 
+    socket.on('turn_role_assignment',function(data){
+      console.log("ROLE ASSIGNMENT:",data);
+      Object.assign(currentTurn.assignedRole,data);
+    });
+
     socket.on('turn_data',function(data){
-      console.log(currentTurn);
-      console.log(data);
+      console.log("TURN DATA",data);
       Object.assign(currentTurn.roles,data['roles']);
       Object.assign(currentTurn.team,data['team']);
+      Object.assign(currentTurn.teams,data['teams']);
     });
 
     socket.on('roll_result',function(data){

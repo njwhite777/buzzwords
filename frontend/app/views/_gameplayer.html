@@ -1,7 +1,7 @@
-<md-container flex layout="column">
+<md-container>
   <md-content>
     <div layout-margin layout="row" layout-align="center center">
-      <div class="text-med">You are an observer!</div>
+      <div class="text-med">Your Role: {{ turn.assignedRole.role || "still unassigned" }}!</div>
     </div>
     <div layout="row" layout-align="center" >
       <div >
@@ -15,7 +15,7 @@
         <div layout-padding>Team On Deck: {{ turn.team.name }}</div>
         <div layout-padding>Teller: {{ turn.roles.teller.nickname }}</div>
         <div layout-padding>Moderator: {{ turn.roles.moderator.nickname }}</div>
-        <div layout-padding>Turn Modifier: {{ turn.modifier.name || "Waiting for teller to roll." }}</div>
+        <div layout-padding>Turn Modifier: {{ turn.modifier.name || "Waiting for teller to roll." }} </div>
       </div>
     </div>
   </md-content>

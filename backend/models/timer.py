@@ -1,13 +1,13 @@
 from threading import Thread
 from app import socketio,socketIOClients
+from socketIO_client import SocketIO
 from flask_socketio import emit
 import datetime
 import time
-# from socketIO.game import timer_notify_turn_complete
 
 class Timer(Thread):
 
-    def __init__(self,duration=30,playerEmails=[],gameID=None):
+    def __init__(self,duration=30,playerEmails=[],gameID=None,completeCallback=None):
         Thread.__init__(self)
         self.duration = duration
         self.playerEmails = playerEmails
@@ -15,6 +15,7 @@ class Timer(Thread):
         self.stopped = False
         self.daemon = True
         self.gameID = gameID
+        self.completeCallback = completeCallback
         self.data = {
             'startTime': None,
             'duration': self.duration,
@@ -48,11 +49,17 @@ class Timer(Thread):
                     self.data['status'] = 'paused'
                     for playerEmail in self.playerEmails:
                         socketio.emit('timer_paused',self.data,room=socketIOClients[playerEmail],namespace="/io/timer")
-
             time.sleep(.5)
         self.data['status'] = 'finished'
-        socketio.emit('update_timer',self.data,room=socketIOClients[playerEmail],namespace="/io/timer")
-        timer_notify_turn_complete( { 'gameID' : self.gameID } )
+        for playerEmail in self.playerEmails:
+            socketio.emit('update_timer',self.data,room=socketIOClients[playerEmail],namespace="/io/timer")
+
+        # TODO: figure out a cleaner method for this.
+        # This kind of has to happen, so maybe we should throw an error if it doesn't
+        if(self.completeCallback):
+            self.data['gameID'] = self.gameID
+            self.completeCallback(self.data)
+
 
     def pause(self):
         self.paused = True
