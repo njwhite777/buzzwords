@@ -183,7 +183,11 @@ class Turn(Base):
 
         self.round.game.addUsedCard(card)
         if self.gameChangerNumber == NO_EXCLUDED_WORDS:
+<<<<<<< HEAD
+            cardData['forbiddenwords'] = [""]
+=======
             cardData['card']['forbiddenwords'] = []
+>>>>>>> 16caf62031deb8253f2b41cc522c0affb3950282
         return cardData
 
     def skip(self):
