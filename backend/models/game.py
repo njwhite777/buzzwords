@@ -8,7 +8,7 @@ from .round import Round
 from .turn import Turn
 from . import Base
 from constants import *
-from validator import *
+from .validator import *
 
 usedCards = Table('used_cards',
     Base.metadata,
