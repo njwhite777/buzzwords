@@ -28,7 +28,7 @@ class Turn(Base):
     # game = relationship("Game", foreign_keys=gameId, lazy = False, uselist=False)
 
     roundId = Column(Integer, ForeignKey('round.id'), nullable=True)
-    round = relationship("Round", foreign_keys=roundId, lazy = False, uselist=False)
+    #round = relationship("Round", foreign_keys=roundId, lazy = False, uselist=False)
 
     teamId = Column(Integer, ForeignKey('team.id'), nullable=True)
     card = relationship("Card", foreign_keys=cardId, lazy = False,post_update=True)
@@ -117,7 +117,9 @@ class Turn(Base):
         return moderator
 
     def __setTeller(self):
-        teller = self.getRandomPlayer(self.team.players)
+        tellerID = self.round.number % len(self.team.players)
+        teller = self.team.players[tellerID]
+        # teller = self.getRandomPlayer(self.team.players)
         teller.role = 1
         self.teller = teller
         return teller

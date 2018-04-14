@@ -8,6 +8,7 @@ from .round import Round
 from .turn import Turn
 from . import Base
 from constants import *
+from .validator import *
 
 usedCards = Table('used_cards',
     Base.metadata,
@@ -55,6 +56,20 @@ class Game(Base):
     @staticmethod
     def numberOfRows(session):
         return session.query(Game).count()
+
+    @staticmethod
+    def isValidGame(session, data):
+        feedback = Validator.isValidGame(data)
+        if not feedback['valid']:
+            return feedback
+        if Game.gameNameExists(session, data['name']):
+            return {'valid' : False, 'message' : 'the game name exists'}
+        return feedback
+
+    @staticmethod
+    def gameNameExists(session, name):
+        game = session.query(Game).filter(and_(Game.name==name, Game.gameState < GAME_PLAYING)).first()
+        return game != None
 
     @staticmethod
     def getGameById(game_id,session):
@@ -144,12 +159,13 @@ class Game(Base):
             return False
         elif self.teamsHaveEqualTurns():
             return False
+        return self.teamHasReachedThreshold()
 
     def hasAtLeastOneRound(self):
         return self.rounds > 0
 
     def teamsHaveEqualTurns(self):
-        turns = self.teams.numberOfTurns()
+        turns = self.teams[0].numberOfTurns()
         for team in self.teams:
             if team.numberOfTurns() != turns:
                 return False
@@ -200,7 +216,10 @@ class Game(Base):
         return len(currentRound.turns) == len(self.teams)
 
     def teamHasReachedThreshold():
-        pass
+        for team in self.teams:
+            if team.score >= self.pointsToWin:
+                return True
+        return False
 
     def __repr__(self):
         return "<Game(id='{}', name='{}', pointsToWin='{}')>".format(

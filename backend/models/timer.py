@@ -1,6 +1,6 @@
 from threading import Thread
 from app import socketio,socketIOClients
-from socketIO_client import SocketIO
+#from socketIO_client import SocketIO
 from flask_socketio import emit
 import datetime
 import time
