@@ -169,7 +169,7 @@ class Turn(Base):
 
         self.round.game.addUsedCard(card)
         if self.gameChangerNumber == NO_EXCLUDED_WORDS:
-            cardData['forbiddenwords'] = ""
+            cardData['forbiddenwords'] = [""]
         return cardData
 
     # def canSkip(self):

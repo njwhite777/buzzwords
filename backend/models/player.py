@@ -26,6 +26,10 @@ class Player(Base):
         self.game = None
 
     @staticmethod
+    def numberOfRows(session):
+        return session.query(Player).count()
+
+    @staticmethod
     def emailExists(session, email):
         player = session.query(Player).filter(Player.email==email).first()
         if(player != None and player.email):
