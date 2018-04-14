@@ -28,7 +28,7 @@ class Turn(Base):
     # game = relationship("Game", foreign_keys=gameId, lazy = False, uselist=False)
 
     roundId = Column(Integer, ForeignKey('round.id'), nullable=True)
-    round = relationship("Round", foreign_keys=roundId, lazy = False, uselist=False)
+    #round = relationship("Round", foreign_keys=roundId, lazy = False, uselist=False)
 
     teamId = Column(Integer, ForeignKey('team.id'), nullable=True)
     card = relationship("Card", foreign_keys=cardId, lazy = False,post_update=True)
@@ -185,11 +185,7 @@ class Turn(Base):
 
         self.round.game.addUsedCard(card)
         if self.gameChangerNumber == NO_EXCLUDED_WORDS:
-<<<<<<< HEAD
-            cardData['forbiddenwords'] = [""]
-=======
             cardData['card']['forbiddenwords'] = []
->>>>>>> 16caf62031deb8253f2b41cc522c0affb3950282
         return cardData
 
     def skip(self):
