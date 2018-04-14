@@ -14,6 +14,10 @@ def playerLogin(data):
         socketIOClients[player.id] = request.sid
         socketIOClients[data['email']] = request.sid # storing request.namespace might be a good idea here
     else:
+        feedback = PlayerModel.isValidPlayer(data)
+        if not feedback['valid']:
+            errorMessage = feedback['message']
+            return
         player = PlayerModel(data['username'], data['email'], 3)
         session.add(player)
         session.flush()

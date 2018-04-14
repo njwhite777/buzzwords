@@ -75,6 +75,12 @@ def init_game(data):
     #     initiator = PlayerModel.find_player_by_id(session, 1)
     # print ("The new game: " + str(data))
     session = Session()
+    # feedback is a dictionary with 'valid' : boolean, 'message' : error message
+    feedback = GameModel.isValidGame(session, data)
+    if not feedback['valid']:
+        # inform the creator of the game error
+        errorMessage = feedback['message']
+        return
     initiator = PlayerModel.findPlayerByEmail(session, socketIOClients[request.sid]) #socketIOClients[request.sid].id
     print_item(initiator,"Initiator is: ")
     gameArgs = {k:v for(k,v) in data.items() if k in ['name','turnDuration','numberOfTeams','maxPlayersPerTeam','pointsToWin','skipPenaltyAfter','withGameChangers'] }
