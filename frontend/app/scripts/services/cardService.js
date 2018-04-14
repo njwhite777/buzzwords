@@ -10,7 +10,7 @@
 angular.module('frontendApp')
   .service('cardService',['socketService','$timeout','currentGameService','debug',function(socketService,$timeout,currentGameService,debug){
     var socket = socketService.cardSocket;
-
+    var gameSocket = socketService.gameSocket;
 
     // var otherCards = [{buzzword:'alphabet1',forbiddenwords : ['a','b','c','d','notes 1123'] },{buzzword:'alphabet2',forbiddenwords : ['a','b','c','d','notes 1123'] },{buzzword:'alphabet3',forbiddenwords : ['a','b','c','d','notes 1123'] }];
     var cardData = { card : { buzzword : 'test', forbiddenwords : ['1','2','3','4'] }, showCard : false };
@@ -20,8 +20,6 @@ angular.module('frontendApp')
         gameID : currentGameService.currentGame.gameID,
         turnID : currentGameService.currentTurn.team.turnID
       };
-      console.log("PRESSED SKIP",data);
-      console.log("PRESSED SKIP",currentGameService.currentTurn);
       socket.emit('skip_card',data);
     };
 
@@ -37,21 +35,24 @@ angular.module('frontendApp')
       },400);
     };
 
-    var awardPoint =  function(){
+    gameSocket.on('report_score',function(){
+      Object.assign(cardData,{ showCard : false });
+    });
+
+    var awardPoint =  function(teamID){
       var data = {
         gameID : currentGameService.currentGame.gameID,
-        turnID : currentGameService.currentTurn.turnID
+        turnID : currentGameService.currentTurn.team.turnID,
+        teamID : teamID
       };
-      console.log("AWARDING POINT:",data);
       socket.emit('award_point',data);
     };
 
     var awardPenalty =  function(){
       var data = {
         gameID : currentGameService.currentGame.gameID,
-        turnID : currentGameService.currentTurn.turnID
+        turnID : currentGameService.currentTurn.team.turnID
       };
-      console.log("AWARDING PENALTY:",data);
       socket.emit('award_penalty',data);
     };
 

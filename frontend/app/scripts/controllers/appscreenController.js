@@ -11,9 +11,4 @@ angular.module('frontendApp')
       .controller('appscreenController',[
         '$scope',
         '$state',
-        function($scope,$state){
-          console.log("AS controller.")
-
-        }
-    ]
-  );
+        function($scope,$state){}]);

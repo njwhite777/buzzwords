@@ -7,7 +7,7 @@ import time
 
 class Timer(Thread):
 
-    def __init__(self,duration=30,playerEmails=[],gameID=None,completeCallback=None):
+    def __init__(self,duration=30,playerEmails=[],gameID=None,turnID=None,completeCallback=None):
         Thread.__init__(self)
         self.duration = duration
         self.playerEmails = playerEmails
@@ -15,6 +15,7 @@ class Timer(Thread):
         self.stopped = False
         self.daemon = True
         self.gameID = gameID
+        self.turnID = turnID
         self.completeCallback = completeCallback
         self.data = {
             'startTime': None,
@@ -50,7 +51,8 @@ class Timer(Thread):
                     for playerEmail in self.playerEmails:
                         socketio.emit('timer_paused',self.data,room=socketIOClients[playerEmail],namespace="/io/timer")
             time.sleep(.5)
-        self.data['status'] = 'finished'
+
+        self.data['status'] = 'initializing'
         for playerEmail in self.playerEmails:
             socketio.emit('update_timer',self.data,room=socketIOClients[playerEmail],namespace="/io/timer")
 
@@ -60,6 +62,8 @@ class Timer(Thread):
             self.data['gameID'] = self.gameID
             self.completeCallback(self.data)
 
+    def __repr__(self):
+        return "<Timer(gameID='{}',turnID='{}',duration='{}',status='{}')>".format(self.gameID,self.turnID,self.duration,self.isAlive())
 
     def pause(self):
         self.paused = True

@@ -1,21 +1,19 @@
 angular.module('frontendApp')
-  .directive('buzzcards',['timerService','cardService','$timeout',function(timerService,cardService,$timeout){
+  .directive('buzzcards',['timerService','cardService','currentGameService','$timeout',function(timerService,cardService,currentGameService,$timeout){
 
     function link(scope, element, attrs){
       scope.cardData = cardService.cardData;
-
       scope.role = attrs.role;
-
-
       scope.cardService = cardService;
-
-
+      scope.currentTurn = currentGameService.currentTurn;
     }
 
     return {
       restrict: 'E',
       link : link,
-      template: '<div ng-if="!cardData.showCard" class="text-med">Waiting to start turn.</div><md-card ng-if="cardData.showCard" class="card-slide" md-theme="{{ showDarkTheme ? \'dark-blue\' : \'default\' }}" md-theme-watch style="width: 400px">'+
+      template: '<div layout-align="center center" ng-show="currentTurn.turnState==\'initializing\'" class="text-med">Waiting to start turn.</div>' +
+                '<div layout-align="center center" ng-show="currentTurn.turnState==\'finished\'" class="text-med">Turn Over!</div>'+
+                '<md-card ng-if="cardData.showCard && currentTurn.turnState==\'running\'" class="card-slide" md-theme="{{ showDarkTheme ? \'dark-blue\' : \'default\' }}" md-theme-watch style="width: 400px;height=250px;">'+
                 '  <md-card-title>'+
                 '    <md-card-title-text>' +
                 '       <span class="md-headline text-med"> {{ cardData.card.buzzword }} </span>'+

@@ -72,7 +72,7 @@ class TestDataBase(unittest.TestCase):
 
     def test4SaveCards(self):
         for index in range(50):
-            forbidden = "{'word1', 'word2', 'word3', 'word4'}"
+            forbidden = "['word1', 'word2', 'word3', 'word4']"
             card = CardModel("word_" + str(index + 1), forbidden, "Book", "345")
             self.session.add(card)
             self.session.flush()

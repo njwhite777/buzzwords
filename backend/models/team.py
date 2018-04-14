@@ -33,8 +33,7 @@ class Team(Base):
 
     @staticmethod
     def getTeamById(session, id):
-        team = session.query(Team).get(id)
-        return team
+        return session.query(Team).get(id)
 
     def numberOfTurns(self):
         return len(self.turns)

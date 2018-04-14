@@ -34,10 +34,6 @@ class Card(Base):
     def findCardById(session, id):
         return session.query(Card).get(id)
 
-    @staticmethod
-    def loadCard():
-        pass
-
     def removeForbiddenWords(self):
         self.forbiddenWords = ""
 

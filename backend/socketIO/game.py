@@ -76,8 +76,11 @@ def init_game(data):
     # print ("The new game: " + str(data))
     session = Session()
     initiator = PlayerModel.findPlayerByEmail(session, socketIOClients[request.sid]) #socketIOClients[request.sid].id
-    print_item(initiator,"Initiator is: ")
+
     gameArgs = {k:v for(k,v) in data.items() if k in ['name','turnDuration','numberOfTeams','maxPlayersPerTeam','pointsToWin','skipPenaltyAfter','withGameChangers'] }
+    # TODO: UNDO THIS!!!###############
+    gameArgs['turnDuration'] = 5
+    ###################################
     gameArgs['initiator'] = initiator
     game = GameModel(**gameArgs)
     initiatorTeamName = data['initiatorTeam']['name']
@@ -212,9 +215,7 @@ def start_new_turn(data):
     session.commit()
     session.close()
 
-    # This happens before the roll.
     setup_turn_roles(gameID)
-    # TODO: This happens before the die is rolled. All players should just see views as though things have not been modified.
     setup_turn_views(turnID)
 
 
@@ -228,15 +229,15 @@ def setup_turn_views(turnID,skipRoll=False):
     guessers    = turn.getGuessers()
 
     if(skipRoll):
-        emit('swap_view',{ 'swapView' : 'teller' },room=socketIOClients[teller.email],namespace='/io/view')
+        socketio.emit('swap_view',{ 'swapView' : 'teller' },room=socketIOClients[teller.email],namespace='/io/view')
     else:
-        emit('swap_view',{ 'swapView' : 'tellerrolldie' },room=socketIOClients[teller.email],namespace='/io/view')
-    emit('swap_view',{ 'swapView' : 'moderator' },room=socketIOClients[moderator.email],namespace='/io/view')
+        socketio.emit('swap_view',{ 'swapView' : 'tellerrolldie' },room=socketIOClients[teller.email],namespace='/io/view')
+    socketio.emit('swap_view',{ 'swapView' : 'moderator' },room=socketIOClients[moderator.email],namespace='/io/view')
 
     for guesser in guessers:
-        emit('swap_view',{'swapView':'gameplayerturn'},room=socketIOClients[guesser.email],namespace='/io/view')
+        socketio.emit('swap_view',{'swapView':'gameplayerturn'},room=socketIOClients[guesser.email],namespace='/io/view')
     for observer in observers:
-        emit('swap_view',{'swapView':'gameplayerturn'},room=socketIOClients[observer.email],namespace='/io/view')
+        socketio.emit('swap_view',{'swapView':'gameplayerturn'},room=socketIOClients[observer.email],namespace='/io/view')
 
     session.commit()
     session.close()
@@ -295,11 +296,11 @@ def setup_turn_roles(gameID,gameChanger=-1):
         'teams': teams,
     }
     for player in players:
-        emit('turn_data',turnData,room=socketIOClients[player.email],namespace='/io/game')
+        socketio.emit('turn_data',turnData,room=socketIOClients[player.email],namespace='/io/game')
     for observer in observers:
-        emit('turn_role_assignment',{ 'role' : 'observer' },room=socketIOClients[observer.email],namespace='/io/game')
+        socketio.emit('turn_role_assignment',{ 'role' : 'observer' },room=socketIOClients[observer.email],namespace='/io/game')
     for guesser in guessers:
-        emit('turn_role_assignment',{ 'role' : 'guesser' },room=socketIOClients[guesser.email],namespace='/io/game')
+        socketio.emit('turn_role_assignment',{ 'role' : 'guesser' },room=socketIOClients[guesser.email],namespace='/io/game')
 
 @socketio.on('roll_wheel',namespace='/io/game')
 def roll_wheel(data):
@@ -354,9 +355,10 @@ def start_turn(data):
     players = game.getAllPlayers()
     for player in players:
         emit('roll_result',rollWheel,room=socketIOClients[player.email],namespace='/io/game')
-
+        emit('turn_started',{ 'turnID' : turn.id },room=socketIOClients[player.email],namespace='/io/game')
 
     cardData = turn.loadCard()
+    print_item(cardData,"CURRENT CARD IS")
     cardData['showCard'] = True
     emit('swap_view',{'swapView':'teller'},room=socketIOClients[teller.email],namespace='/io/view')
     time.sleep(1)
@@ -418,8 +420,7 @@ def resume_timer(data):
 def timer_notify_turn_complete(data):
     session = Session()
     print_item(data,"TURN COMPLETE!!!")
-    # TODO: notify clients of turn completion.
-    # TODO: emit clear cards.
+    # TODO: notify clients of turn completion
     # TODO: sleep for a second.
     # TODO: start next turn!
     gameID = data['gameID']
@@ -427,12 +428,19 @@ def timer_notify_turn_complete(data):
     players = game.getAllPlayers()
     round = game.getCurrentRound()
     turn = round.getCurrentTurn()
-    print_item(turn,"TURN ITEM TO BE REPLACED")
-    waitDuration = 3
+    teamScoreData = turn.getAllTeamScores()
+    waitDuration = 2
     for player in players:
-        emit('swap_view',{ 'swapView' : 'waitforturn'},room=socketIOClients[player.email],namespace='/io/view')
+        # TODO: ADD SCORE INFO TO turn_finished
+        socketio.emit('turn_finished',{ 'turnID' : turn.id },room=socketIOClients[player.email],namespace='/io/game')
+        socketio.emit('report_score',teamScoreData,room=socketIOClients[player.email],namespace='/io/game')
+        socketio.emit('swap_view',{ 'swapView' : 'waitforturn'},room=socketIOClients[player.email],namespace='/io/view')
+
+    # TODO: figure out how to not do this nastyness.
+    timer = turnTimers[turn.id]
+    del turnTimers[turn.id]
     time.sleep(waitDuration)
-    start_new_turn()
+    start_new_turn(data)
 
     session.commit()
     session.close()
@@ -440,9 +448,10 @@ def timer_notify_turn_complete(data):
 @socketio.on('award_penalty',namespace="/io/card")
 def award_penalty(data):
     session = Session()
+    print_item(data,"TAKE POINT RECEIVED")
     turnID = data['turnID']
     turn =  TurnModel.getTurnById(turnID,session)
-    turn.awardTeam()
+    turn.penaliseTeam()
     session.commit()
     session.close()
     load_next_card(data)
@@ -451,8 +460,9 @@ def award_penalty(data):
 def award_point(data):
     session = Session()
     turnID = data['turnID']
+    teamID = data['teamID']
     turn =  TurnModel.getTurnById(turnID,session)
-    turn.awardPoint()
+    turn.awardTeamByID(teamID)
     session.commit()
     session.close()
     load_next_card(data)
