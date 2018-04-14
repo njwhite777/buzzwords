@@ -51,7 +51,11 @@ class Validator():
 
     @staticmethod
     def isValidPlayer(data):
-        return Validator.isLengthBetween(data['username'], 2, 255) and Validator.isLengthBetween(data['email'], 2, 255) and Validator.isValidEmail(data['email'])
+        if not Validator.isLengthBetween(data['username'], 2, 255):
+            return {'valid' : False, 'message' : 'username must be between 2 and 255  characters inclusive'}
+        elif not Validator.isValidEmail(data['email']):
+            return {'valid' : False, 'message' : 'invalid email'}
+        return {'valid' : True, 'message' : 'valid'}
 
     def isValidGame(data):
         # game length
