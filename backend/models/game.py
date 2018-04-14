@@ -176,7 +176,7 @@ class Game(Base):
         session = Session.object_session(self)
         currentRound = self.getCurrentRound()
         if self.isRoundOver(currentRound):
-            nextRoundNumber = self.currentRound.number + 1
+            nextRoundNumber = currentRound.number + 1
             newRound = Round(number=nextRoundNumber,game=self)
             self.rounds.append(newRound)
             currentRound = newRound

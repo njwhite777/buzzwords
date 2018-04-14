@@ -170,7 +170,14 @@ app.config(function($stateProvider,$urlRouterProvider,localStorageServiceProvide
 
    var waitforturnState = {
      url: '/waitforturn',
-     templateUrl : './views/_turnwaitview.html'
+     templateUrl : './views/_turnwaitview.html',
+     controller : 'turnwaitviewController'
+   };
+
+   var endgameState = {
+     url: '/endgame',
+     templateUrl : './views/_endgame.html',
+     controller : 'endgameController'
    };
 
    $stateProvider.state('root',mainState);
@@ -181,4 +188,6 @@ app.config(function($stateProvider,$urlRouterProvider,localStorageServiceProvide
    $stateProvider.state('teller',tellerState);
    $stateProvider.state('moderator',moderatorState);
    $stateProvider.state('waitforturn',waitforturnState);
+   $stateProvider.state('endgame',endgameState);
+   
 });

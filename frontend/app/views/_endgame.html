@@ -1,18 +1,12 @@
 <div layout="column" >
   <div layout="row" >
-    <p class="text-med text-center"> Waiting for new turn. </p>
+    <p class="text-med text-center"> Game Over! </p>
   </div>
-  <div  layout="row" class="spinner">
-    <div class="bounce1"></div>
-    <div class="bounce2"></div>
-    <div class="bounce3"></div>
-  </div>
-
   <div layout="row" >
-    <p class="text-med text-center"> Current Scores: </p>
+    <p class="text-med text-center"> Final Scores: </p>
   </div>
   <div layout="column" layout-align="center center" style="min-height:400px;">
-    <md-card ng-repeat="(key,teamScoreData) in teamScoreData" md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch style="width:400px;margin:0px;margin-top:0px;">
+    <md-card ng-repeat="(key,teamScoreData) in teamScoreData | orderBy: teamScoreData.score" md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch style="width:400px;margin:0px;margin-top:0px;">
     <div layout="row">
       <md-card-title>
         <md-card-title-text>
@@ -26,5 +20,8 @@
       </md-card-title>
      </div>
     </md-card>
+  </div>
+  <div layout="row" layout-align="center center">
+    <md-button ng-click="finishedGame()" class="md-primary md-raised">Finished!</md-button>
   </div>
 </div>

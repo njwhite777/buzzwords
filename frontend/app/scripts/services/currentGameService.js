@@ -20,7 +20,8 @@ angular.module('frontendApp')
       team:     {},
       teams: {},
       modifier: {},
-      assignedRole : {}
+      assignedRole : {},
+      turnState : 'initializing'
     };
 
     var deferred = $q.defer();
@@ -32,6 +33,26 @@ angular.module('frontendApp')
     var startTurn = function(){
       socket.emit("starting_turn",currentGame);
     };
+
+    socket.on('turn_started',function(data){
+      currentTurn['turnState'] = 'running';
+    });
+
+    socket.on('turn_finished',function(data){
+      currentTurn['turnState'] = 'finished';
+    });
+
+    socket.on('report_score',function(){
+      console.log("REPORTED SCORE, RESETTING");
+      Object.assign(currentTurn, {
+        roles:    {},
+        team:     {},
+        teams: {},
+        modifier: {},
+        assignedRole : {},
+        turnState : 'initializing'
+      });
+    });
 
     // The event listener which returns when your own game has been created.
     socket.on('created_your_game',function(data){
@@ -65,7 +86,6 @@ angular.module('frontendApp')
     });
 
     socket.on('roll_result',function(data){
-      console.log("ROLL RESULT RECEIVED: ",data);
       Object.assign(currentTurn.modifier,data);
     });
 
