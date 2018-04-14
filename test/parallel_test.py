@@ -6,8 +6,8 @@ import time
 import threading
 
 
-#capabilities = webdriver.DesiredCapabilities().FIREFOX
-#capabilities["marionette"] = False
+capabilities = webdriver.DesiredCapabilities().FIREFOX
+capabilities["marionette"] = False
 binary = FirefoxBinary(r'/usr/bin/firefox')
 
 class CreateGame(threading.Thread):
@@ -27,6 +27,7 @@ class CreateGame(threading.Thread):
         if(not driver):
             driver = self.newBrowserWindow()
         self.openApplication(driver)
+        time.sleep(3)
         email = driver.find_element_by_name("email")
         email.send_keys("nate@bsu.edu")
         playername = driver.find_element_by_name("playername")
@@ -76,7 +77,6 @@ class JoinGame(threading.Thread):
         self.gamename = gamename
         self.teamname = teamname
 
-
     def run(self):
 
         self.joinTeam(self.useremail, self.username, self.gamename, self.teamname)
@@ -86,6 +86,7 @@ class JoinGame(threading.Thread):
         if(not driver):
             driver = self.newBrowserWindow()
         self.openApplication(driver)
+        time.sleep(3)
         email = driver.find_element_by_name("email")
         email.send_keys(useremail)
         playername = driver.find_element_by_name("playername")
