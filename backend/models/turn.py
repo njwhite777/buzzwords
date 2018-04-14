@@ -10,6 +10,7 @@ from . import Base
 from constants import *
 from app import turnTimers,Session
 import json
+from .team import Team as TeamModel
 
 class Turn(Base):
 
@@ -136,6 +137,19 @@ class Turn(Base):
         for guesser in guessers:
             guesser.role = GUESSER
 
+    def getAllTeamScores(self):
+        teamScoreData = dict()
+        teams = self.round.game.teams
+        for team in teams:
+            tDict = {
+                'teamID': team.id,
+                'id' : team.id,
+                'name': team.name,
+                'score' : team.score
+            }
+            teamScoreData[team.id] = tDict
+        return teamScoreData
+
     def getGuessers(self):
         return self.round.game.getGuessers()
 
@@ -169,14 +183,8 @@ class Turn(Base):
 
         self.round.game.addUsedCard(card)
         if self.gameChangerNumber == NO_EXCLUDED_WORDS:
-            cardData['forbiddenwords'] = ""
+            cardData['card']['forbiddenwords'] = []
         return cardData
-
-    # def canSkip(self):
-    #     if():
-    #         return
-    #     elif(self.numberOfSkips < 3):
-    #     return self.gameChangerNumber == UNLIMITED_SKIPS # number of skips from the game
 
     def skip(self):
         currentCard = self.card
@@ -186,13 +194,24 @@ class Turn(Base):
         if(self.numberOfSkips > skipPenaltyAfter):
             self.penaliseTeam()
 
+    def awardTeamByID(self,teamID):
+        session = Session.object_session(self)
+        otherTeam = TeamModel.getTeamById(session,teamID)
+        self.card.wonCount += 1
+        otherTeam.score += 1
+        session.commit()
+
     def awardTeam(self):
+        session = Session.object_session(self)
         self.card.wonCount += 1
         self.team.score += 1
+        session.commit()
 
     def penaliseTeam(self):
+        session = Session.object_session(self)
         self.card.lostCount += 1
         self.team.score -= 1
+        session.commit()
 
     def startTimer(self,callback=None):
         players=self.round.game.getAllPlayers()
@@ -202,7 +221,7 @@ class Turn(Base):
             duration*=2
         elif( HALF_ROUND_TIME == self.gameChangerNumber ):
             duration*=.5
-        timer = Timer(duration=duration,playerEmails=playerEmails,gameID=self.round.game.id,completeCallback=callback)
+        timer = Timer(duration=duration,playerEmails=playerEmails,gameID=self.round.game.id,turnID=self.id,completeCallback=callback)
         turnTimers[self.id]=timer
         timer.start()
 

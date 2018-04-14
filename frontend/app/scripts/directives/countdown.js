@@ -105,6 +105,9 @@ angular.module('frontendApp')
 
         var displayRemainSec = duration - transpired;
         var displayRemainMins = Math.floor( displayRemainSec / 60 );
+        if(displayRemainMins >= 1){
+          displayRemainSec = displayRemainSec % 60;
+        }
 
         var textXconst = 36;
         var textYconst = 10;
