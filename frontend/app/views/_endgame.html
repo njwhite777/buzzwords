@@ -6,16 +6,16 @@
     <p class="text-med text-center"> Final Scores: </p>
   </div>
   <div layout="column" layout-align="center center" style="min-height:400px;">
-    <md-card ng-repeat="(key,teamScoreData) in teamScoreData | orderBy: teamScoreData.score" md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch style="width:400px;margin:0px;margin-top:0px;">
+    <md-card ng-repeat="teamScore in teamScoreData" md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch style="width:400px;margin:0px;margin-top:0px;">
     <div layout="row">
       <md-card-title>
         <md-card-title-text>
-          <span class="md-headline">Team: {{ teamScoreData.name }}</span>
+          <span class="md-headline">Team: {{ teamScore.name }}</span>
         </md-card-title-text>
       </md-card-title>
       <md-card-title>
         <md-card-title-text>
-          <span class="md-headline">Current Points: {{ teamScoreData.score }}</span>
+          <span class="md-headline">Current Points: {{ teamScore.score }}</span>
         </md-card-title-text>
       </md-card-title>
      </div>

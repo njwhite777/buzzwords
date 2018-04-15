@@ -326,6 +326,7 @@ def roll_wheel(data):
         'description' : gameChanger.description,
         'name': gameChanger.name
     }
+    print_item(rollWheel,"ROLL RESULT WAS")
     emit('my_roll_result',rollWheel)
     time.sleep(duration + 1.5)
     emit('enable_start_turn_button')
@@ -442,6 +443,7 @@ def timer_notify_turn_complete(data):
     if(game.isGameOver()):
         for player in players:
             socketio.emit('swap_view',{ 'swapView' : 'endgame'},room=socketIOClients[player.email],namespace='/io/view')
+        return
 
     waitDuration = 2
     for player in players:
