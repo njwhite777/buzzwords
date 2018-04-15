@@ -18,6 +18,7 @@ def print_item(item,message):
 #  'request_games'
 @socketio.on('request_games',namespace='/io/game')
 def request_games():
+    print("I am requesting!")
     session = Session()
     games = GameModel.getAllGames(session)
     gDict = dict()
