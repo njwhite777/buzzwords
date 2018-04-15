@@ -15,14 +15,6 @@ angular.module('frontendApp')
   'debug',
   function(socketFactory,socketIOConfig,$q,debug) {
 
-    class MySocket{
-      constructor(socketName){
-        this.socketName = socketName;
-        this.socketConnection = io.connect(this.socketName);
-        this.socket = socketFactory( { ioSocket: this.socketConnection } )
-      }
-    }
-
     // This is the only way I could figure out to hook up the sockets!
     //  note the port on this is the port of the flask server.
     var IOsocketName = socketIOConfig.getSocketName();
