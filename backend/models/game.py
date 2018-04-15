@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import datetime
-from sqlalchemy import Column, Integer, String, Table, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, Table, ForeignKey, DateTime, and_
 from sqlalchemy.orm import sessionmaker, relationship
 from app import Session
 from .card import Card
@@ -8,7 +8,7 @@ from .round import Round
 from .turn import Turn
 from . import Base
 from constants import *
-from validator import *
+from .validator import *
 
 usedCards = Table('used_cards',
     Base.metadata,
@@ -74,10 +74,6 @@ class Game(Base):
     @staticmethod
     def getGameById(game_id,session):
         return session.query(Game).get(int(game_id))
-
-    @staticmethod
-    def gameNameExists(session, name):
-        game = session.query(Game).get(int(game_id))
 
     def setStatePaused(self):
         self.gameState=GAME_PAUSED
