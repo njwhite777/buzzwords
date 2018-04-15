@@ -75,6 +75,10 @@ class Game(Base):
     def getGameById(game_id,session):
         return session.query(Game).get(int(game_id))
 
+    @staticmethod
+    def getAllGames(session):
+        return session.query(Game).all()
+
     def setStatePaused(self):
         self.gameState=GAME_PAUSED
 
@@ -86,10 +90,6 @@ class Game(Base):
 
     def setStateReady(self):
         self.gameState=GAME_READY
-
-    @staticmethod
-    def getAllGames(session):
-        return session.query(Game).all()
 
     def addUsedCard(self, card):
         self.usedCards.append(card)
@@ -151,14 +151,15 @@ class Game(Base):
         return True
 
     def isGameOver(self):
-        if not self.hasAtLeastOneRound():
+
+        if not(self.hasAtLeastOneRound()):
             return False
-        elif self.teamsHaveEqualTurns():
+        elif not(self.teamsHaveEqualTurns()):
             return False
         return self.teamHasReachedThreshold()
 
     def hasAtLeastOneRound(self):
-        return self.rounds > 0
+        return len(self.rounds) > 0
 
     def teamsHaveEqualTurns(self):
         turns = self.teams[0].numberOfTurns()
@@ -211,7 +212,7 @@ class Game(Base):
     def isRoundOver(self, currentRound):
         return len(currentRound.turns) == len(self.teams)
 
-    def teamHasReachedThreshold():
+    def teamHasReachedThreshold(self):
         for team in self.teams:
             if team.score >= self.pointsToWin:
                 return True

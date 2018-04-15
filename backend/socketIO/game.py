@@ -87,6 +87,7 @@ def init_game(data):
     gameArgs = {k:v for(k,v) in data.items() if k in ['name','turnDuration','numberOfTeams','maxPlayersPerTeam','pointsToWin','skipPenaltyAfter','withGameChangers'] }
     # TODO: UNDO THIS!!!###############
     gameArgs['turnDuration'] = 5
+    gameArgs['pointsToWin'] = 5
     ###################################
     gameArgs['initiator'] = initiator
     game = GameModel(**gameArgs)
@@ -437,6 +438,7 @@ def timer_notify_turn_complete(data):
     turn = round.getCurrentTurn()
     teamScoreData = turn.getAllTeamScores()
 
+    print_item(game,"CHECKING Game.isGameOver()")
     if(game.isGameOver()):
         for player in players:
             socketio.emit('swap_view',{ 'swapView' : 'endgame'},room=socketIOClients[player.email],namespace='/io/view')
@@ -448,7 +450,7 @@ def timer_notify_turn_complete(data):
         socketio.emit('report_score',teamScoreData,room=socketIOClients[player.email],namespace='/io/game')
         socketio.emit('swap_view',{ 'swapView' : 'waitforturn'},room=socketIOClients[player.email],namespace='/io/view')
 
-    # TODO: figure out how to not do this nastyness.
+    # TODO: figure out how to not do this nastiness.
     timer = turnTimers[turn.id]
     del turnTimers[turn.id]
     time.sleep(waitDuration)

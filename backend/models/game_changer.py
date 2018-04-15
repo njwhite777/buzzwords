@@ -30,12 +30,12 @@ class  GameChangers():
     def __init__(self):
         self.maxWidthLimit = -1
         self.changers = dict()
-        self.changers[0] = GameChanger("double round time", DOUBLE_ROUND_TIME,'2X Turn', 2)
-        self.changers[1] = GameChanger("half round time", HALF_ROUND_TIME,'.5 Turn', 7)
-        self.changers[2] = GameChanger("unlimited skips: The teller can skip unlimited number of cards in one round", UNLIMITED_SKIPS,'∞ Skips', 7)
-        self.changers[3] = GameChanger("No excluded words: Only the main word will be visible in the card. The teller can explain without worrying about the excluded words", NO_EXCLUDED_WORDS,'No Forbidden Words', 14)
-        self.changers[4] = GameChanger("Statue teller: The teller will explain the word while standing like a statue only by talking. No part of his/her body will move except mouth.", STATUE_TELLER,'Statue Teller', 21)
-        self.changers[5] = GameChanger("One-person guesser: The teller will explain to only one of the guessers. The remaining of the guessers will stay silent during the round.", ONE_PERSON_TELLER,'One Guesser', 21)
+        self.changers[0] = GameChanger("Double Turn Time: Turn duration will be doubled!", DOUBLE_ROUND_TIME,'2X Turn', 2)
+        self.changers[1] = GameChanger("Half Turn Time: Turn duration will cut in half!.", HALF_ROUND_TIME,'.5 Turn', 7)
+        self.changers[2] = GameChanger("Infinite Skips: The teller can skip unlimited number of cards in one round", UNLIMITED_SKIPS,'∞ Skips', 7)
+        self.changers[3] = GameChanger("No Forbidden Words: Only the buzzword will be visible in the card.", NO_EXCLUDED_WORDS,'No Forbidden Words', 14)
+        self.changers[4] = GameChanger("Statue Teller: The teller will explain the word while standing like a statue only by talking. No part of his/her body will move except mouth.", STATUE_TELLER,'Statue Teller', 21)
+        self.changers[5] = GameChanger("One-Person Guesser: The teller will explain to only one of the guessers. The remaining of the guessers will stay silent during the round.", ONE_PERSON_TELLER,'One Guesser', 21)
         self.changers[6] = GameChanger("Round-killer: Current team missed its round completely. It is next team’s turn now.", ROUND_KILLER,'Round Killer', 14)
         self.changers[7] = GameChanger("All guessers: Any member of the other team can also guess along with guessers. Whoever can guess the word will be rewarded with one point to his/her team.", ALL_GUESSERS,'All Guess', 14)
         self.setGameChangerWidthLimits()
