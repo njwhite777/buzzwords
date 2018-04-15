@@ -151,7 +151,6 @@ class Game(Base):
         return True
 
     def isGameOver(self):
-
         if not(self.hasAtLeastOneRound()):
             return False
         elif not(self.teamsHaveEqualTurns()):
@@ -214,7 +213,9 @@ class Game(Base):
 
     def teamHasReachedThreshold(self):
         for team in self.teams:
+            print(team.name, team.score, self.pointsToWin)
             if team.score >= self.pointsToWin:
+                print('we have a winner')
                 return True
         return False
 
