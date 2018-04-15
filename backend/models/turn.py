@@ -76,14 +76,14 @@ class Turn(Base):
         return players[randomPlayerIndex]
 
     def setGameChanger(self):
-        gameChangers = GameChangers()
+        gameChangers = GameChangers(withNorm=True)
         selectedGameChanger = gameChangers.rollDie()
         self.gameChangerNumber = selectedGameChanger.gameChangerId
         self.updatePlayerRoles()
         return selectedGameChanger
 
     def getGameChanger(self):
-        gameChangers = GameChangers()
+        gameChangers = GameChangers(withNorm=True)
         return gameChangers.getGameChanger(self.gameChangerNumber)
 
     '''
@@ -193,7 +193,7 @@ class Turn(Base):
         currentCard.skippedCount += 1
         self.numberOfSkips += 1
         skipPenaltyAfter = self.round.game.skipPenaltyAfter
-        if(self.numberOfSkips > skipPenaltyAfter):
+        if(self.numberOfSkips > skipPenaltyAfter and not(self.gameChangerNumber == UNLIMITED_SKIPS)):
             self.penaliseTeam()
 
     def awardTeamByID(self,teamID):
