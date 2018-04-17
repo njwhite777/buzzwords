@@ -328,6 +328,7 @@ def roll_wheel(data):
     }
     print_item(rollWheel,"ROLL RESULT WAS")
     emit('my_roll_result',rollWheel)
+
     time.sleep(duration + 1.5)
     emit('enable_start_turn_button')
     session.commit()
@@ -351,17 +352,26 @@ def start_turn(data):
         'description' : gameChanger.description,
         'name': gameChanger.name
     }
+    players = game.getAllPlayers()
 
     if( gameChanger.gameChangerId == ALL_GUESSERS):
         setup_turn_roles(gameID,gameChanger)
 
     if( gameChanger.gameChangerId == ROUND_KILLER ):
+
+        if(game.isGameOver()):
+            for player in players:
+                emit('swap_view',{ 'swapView' : 'endgame'},room=socketIOClients[player.email],namespace='/io/view')
+            session.commit()
+            session.close()
+            return
+
         start_new_turn(data)
         session.commit()
         session.close()
         return
 
-    players = game.getAllPlayers()
+
     for player in players:
         emit('roll_result',rollWheel,room=socketIOClients[player.email],namespace='/io/game')
         emit('turn_started',{ 'turnID' : turn.id },room=socketIOClients[player.email],namespace='/io/game')
@@ -443,6 +453,8 @@ def timer_notify_turn_complete(data):
     if(game.isGameOver()):
         for player in players:
             socketio.emit('swap_view',{ 'swapView' : 'endgame'},room=socketIOClients[player.email],namespace='/io/view')
+        session.commit()
+        session.close()
         return
 
     waitDuration = 2
