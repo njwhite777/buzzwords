@@ -7,14 +7,14 @@ class Card(Base):
 
     __tablename__ = 'card'
     id          = Column(Integer, primary_key=True)
-    buzzword    = Column(String)
-    forbiddenWords   = Column(String)
+    buzzword    = Column(String(128))
+    forbiddenWords   = Column(String(128))
     skippedCount = Column(Integer)
-    quizletEndpoint = Column(String)
+    quizletEndpoint = Column(String(128))
     wonCount = Column(Integer)
     lostCount = Column(Integer)
-    source      = Column(String)
-    sourcePage = Column(String)
+    source      = Column(String(128))
+    sourcePage = Column(String(128))
     isPhrase = Column(Integer)
 
     def __init__(self,buzzword,forbidden_words,source,source_page,skipped_count=0,won_count=0,lost_count=0, is_phrase = 0,quizletEndpoint=None):

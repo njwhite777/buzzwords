@@ -20,7 +20,7 @@ class Game(Base):
 
     __tablename__ = 'game'
     id   = Column(Integer, primary_key=True)
-    name = Column(String)
+    name = Column(String(256))
     gameState = Column(Integer)
     turnDuration = Column(Integer)
     withGameChangers = Column(Integer)
