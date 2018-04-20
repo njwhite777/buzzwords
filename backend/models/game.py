@@ -2,11 +2,11 @@
 import datetime
 from sqlalchemy import Column, Integer, String, Table, ForeignKey, DateTime, and_
 from sqlalchemy.orm import sessionmaker, relationship
-from app import Session
 from .card import Card
 from .round import Round
 from .turn import Turn
 from . import Base
+from . import Session
 from constants import *
 from .validator import *
 

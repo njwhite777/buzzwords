@@ -6,7 +6,6 @@ from socketIO import *
 from tests import *
 from app import app,socketio,engine,Session
 
-
 parser = argparse.ArgumentParser()
 
 # TODO: make app configurable from command line. This would require setting up an app constructor method in app.py.
