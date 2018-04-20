@@ -4,13 +4,13 @@ from flask_cors import CORS
 from db import create_db,delete_db
 from socketIO import *
 from tests import *
-import quizlet
 from app import app,socketio,engine,Session
-import json
+
 
 parser = argparse.ArgumentParser()
 
 # TODO: make app configurable from command line. This would require setting up an app constructor method in app.py.
+#  or just override config files before starting the app in the following if clause
 # parser.add_argument('--debug',default=False,help='Run in debug mode?')
 # parser.add_argument('-e','--env',default='dev',help="Pass the environment : dev, test, prod")
 # parser.add_argument('-d','--db',default=None,help="Pass a flag to set up a db for every time the server restarts.")
