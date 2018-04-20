@@ -50,7 +50,7 @@ if(app.config['ENVIRONMENT'] == 'dev'):
         AppModelBase.metadata.create_all(engine)
         getQuizletCards()
 elif(app.config['ENVIRONMENT'] == 'prod'):
-    engine = create_engine(app.config['DB_URI'].format(app.config['DBNAME']))
+    engine = create_engine(app.config['DB_URI'])
     Session = sessionmaker(bind=engine)
     if(app.config['REBUILDDB']):
         create_db(engine)
