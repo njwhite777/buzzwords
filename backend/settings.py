@@ -1,0 +1,8 @@
+HOSTNAME="localhost"
+DEBUG=True
+ENVIRONMENT="dev"
+DB_URI_TEMPLATE="sqlite:///db/{}.sqlite"
+DB_NAME="dev"
+DB_URI=DB_URI_TEMPLATE.format(DB_NAME)
+REBUILDDB=True
+PORT=5000
