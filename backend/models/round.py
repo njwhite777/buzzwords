@@ -23,11 +23,6 @@ class Round(Base):
     def addTurn(self, turn):
         self.turns.append(turn)
 
-    def getLastTurn(self):
-        if len(self.turns) == 0:
-            return None
-        return self.turns[len(self.turns) - 1]
-
     def getCurrentTurn(self):
         if len(self.turns) == 0:
             return None

@@ -120,7 +120,7 @@ class TestDataBase(unittest.TestCase):
         game = GameModel.getGameById(1,self.session)
         round = game.getCurrentRound()
         self.session.commit()
-        turn = round.getLastTurn()
+        turn = round.getCurrentTurn()
         turn.setGameChanger()
         print("Changer Number is {}".format(turn.gameChangerNumber))
         turn.updatePlayerRoles() # roles have to be updated if the all-guessers game changer is selected
@@ -131,7 +131,7 @@ class TestDataBase(unittest.TestCase):
         game = GameModel.getGameById(1,self.session)
         round = game.getCurrentRound()
         self.session.commit()
-        turn = round.getLastTurn()
+        turn = round.getCurrentTurn()
         cardData = turn.loadCard()
         print("buzzword: " + cardData['card']['buzzword'])
         self.session.commit()

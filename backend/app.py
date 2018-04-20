@@ -10,7 +10,7 @@ import json
 import sys
 from models import Base as AppModelBase
 
-app = Flask(__name__)
+app=Flask(__name__)
 app.config.from_object('settings')
 app.config.from_envvar('CS690_SETTINGS',silent=True)
 debug = app.config['DEBUG']

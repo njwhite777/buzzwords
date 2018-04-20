@@ -26,23 +26,3 @@ def playerLogin(data):
         socketIOClients[data['email']] = request.sid # storing request.namespace might be a good idea here
     session.commit()
     session.close()
-
-@socketio.on('player_join_team',namespace='/io/player')
-def playerJoinTeam(data):
-    session = Session()
-    playerId = socketIOClients[request.sid]
-    player = PlayerModel.findPlayerById(session, playerId)
-    if player:
-        print("the player does not exist")
-        return
-    teamId = data['team_id']
-    team = TeamModel.findTeamById(session, teamId)
-    if team is None:
-        print("the team does not exist")
-        return
-    player.team = team
-    session.commit()
-    session.close()
-
-    viewData = {'swapView':'gameinitiatorwait'}
-    emit('swap_view',viewData,namespace="/io/view")

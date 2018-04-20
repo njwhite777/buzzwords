@@ -194,7 +194,7 @@ class Game(Base):
             currentRound = newRound
             session.add(currentRound)
             session.commit()
-        lastTurn = currentRound.getLastTurn()
+        lastTurn = currentRound.getCurrentTurn()
         if lastTurn:
             lastTeam = lastTurn.team
             nextTeam = self.getRoundNextTeam(lastTeam)
