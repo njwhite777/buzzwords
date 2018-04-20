@@ -44,13 +44,18 @@ turnTimers = dict()
 if(app.config['ENVIRONMENT'] == 'dev'):
     print("RUNNING IN DEV")
     engine = create_engine(app.config['DB_URI'])
+    Session = sessionmaker(bind=engine)
     if(app.config['REBUILDDB']):
         create_db(engine)
         AppModelBase.metadata.create_all(engine)
-        Session = sessionmaker(bind=engine)
         getQuizletCards()
 elif(app.config['ENVIRONMENT'] == 'prod'):
     engine = create_engine(app.config['DB_URI'].format(app.config['DBNAME']))
+    Session = sessionmaker(bind=engine)
+    if(app.config['REBUILDDB']):
+        create_db(engine)
+        AppModelBase.metadata.create_all(engine)
+        getQuizletCards()
 else:
     pass
     # engine = create_engine(app.config['DB_URI'].format(app.config['DBNAME']))
