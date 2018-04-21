@@ -1,8 +1,7 @@
 #!/usr/bin/env python
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
-from flask import Flask, session as http_session
-from sqlalchemy.orm import sessionmaker, relationship
 from . import Base
+from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from constants import TELLER,GUESSER,OBSERVER,MODERATOR
 from .validator import *
 

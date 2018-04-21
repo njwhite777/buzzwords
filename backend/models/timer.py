@@ -1,9 +1,8 @@
 from threading import Thread
-from app import socketio,socketIOClients
-#from socketIO_client import SocketIO
-from flask_socketio import emit
 import datetime
 import time
+import globalVars
+# import globalVars import socketio,globalVars.socketIOClients
 
 class Timer(Thread):
 
@@ -34,13 +33,13 @@ class Timer(Thread):
                 if(self.data['status'] == 'paused'):
                     self.data['status'] = 'running'
                     for playerEmail in self.playerEmails:
-                        socketio.emit('timer_resumed',self.data,room=socketIOClients[playerEmail],namespace="/io/timer")
+                        globalVars.socketio.emit('timer_resumed',self.data,room=globalVars.socketIOClients[playerEmail],namespace="/io/timer")
 
                 for playerEmail in self.playerEmails:
                     # TODO: set up socketio rooms for games so we can just reference the room and then broadcast to it.
                     self.data['startTime'] = timePretty
                     self.data['countdown'] = self.data['duration'] - self.data['transpired']
-                    socketio.emit('update_timer',self.data,room=socketIOClients[playerEmail],namespace="/io/timer")
+                    globalVars.socketio.emit('update_timer',self.data,room=globalVars.socketIOClients[playerEmail],namespace="/io/timer")
                 time.sleep(1)
                 self.data['transpired'] += 1
             if(not(self.paused)):
@@ -49,12 +48,12 @@ class Timer(Thread):
                 if(not(self.data['status'] == 'paused')):
                     self.data['status'] = 'paused'
                     for playerEmail in self.playerEmails:
-                        socketio.emit('timer_paused',self.data,room=socketIOClients[playerEmail],namespace="/io/timer")
+                        globalVars.socketio.emit('timer_paused',self.data,room=globalVars.socketIOClients[playerEmail],namespace="/io/timer")
             time.sleep(.5)
 
         self.data['status'] = 'initializing'
         for playerEmail in self.playerEmails:
-            socketio.emit('update_timer',self.data,room=socketIOClients[playerEmail],namespace="/io/timer")
+            globalVars.socketio.emit('update_timer',self.data,room=globalVars.socketIOClients[playerEmail],namespace="/io/timer")
 
         # TODO: figure out a cleaner method for this.
         # This kind of has to happen, so maybe we should throw an error if it doesn't

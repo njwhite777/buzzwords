@@ -1,7 +1,5 @@
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import ForeignKey
-Base = declarative_base()
-from app import Session
+from db import Base
 from .card import Card as CardModel
 from .game import Game as GameModel
 from .player import Player as PlayerModel

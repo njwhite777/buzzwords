@@ -1,40 +1,36 @@
 #!/usr/bin/env python
 from flask import Flask,request
 import random, threading, webbrowser
-from flask_socketio import SocketIO,emit
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from db import create_db
+
+from db import create_app_database,Base
 import quizlet
 import json
 import sys
-from models import Base as AppModelBase
 
-app=Flask(__name__)
-app.config.from_object('settings')
-app.config.from_envvar('CS690_SETTINGS',silent=True)
-debug = app.config['DEBUG']
-socketio = SocketIO(app)
+# Next two methods are badly coupled.
+# Creates app, applies configuration information, returns
+def create_app(app_name=None,environment='dev',configFile=None,config=None):
+    if(not(app_name)):
+        app_name=__name__
+    app=Flask(__name__)
 
-socketIOClients=dict()
-turnTimers=dict()
-Session=None
-engine=None
+    # Check to see if we should be loading from the config file or
+    #  the config file pointed to by the env.
+    if(configFile and 'dev_config' in configFile):
+        app.config.from_object(configFile['dev_config'])
+    if(configFile and 'prod_config' in configFile):
+        app.config.from_envvar(configFile['prod_config'],silent=True)
 
-if(app.config['ENVIRONMENT'] == 'dev'):
-    print("RUNNING IN DEV")
-    engine = create_engine(app.config['DB_URI'])
-    Session = sessionmaker(bind=engine)
-    if(app.config['REBUILDDB']):
-        create_db(engine)
-        AppModelBase.metadata.create_all(engine)
-elif(app.config['ENVIRONMENT'] == 'prod'):
-    engine = create_engine(app.config['DB_URI'])
-    Session = sessionmaker(bind=engine)
-    if(app.config['REBUILDDB']):
-        create_db(engine)
-        AppModelBase.metadata.create_all(engine)
-    # engine = create_engine(app.config['DB_URI'].format(app.config['DBNAME']))
+    # TODO: apply any cl parameters that override other things
+    if(config):
+        pass
+    return app
+
+# This method is nigh useless...
+def create_db_connection(app,rebuilddb=False):
+    if(rebuilddb or 'REBUILDDB' in app.config and app.config['REBUILDDB']):
+        rebuilddb = True
+    return create_app_database(app.config['DB_URI'],rebuilddb=rebuilddb)
 
 def getQuizletCards(login='Nathan_White34',client_id='SN77uEA94G',endpoint='258934949'):
     # Getting the cards from quizlet.

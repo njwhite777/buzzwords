@@ -8,9 +8,9 @@ from .game_changer import *
 from .timer import Timer
 from . import Base
 from constants import *
-from app import turnTimers,Session
 import json
 from .team import Team as TeamModel
+from globalVars import turnTimers
 
 class Turn(Base):
 
