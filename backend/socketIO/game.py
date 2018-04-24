@@ -5,6 +5,7 @@ from flask_socketio import emit
 from flask import request
 import sys
 import time
+import globalVars
 from constants import ROUND_KILLER,ALL_GUESSERS,WITHOUT_GAME_CHANGERS
 
 def print_item(item,message):
@@ -237,15 +238,15 @@ def setup_turn_views(turnID,skipRoll=False):
     guessers    = turn.getGuessers()
 
     if(skipRoll):
-        socketio.emit('swap_view',{ 'swapView' : 'teller' },room=globalVars.socketIOClients[teller.email],namespace='/io/view')
+        globalVars.socketio.emit('swap_view',{ 'swapView' : 'teller' },room=globalVars.socketIOClients[teller.email],namespace='/io/view')
     else:
-        socketio.emit('swap_view',{ 'swapView' : 'tellerrolldie' },room=globalVars.socketIOClients[teller.email],namespace='/io/view')
-    socketio.emit('swap_view',{ 'swapView' : 'moderator' },room=globalVars.socketIOClients[moderator.email],namespace='/io/view')
+        globalVars.socketio.emit('swap_view',{ 'swapView' : 'tellerrolldie' },room=globalVars.socketIOClients[teller.email],namespace='/io/view')
+    globalVars.socketio.emit('swap_view',{ 'swapView' : 'moderator' },room=globalVars.socketIOClients[moderator.email],namespace='/io/view')
 
     for guesser in guessers:
-        socketio.emit('swap_view',{'swapView':'gameplayerturn'},room=globalVars.socketIOClients[guesser.email],namespace='/io/view')
+        globalVars.socketio.emit('swap_view',{'swapView':'gameplayerturn'},room=globalVars.socketIOClients[guesser.email],namespace='/io/view')
     for observer in observers:
-        socketio.emit('swap_view',{'swapView':'gameplayerturn'},room=globalVars.socketIOClients[observer.email],namespace='/io/view')
+        globalVars.socketio.emit('swap_view',{'swapView':'gameplayerturn'},room=globalVars.socketIOClients[observer.email],namespace='/io/view')
 
     session.commit()
     session.close()
@@ -304,11 +305,11 @@ def setup_turn_roles(gameID,gameChanger=-1):
         'teams': teams,
     }
     for player in players:
-        socketio.emit('turn_data',turnData,room=globalVars.socketIOClients[player.email],namespace='/io/game')
+        globalVars.socketio.emit('turn_data',turnData,room=globalVars.socketIOClients[player.email],namespace='/io/game')
     for observer in observers:
-        socketio.emit('turn_role_assignment',{ 'role' : 'observer' },room=globalVars.socketIOClients[observer.email],namespace='/io/game')
+        globalVars.socketio.emit('turn_role_assignment',{ 'role' : 'observer' },room=globalVars.socketIOClients[observer.email],namespace='/io/game')
     for guesser in guessers:
-        socketio.emit('turn_role_assignment',{ 'role' : 'guesser' },room=globalVars.socketIOClients[guesser.email],namespace='/io/game')
+        globalVars.socketio.emit('turn_role_assignment',{ 'role' : 'guesser' },room=globalVars.socketIOClients[guesser.email],namespace='/io/game')
 
 @globalVars.socketio.on('roll_wheel',namespace='/io/game')
 def roll_wheel(data):
@@ -452,7 +453,7 @@ def timer_notify_turn_complete(data):
     print_item(game,"CHECKING Game.isGameOver()")
     if(game.isGameOver()):
         for player in players:
-            socketio.emit('swap_view',{ 'swapView' : 'endgame'},room=globalVars.socketIOClients[player.email],namespace='/io/view')
+            globalVars.socketio.emit('swap_view',{ 'swapView' : 'endgame'},room=globalVars.socketIOClients[player.email],namespace='/io/view')
         session.commit()
         session.close()
         return
@@ -460,9 +461,9 @@ def timer_notify_turn_complete(data):
     waitDuration = 2
     for player in players:
         # TODO: ADD SCORE INFO TO turn_finished
-        socketio.emit('turn_finished',{ 'turnID' : turn.id },room=globalVars.socketIOClients[player.email],namespace='/io/game')
-        socketio.emit('report_score',teamScoreData,room=globalVars.socketIOClients[player.email],namespace='/io/game')
-        socketio.emit('swap_view',{ 'swapView' : 'waitforturn'},room=globalVars.socketIOClients[player.email],namespace='/io/view')
+        globalVars.socketio.emit('turn_finished',{ 'turnID' : turn.id },room=globalVars.socketIOClients[player.email],namespace='/io/game')
+        globalVars.socketio.emit('report_score',teamScoreData,room=globalVars.socketIOClients[player.email],namespace='/io/game')
+        globalVars.socketio.emit('swap_view',{ 'swapView' : 'waitforturn'},room=globalVars.socketIOClients[player.email],namespace='/io/view')
 
     # TODO: figure out how to not do this nastiness.
     timer = turnTimers[turn.id]

@@ -10,7 +10,8 @@ from . import Base
 from constants import *
 import json
 from .team import Team as TeamModel
-from globalVars import turnTimers
+import globalVars
+
 
 class Turn(Base):
     """
@@ -147,7 +148,7 @@ class Turn(Base):
         """
             - updates player roles, this happends when the ALL_GUESSERS game changer has been selected in which case all observers have to be updated to guessers
         """
-        session = Session.object_session(self)
+        session = globalVars.Session.object_session(self)
         if self.gameChangerNumber == ALL_GUESSERS:
             observers = self.getObservers()
             for observer in observers:
@@ -324,7 +325,7 @@ class Turn(Base):
             :param teamID: the id of the team to be awarded a point, we need teamID when the ALL_GUESSERS game changer has been selected in which any team can be awared a point
             :type teamID: int
         """
-        session = Session.object_session(self)
+        session = globalVars.Session.object_session(self)
         otherTeam = TeamModel.getTeamById(session,teamID)
         self.card.wonCount += 1
         otherTeam.score += 1
@@ -334,7 +335,7 @@ class Turn(Base):
         """
             - award the point to the team which is on deck
         """
-        session = Session.object_session(self)
+        session = globalVars.Session.object_session(self)
         self.card.wonCount += 1
         self.team.score += 1
         session.commit()
@@ -343,7 +344,7 @@ class Turn(Base):
         """
             - deducts one point to the team on deck for an infraction
         """
-        session = Session.object_session(self)
+        session = globalVars.Session.object_session(self)
         self.card.lostCount += 1
         self.team.score -= 1
         session.commit()
@@ -364,7 +365,7 @@ class Turn(Base):
         elif( HALF_ROUND_TIME == self.gameChangerNumber ):
             duration*=.5
         timer = Timer(duration=duration,playerEmails=playerEmails,gameID=self.round.game.id,turnID=self.id,completeCallback=callback)
-        turnTimers[self.id]=timer
+        globalVars.turnTimers[self.id]=timer
         timer.start()
 
     def getTimer(self):
@@ -373,13 +374,13 @@ class Turn(Base):
             :return: the timer object which keeps track of the time in this turn
             :rtype: threading.Thread
         """
-        return turnTimers[self.id]
+        return globalVars.turnTimers[self.id]
 
     def removeTimer(self):
         """
             - deletes the timer object when it is no longer needed to free memory
         """
-        del turnTimers[self.id]
+        del globalVars.turnTimers[self.id]
 
     def __repr__(self):
         """

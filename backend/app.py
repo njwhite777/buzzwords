@@ -6,6 +6,8 @@ from db import create_app_database,Base
 import quizlet
 import json
 import sys
+import globalVars
+from models import CardModel
 
 # Next two methods are badly coupled.
 # Creates app, applies configuration information, returns
@@ -34,7 +36,7 @@ def create_db_connection(app,rebuilddb=False):
 
 def getQuizletCards(login='Nathan_White34',client_id='SN77uEA94G',endpoint='258934949'):
     # Getting the cards from quizlet.
-    session=Session()
+    session=globalVars.Session()
     quizletClient = quizlet.QuizletClient(client_id=client_id, login=login)
     data = quizletClient.sets.endpoint.get(endpoint)
     count = 0

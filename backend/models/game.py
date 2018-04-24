@@ -8,6 +8,7 @@ from .turn import Turn
 from . import Base
 from constants import *
 from .validator import *
+import globalVars
 
 # association table with the gameID and cardID to keep track of the cards used in a particular game
 usedCards = Table('used_cards',
@@ -257,7 +258,7 @@ class Game(Base):
             :return: the list of all unused cards in the game
             :rtype: list<models.Card>
         """
-        session=Session()
+        session=globalVars.Session()
         query = session.query(Card).filter(~(Card.id.in_(self.getUsedCardsIds())))
         all = query.all()
         session.close()
@@ -315,7 +316,7 @@ class Game(Base):
             :return: the latest added round in the game
             :rtype: models.Round
         """
-        session = Session.object_session(self)
+        session = globalVars.Session.object_session(self)
         if not self.rounds:
             newRound = Round(number=0,game=self)
             self.rounds.append(newRound)
@@ -343,7 +344,7 @@ class Game(Base):
             :return: new turn created
             :rtype: models.Turn
         """
-        session = Session.object_session(self)
+        session = globalVars.Session.object_session(self)
         currentRound = self.getCurrentRound()
         if self.isRoundOver(currentRound):
             nextRoundNumber = currentRound.number + 1
