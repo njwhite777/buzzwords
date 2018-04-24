@@ -20,16 +20,17 @@ class Card(Base):
 
     __tablename__ = 'card'
     id          = Column(Integer, primary_key=True)
-    buzzword    = Column(String)
-    forbiddenWords   = Column(String)
+    buzzword    = Column(String(128))
+    forbiddenWords   = Column(String(128))
     skippedCount = Column(Integer)
+    quizletEndpoint = Column(String(128))
     wonCount = Column(Integer)
     lostCount = Column(Integer)
-    source      = Column(String)
-    sourcePage = Column(String)
+    source      = Column(String(128))
+    sourcePage = Column(String(128))
     isPhrase = Column(Integer)
 
-    def __init__(self,buzzword,forbidden_words,source,source_page,skipped_count=0,won_count=0,lost_count=0, is_phrase = 0):
+    def __init__(self,buzzword,forbidden_words,source,source_page,skipped_count=0,won_count=0,lost_count=0, is_phrase = 0,quizletEndpoint=None):
         self.buzzword           = buzzword
         self.forbiddenWords    = forbidden_words
         self.skippedCount      = skipped_count
@@ -38,6 +39,7 @@ class Card(Base):
         self.source             = source
         self.sourcePage        = source_page
         self.isPhrase          = is_phrase
+        self.quizletEndpoint   = quizletEndpoint
 
     @staticmethod
     def numberOfRows(session):

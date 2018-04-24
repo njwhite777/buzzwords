@@ -1,8 +1,7 @@
 #!/usr/bin/env python
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
-from flask import Flask, session as http_session
-from sqlalchemy.orm import sessionmaker, relationship
 from . import Base
+from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from constants import TELLER,GUESSER,OBSERVER,MODERATOR
 from .validator import *
 
@@ -21,8 +20,8 @@ class Player(Base):
 	"""
     __tablename__ = 'player'
     id       = Column(Integer,primary_key=True)
-    nickname = Column(String)
-    email = Column(String)
+    nickname = Column(String(128))
+    email = Column(String(128))
     role = Column(Integer)
     teamID = Column(Integer, ForeignKey('team.id'), nullable=True)
 

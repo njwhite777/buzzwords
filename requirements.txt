@@ -1,12 +1,13 @@
 aniso8601==2.0.0
 bleach==2.1.2
-certifi==2017.11.5
+certifi==2018.1.18
 chardet==3.0.4
 click==6.7
 colorclass==2.2.0
 decorator==4.1.2
 entrypoints==0.2.3
 Flask==0.12.2
+Flask-Cors==3.0.3
 Flask-RESTful==0.3.6
 Flask-SocketIO==2.9.6
 formats==0.1.1
@@ -48,8 +49,10 @@ qtconsole==4.3.1
 Quizlet-API==0.1.0
 requests==2.18.4
 rethinkdb==2.3.0.post6
+selenium==3.11.0
 simplegeneric==0.8.1
 six==1.11.0
+socketIO-client==0.7.2
 SQLAlchemy==1.2.2
 SQLAlchemy-Utils==0.32.21
 terminado==0.8.1
@@ -60,5 +63,6 @@ traitlets==4.3.2
 urllib3==1.22
 wcwidth==0.1.7
 webencodings==0.5.1
+websocket-client==0.47.0
 Werkzeug==0.14.1
 widgetsnbextension==3.1.0

@@ -2,7 +2,6 @@
 import datetime
 from sqlalchemy import Column, Integer, String, Table, ForeignKey, DateTime, and_
 from sqlalchemy.orm import sessionmaker, relationship
-from app import Session
 from .card import Card
 from .round import Round
 from .turn import Turn
@@ -45,7 +44,7 @@ class Game(Base):
 
     __tablename__ = 'game'
     id   = Column(Integer, primary_key=True)
-    name = Column(String)
+    name = Column(String(256))
     gameState = Column(Integer)
     turnDuration = Column(Integer)
     withGameChangers = Column(Integer)
@@ -353,7 +352,7 @@ class Game(Base):
             currentRound = newRound
             session.add(currentRound)
             session.commit()
-        lastTurn = currentRound.getLastTurn()
+        lastTurn = currentRound.getCurrentTurn()
         if lastTurn:
             lastTeam = lastTurn.team
             nextTeam = self.getRoundNextTeam(lastTeam)

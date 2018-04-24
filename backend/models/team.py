@@ -17,7 +17,7 @@ class Team(Base):
 	"""
     __tablename__ = 'team'
     id          = Column(Integer,primary_key=True)
-    name        = Column(String)
+    name        = Column(String(256))
     maxPlayersPerTeam=Column(Integer)
     score = Column(Integer)
     players = relationship("Player", backref = "team", lazy = False)
