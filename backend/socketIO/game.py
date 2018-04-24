@@ -418,7 +418,7 @@ def pause_timer(data):
     session.commit()
     turn = round.getCurrentTurn()
     turnID = turn.id
-    timer = turnTimers[turnID]
+    timer = globalVars.turnTimers[turnID]
     timer.pause()
     session.close()
 
@@ -432,7 +432,7 @@ def resume_timer(data):
     round = game.getCurrentRound()
     turn = round.getCurrentTurn()
     turnID = turn.id
-    timer = turnTimers[turnID]
+    timer = globalVars.turnTimers[turnID]
     timer.resume()
     session.close()
 
@@ -466,8 +466,8 @@ def timer_notify_turn_complete(data):
         globalVars.socketio.emit('swap_view',{ 'swapView' : 'waitforturn'},room=globalVars.socketIOClients[player.email],namespace='/io/view')
 
     # TODO: figure out how to not do this nastiness.
-    timer = turnTimers[turn.id]
-    del turnTimers[turn.id]
+    timer = globalVars.turnTimers[turn.id]
+    del globalVars.turnTimers[turn.id]
     time.sleep(waitDuration)
     start_new_turn(data)
 
