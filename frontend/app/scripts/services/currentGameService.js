@@ -42,6 +42,11 @@ angular.module('frontendApp')
       currentTurn['turnState'] = 'finished';
     });
 
+    socket.on('timer_finished',function(data){
+      console.log("TIMER IS FINISHED",data)
+      socket.emit('turn_complete',data);
+    });
+
     socket.on('report_score',function(){
       console.log("REPORTED SCORE, RESETTING");
       Object.assign(currentTurn, {

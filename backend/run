@@ -24,7 +24,7 @@ if __name__ == '__main__':
     # TODO: write command line params.
     # config = { k:args[k] for k in ['','','','',''] if k in args }
     app = create_app(app_name="buzzwords",environment=environment,configFile={ 'dev_config' : 'settings','prod_config':''},config={})
-    globalVars.socketio=SocketIO(app)
+    globalVars.socketio=SocketIO(app,async_handlers=True)
     globalVars.Session,globalVars.engine = create_db_connection(app,rebuilddb=True)
     if(environment):
         getQuizletCards()
@@ -32,4 +32,5 @@ if __name__ == '__main__':
     from socketIO import *
 
     CORS(app)
-    globalVars.socketio.run(app,debug=app.config['DEBUG'],port=app.config['PORT'],host=app.config['HOSTNAME'])
+    # globalVars.socketio.run(app,debug=app.config['DEBUG'],port=app.config['PORT'],host=app.config['HOSTNAME'])
+    globalVars.socketio.run(app,debug=app.config['DEBUG'],port=app.config['PORT'],host=app.config['HOSTNAME'],use_reloader=False)

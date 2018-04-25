@@ -241,7 +241,8 @@ class Turn(Base):
                 'teamID': team.id,
                 'id' : team.id,
                 'name': team.name,
-                'score' : team.score
+                'score' : team.score,
+                'out_of': self.round.game.pointsToWin
             }
             teamScoreData[team.id] = tDict
         return teamScoreData
@@ -349,7 +350,7 @@ class Turn(Base):
         self.team.score -= 1
         session.commit()
 
-    def startTimer(self,callback=None):
+    def startTimer(self):
         """
             - starts the timer to keep track of the time used in the turn, called when the "Start Turn" button is clicked
             - checks the selected game changer and updates the duration accordingly
@@ -364,9 +365,9 @@ class Turn(Base):
             duration*=2
         elif( HALF_ROUND_TIME == self.gameChangerNumber ):
             duration*=.5
-        timer = Timer(duration=duration,playerEmails=playerEmails,gameID=self.round.game.id,turnID=self.id,completeCallback=callback)
+        timer = Timer(duration=duration,playerEmails=playerEmails,gameID=self.round.game.id,turnID=self.id)
         globalVars.turnTimers[self.id]=timer
-        timer.start()
+        timer.run()
 
     def getTimer(self):
         """

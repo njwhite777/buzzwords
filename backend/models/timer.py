@@ -1,13 +1,9 @@
-from threading import Thread
 import datetime
-import time
 import globalVars
 # import globalVars import socketio,globalVars.socketIOClients
 
-class Timer(Thread):
-
-    def __init__(self,duration=30,playerEmails=[],gameID=None,turnID=None,completeCallback=None):
-        Thread.__init__(self)
+class Timer(object):
+    def __init__(self,duration=30,playerEmails=[],gameID=None,turnID=None):
         self.duration = duration
         self.playerEmails = playerEmails
         self.paused = False
@@ -15,7 +11,6 @@ class Timer(Thread):
         self.daemon = True
         self.gameID = gameID
         self.turnID = turnID
-        self.completeCallback = completeCallback
         self.data = {
             'startTime': None,
             'duration': self.duration,
@@ -40,7 +35,7 @@ class Timer(Thread):
                     self.data['startTime'] = timePretty
                     self.data['countdown'] = self.data['duration'] - self.data['transpired']
                     globalVars.socketio.emit('update_timer',self.data,room=globalVars.socketIOClients[playerEmail],namespace="/io/timer")
-                time.sleep(1)
+                globalVars.socketio.sleep(1)
                 self.data['transpired'] += 1
             if(not(self.paused)):
                 self.stop()
@@ -49,7 +44,7 @@ class Timer(Thread):
                     self.data['status'] = 'paused'
                     for playerEmail in self.playerEmails:
                         globalVars.socketio.emit('timer_paused',self.data,room=globalVars.socketIOClients[playerEmail],namespace="/io/timer")
-            time.sleep(.5)
+            globalVars.socketio.sleep(.5)
 
         self.data['status'] = 'initializing'
         for playerEmail in self.playerEmails:
@@ -57,12 +52,13 @@ class Timer(Thread):
 
         # TODO: figure out a cleaner method for this.
         # This kind of has to happen, so maybe we should throw an error if it doesn't
-        if(self.completeCallback):
-            self.data['gameID'] = self.gameID
-            self.completeCallback(self.data)
+        self.data['gameID'] = self.gameID
+        globalVars.socketio.emit('timer_finished',self.data,room=globalVars.socketIOClients[self.playerEmails[0]],namespace="/io/game")
+        self.stop()
+        return
 
     def __repr__(self):
-        return "<Timer(gameID='{}',turnID='{}',duration='{}',status='{}')>".format(self.gameID,self.turnID,self.duration,self.isAlive())
+        return "<Timer(gameID='{}',turnID='{}',duration='{}',status='{}')>".format(self.gameID,self.turnID,self.duration,self.data['status'])
 
     def pause(self):
         self.paused = True

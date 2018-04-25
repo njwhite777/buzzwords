@@ -126,9 +126,9 @@ angular.module('frontendApp')
           drawText(`00:00`, canvas.width / 2 - textXconst, canvas.height / 2 + textYconst, textColor, cHelper.fontSize);
         }
 
-        if(progress < 975){
-          window.requestAnimationFrame(draw);
-        }
+        // if(progress < 975){
+        //   window.requestAnimationFrame(draw);
+        // }
       }
 
       function drawText(text, x, y, color, size, font) {

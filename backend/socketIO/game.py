@@ -330,7 +330,7 @@ def roll_wheel(data):
     print_item(rollWheel,"ROLL RESULT WAS")
     emit('my_roll_result',rollWheel)
 
-    time.sleep(duration + 1.5)
+    globalVars.socketio.sleep(duration + 1.5)
     emit('enable_start_turn_button')
     session.commit()
     session.close()
@@ -381,11 +381,11 @@ def start_turn(data):
     print_item(cardData,"CURRENT CARD IS")
     cardData['showCard'] = True
     emit('swap_view',{'swapView':'teller'},room=globalVars.socketIOClients[teller.email],namespace='/io/view')
-    time.sleep(1)
+    globalVars.socketio.sleep(1)
 
     emit('load_card',cardData,room=globalVars.socketIOClients[teller.email],namespace='/io/card')
     emit('load_card',cardData,room=globalVars.socketIOClients[moderator.email],namespace='/io/card')
-    turn.startTimer(timer_notify_turn_complete)
+    turn.startTimer()
 
     session.commit()
     session.close()
@@ -425,7 +425,7 @@ def pause_timer(data):
 
 @globalVars.socketio.on("resume_timer",namespace="/io/timer")
 def resume_timer(data):
-    session = Session()
+    session = globalVars.Session()
     print_item(data,"RESUMING TIMER")
     gameID = data['gameID']
     game = GameModel.getGameById(gameID,session)
@@ -436,10 +436,9 @@ def resume_timer(data):
     timer.resume()
     session.close()
 
-@globalVars.socketio.on("timer_notify_turn_complete",namespace="/io/game")
-def timer_notify_turn_complete(data):
+@globalVars.socketio.on("turn_complete",namespace="/io/game")
+def turn_complete(data):
     session = globalVars.Session()
-    print_item(data,"TURN COMPLETE!!!")
     # TODO: notify clients of turn completion
     # TODO: sleep for a second.
     # TODO: start next turn!
@@ -465,10 +464,10 @@ def timer_notify_turn_complete(data):
         globalVars.socketio.emit('report_score',teamScoreData,room=globalVars.socketIOClients[player.email],namespace='/io/game')
         globalVars.socketio.emit('swap_view',{ 'swapView' : 'waitforturn'},room=globalVars.socketIOClients[player.email],namespace='/io/view')
 
-    # TODO: figure out how to not do this nastiness.
     timer = globalVars.turnTimers[turn.id]
+    print(timer)
     del globalVars.turnTimers[turn.id]
-    time.sleep(waitDuration)
+    globalVars.socketio.sleep(waitDuration)
     start_new_turn(data)
 
     session.commit()
