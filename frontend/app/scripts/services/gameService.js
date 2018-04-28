@@ -30,7 +30,7 @@ angular.module('frontendApp')
       socket.emit('validate_game_config',gameCreateData.game);
     };
 
-    // Called as soon as a game is started in the  backend. Removesthe game maching this id.
+    // Called as soon as a game is started in the  backend. Removes the game matching this id.
     socket.on('game_started',function(data){
         var gameID = data['gameID'];
         delete games[gameID];

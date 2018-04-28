@@ -36,6 +36,9 @@ class Player(Base):
         self.game = None
 
     @staticmethod
+    def numberOfRows(session):
+        return session.query(Player).count()
+    @staticmethod
     def isValidPlayer(data):
         """
             - validates the form data used for creating the player

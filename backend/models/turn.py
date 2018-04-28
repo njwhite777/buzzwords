@@ -135,6 +135,14 @@ class Turn(Base):
         self.updatePlayerRoles()
         return selectedGameChanger
 
+    def setGameChangerTest(self, changerID):
+        gameChangers = GameChangers()
+        selectedGameChanger = gameChangers.getGameChanger(changerID)
+        self.gameChangerNumber = changerID
+        self.updatePlayerRoles()
+        return selectedGameChanger
+
+
     def getGameChanger(self):
         """
             - returns the selected game changer object
