@@ -76,11 +76,23 @@
   </md-select>
   </md-input-container>
 
-<md-input-container class="md-block" flex-gt-sm> Free Skips
-<md-select  placeholder="Free Skips" ng-change="getData();formFieldChanged(gameData.skipPenaltyAfter)" ng-model="gameData.skipPenaltyAfter">
-  <md-option ng-value="opt" ng-repeat="opt in skipOptions" >{{ opt }}</md-option>
-</md-select>
-</md-input-container>
+  <md-input-container class="md-block" flex-gt-sm> Free Skips
+  <md-select  placeholder="Free Skips" ng-change="getData();formFieldChanged(gameData.skipPenaltyAfter)" ng-model="gameData.skipPenaltyAfter">
+    <md-option ng-value="opt" ng-repeat="opt in skipOptions" >{{ opt }}</md-option>
+  </md-select>
+  </md-input-container>
+
+  <md-input-container class="md-block" flex-gt-sm> Points to Win
+  <md-select  placeholder="Points to win" ng-change="getData();formFieldChanged(gameData.pointsToWin)" ng-model="gameData.pointsToWin">
+    <md-option ng-value="opt" ng-repeat="opt in pointsOptions" >{{ opt }}</md-option>
+  </md-select>
+  </md-input-container>
+
+  <md-input-container class="md-block" flex-gt-sm>
+    <label>Points to Win </label>
+    <input name="pointsToWin" id="gameData.pointsToWin" type = "number" ng-model ="gameData.pointsToWin" ng-change="forceBack(gameData,'pointsToWin',60,10)" ng-model-options='{debounce:1000}'>
+  </md-input-container>
+
     <md-input-container class="md-block" flex-gt-sm>
       Game Changers:
       <md-checkbox ng-model="gameData.gameChangers" aria-label="With Turn Modifiers"></md-checkbox>
