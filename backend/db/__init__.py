@@ -5,7 +5,7 @@ from .db_operations import create_db,delete_db,exists_db
 Base = declarative_base()
 
 def create_app_database(uri,rebuilddb=False):
-    engine = create_engine(uri)
+    engine = create_engine(uri, echo=True)
     Session=sessionmaker(bind=engine)
     if(rebuilddb):
         if(exists_db(engine)):

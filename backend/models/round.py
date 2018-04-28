@@ -3,6 +3,7 @@ import datetime
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import sessionmaker, relationship
 from . import Base
+from .turn import Turn 
 
 class Round(Base):
     """
@@ -19,13 +20,21 @@ class Round(Base):
     id = Column(Integer,primary_key=True)
     number       = Column(Integer)
     startTime = Column(DateTime, default=datetime.datetime.utcnow)
-    turns          = relationship("Turn", backref = "round", lazy = False)
+    turns          = relationship("Turn", backref = "round", lazy = True)
     gameId = Column(Integer, ForeignKey('game.id'), nullable=False)
 
     def __init__(self, number,game):
         self.number = number
         self.turns = []
         self.game = game
+
+    @staticmethod
+    def getNumberOfRounds(session, gameId):
+        return session.query(Round).filter(Round.gameId==gameId).count()
+
+    @staticmethod
+    def getLastRound(session, gameId):
+        return session.query(Round).filter(Round.gameId==gameId).order_by(Round.id.desc()).first()
 
     def addTurn(self, turn):
         """
@@ -36,7 +45,10 @@ class Round(Base):
         """
         self.turns.append(turn)
 
-    def getCurrentTurn(self):
+    def isRoundOver(self, session):
+        return Turn.getNumberOfTurnsInARound(session, self.id) == len(self.game.teams)
+
+    def getCurrentTurnOld(self):
         """
             - returns the last turn to be added in this round, must ensure the turns are returned in the order they were created
             :return: the last turn to be added to the round, None if the round is new
@@ -45,6 +57,16 @@ class Round(Base):
         if len(self.turns) == 0:
             return None
         return self.turns[len(self.turns) - 1]
+
+    def getCurrentTurn(self, session):
+        """
+            - returns the last turn to be added in this round, must ensure the turns are returned in the order they were created
+            :return: the last turn to be added to the round, None if the round is new
+            :rtype: Turn
+        """
+        if Turn.getNumberOfTurnsInARound(session, self.id) == 0:
+            return None
+        return Turn.getLastTurn(session, self.id)
 
     def __repr__(self):
         """string representaion of the round object"""

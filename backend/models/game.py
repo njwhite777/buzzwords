@@ -59,8 +59,8 @@ class Game(Base):
 
     initiator = relationship("Player", foreign_keys=initiatorID, lazy = False, uselist=False)
     teams = relationship("Team", backref = "game", lazy = False, order_by = "Team.id")
-    rounds = relationship("Round", backref = "game", lazy = False)
-    usedCards = relationship("Card",secondary=usedCards,lazy = False)
+    rounds = relationship("Round", backref = "game", lazy = True)
+    usedCards = relationship("Card",secondary=usedCards,lazy = True)
 
     def __init__(self,initiator,name=None,turnDuration=30,numberOfTeams=2,maxPlayersPerTeam=5,pointsToWin=30,skipPenaltyAfter=3,withGameChangers=1,minRequiredPlayers=2):
         self.name = name
@@ -282,19 +282,28 @@ class Game(Base):
             :return: True if the game is over, False otherwise
             :rtype: bool
         """
-        if not(self.hasAtLeastOneRound()):
+        session=globalVars.Session()
+        if not(self.hasAtLeastOneRound(session)):
             return False
         elif not(self.teamsHaveEqualTurns()):
             return False
         return self.teamHasReachedThreshold()
 
-    def hasAtLeastOneRound(self):
+    def hasAtLeastOneRoundOld(self):
         """
             - checks if the game has had at least one round
             :return: True if the game has at least a single round, False otherwise
             :rtype: bool
         """
         return len(self.rounds) > 0
+
+    def hasAtLeastOneRound(self, session):
+        """
+            - checks if the game has had at least one round
+            :return: True if the game has at least a single round, False otherwise
+            :rtype: bool
+        """
+        return Round.getNumberOfRounds(session, self.id) > 0
 
     def teamsHaveEqualTurns(self):
         """
@@ -303,13 +312,13 @@ class Game(Base):
             :return: True if all teams have played equal number of turns, False otherwise
             :rtype: bool
         """
-        turns = self.teams[0].numberOfTurns()
+        turns = self.teams[0].numberOfTurns
         for team in self.teams:
-            if team.numberOfTurns() != turns:
+            if team.numberOfTurns != turns:
                 return False
         return True
 
-    def getCurrentRound(self):
+    def getCurrentRoundOld(self):
         """
             - finds the latest round in the game
             - if no round yet in the game, a new round is created
@@ -322,6 +331,21 @@ class Game(Base):
             self.rounds.append(newRound)
             session.commit()
         return self.rounds[len(self.rounds) - 1]
+
+    def getCurrentRound(self):
+        """
+            - finds the latest round in the game
+            - if no round yet in the game, a new round is created
+            :return: the latest added round in the game
+            :rtype: models.Round
+        """
+        session = globalVars.Session.object_session(self)
+        if Round.getNumberOfRounds(session, self.id) == 0:
+            newRound = Round(number=0,game=self)
+            session.add(newRound)
+            session.commit()
+            return newRound
+        return Round.getLastRound(session, self.id)
 
     def getRoundNextTeam(self, currentTeam):
         """
@@ -337,7 +361,7 @@ class Game(Base):
             index += 1
         return None
 
-    def createTurn(self):
+    def createTurnOld(self):
         """
             - creates a new turn  and adds it to the current round
             - if all teams have played equal number of turns, a new round is created
@@ -360,6 +384,38 @@ class Game(Base):
         else:
             nextTeam = self.teams[0]
         turn = Turn(team=nextTeam,round=currentRound,game=self,turnDuration=self.turnDuration)
+        session.add(turn)
+        session.commit()
+        turn.setPlayerRoles()
+        # currentRound.addTurn(turn)
+        session.commit()
+        return turn
+
+    def createTurn(self):
+        """
+            - creates a new turn  and adds it to the current round
+            - if all teams have played equal number of turns, a new round is created
+            :return: new turn created
+            :rtype: models.Turn
+        """
+        session = globalVars.Session.object_session(self)
+        currentRound = self.getCurrentRound()
+        if currentRound.isRoundOver(session):
+            nextRoundNumber = currentRound.number + 1
+            newRound = Round(number=nextRoundNumber,game=self)
+            #self.rounds.append(newRound)
+            currentRound = newRound
+            session.add(currentRound)
+            session.commit()
+        lastTurn = currentRound.getCurrentTurn(session)
+        if lastTurn:
+            lastTeam = lastTurn.team
+            nextTeam = self.getRoundNextTeam(lastTeam)
+        else:
+            nextTeam = self.teams[0]
+        turn = Turn(team=nextTeam,round=currentRound,game=self,turnDuration=self.turnDuration)
+        print("number of turns>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", nextTeam.numberOfTurns)
+        nextTeam.numberOfTurns += 1
         session.add(turn)
         session.commit()
         turn.setPlayerRoles()

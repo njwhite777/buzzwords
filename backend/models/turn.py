@@ -75,6 +75,18 @@ class Turn(Base):
         """
         return session.query(Turn).get(int(turnID))
 
+    @staticmethod
+    def getNumberOfTurnsInARound(session, roundId):
+        return session.query(Turn).filter(Turn.roundId==roundId).count()
+
+    @staticmethod
+    def getNumberOfTeamTurns(session, teamId):
+        return session.query(Turn).filter(Turn.teamId==teamId).count()
+
+    @staticmethod
+    def getLastTurn(session, roundId):
+        return session.query(Turn).filter(Turn.roundId==roundId).order_by(Turn.id.desc()).first()
+
     def setTeam(self, team):
         """
             - sets the team playing this turn
@@ -186,8 +198,9 @@ class Turn(Base):
         """
         teamsNotOnTurn = self.getTeamsNotOnTurn()
         randomTeam = self.getRandomTeam(teamsNotOnTurn)
+        print("selected team for moderator>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", randomTeam)
         moderator = self.getRandomPlayer(randomTeam.players)
-        moderator.role = 2
+        moderator.role = MODERATOR
         self.moderator = moderator
         return moderator
 
