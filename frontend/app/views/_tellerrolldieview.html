@@ -12,7 +12,7 @@
   </div>
   <div layout-margin layout-padding layout="row" layout-align="center" >
     <md-button ng-show="rollButton" class="md-primary md-raised text-medsmall" ng-click="rollButton=!rollButton;spinWheel()">Roll Wheel</md-button>
-    <md-button ng-show="!rollButton" ng-disabled="disabledStart" class="md-primary md-raised text-medsmall" ng-click="currentGameService.startTurn()">Start Turn</md-button>
+    <md-button ng-show="!rollButton" ng-disabled="disabledStart" class="md-primary md-raised text-medsmall" ng-click="currentGameService.startTurn();disabledStart=!disabledStart;">Start Turn</md-button>
   </div>
   </md-content>
   <div layout-margin layout="row" layout-align="center center">

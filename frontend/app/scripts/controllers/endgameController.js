@@ -11,11 +11,10 @@ angular.module('frontendApp')
   .controller('endgameController',[
     '$scope',
     '$state',
-    function ($scope,$state) {
-
+    'pointsService',
+    function ($scope,$state,pointsService) {
+      $scope.teamScoreData = pointsService.teamScoreData;
       $scope.finishedGame = function(){
-          // TODO: notify that player is no longer in a game.
-          console.log("FINISHED GAME!");
           $state.go('root');
       };
 

@@ -12,6 +12,19 @@ angular.module('frontendApp')
         scope.height = "400";
         scope.width  = "400";
         scope.duration = 4;
+        scope.turns = 4;
+        scope.segments = [
+          {'textFontFamily' : 'Cabin','strokeStyle': 'rgba(255,255,255,0)','fillStyle' : '#eae56f', 'text' : '2X Turn','size': winwheelPercentToDegrees(2) },
+          {'textFontFamily' : 'Cabin','strokeStyle': 'rgba(255,255,255,0)','fillStyle' : '#fc7ba7', 'text' : '.5X Turn','size': winwheelPercentToDegrees(7)},
+          {'textFontFamily' : 'Cabin','strokeStyle': 'rgba(255,255,255,0)','fillStyle' : '#7884ea', 'text' : '∞ Skips','size': winwheelPercentToDegrees(7)},
+          {'textFontFamily' : 'Cabin','strokeStyle': 'rgba(255,255,255,0)','fillStyle' : '#f6a84a', 'text' : 'No Forbidden Words','size': winwheelPercentToDegrees(14)},
+          {'textFontFamily' : 'Cabin','strokeStyle': 'rgba(255,255,255,0)','fillStyle' : '#89f26e', 'text' : 'Statue Teller','size': winwheelPercentToDegrees(15)},
+          {'textFontFamily' : 'Cabin','strokeStyle': 'rgba(255,255,255,0)','fillStyle' : '#f6776d', 'text' : 'One Guesser','size': winwheelPercentToDegrees(15)},
+          {'textFontFamily' : 'Cabin','strokeStyle': 'rgba(255,255,255,0)','fillStyle' : '#BBDEFB', 'text' : 'Turn Killer','size': winwheelPercentToDegrees(14)},
+          {'textFontFamily' : 'Cabin','strokeStyle': 'rgba(255,255,255,0)','fillStyle' : '#b068b1', 'text' : 'All Guessers','size': winwheelPercentToDegrees(14)},
+          {'textFontFamily' : 'Cabin','strokeStyle': 'rgba(255,255,255,0)','fillStyle' : '#4068bb', 'text' : 'Normal Turn','size': winwheelPercentToDegrees(12)}
+        ];
+        scope.numSegments = scope.segments.length;
 
         var socket = socketService.gameSocket;
 
@@ -26,25 +39,15 @@ angular.module('frontendApp')
         scope.myWheel = new Winwheel({
           'canvasId'    : 'wheelCanvas',
           'outerRadius' : ((scope.height/2) - 20),
-          'numSegments' : 8,
+          'numSegments' : scope.numSegments,
           'textFontSize' : 18,
-          'segments'    :
-          [
-            {'textFontFamily' : 'Cabin','strokeStyle': 'rgba(255,255,255,0)','fillStyle' : '#eae56f', 'text' : '2X Turn','size': winwheelPercentToDegrees(2) },
-            {'textFontFamily' : 'Cabin','strokeStyle': 'rgba(255,255,255,0)','fillStyle' : '#fc7ba7', 'text' : '.5 Turn','size': winwheelPercentToDegrees(7)},
-            {'textFontFamily' : 'Cabin','strokeStyle': 'rgba(255,255,255,0)','fillStyle' : '#7884ea', 'text' : '∞ Skips','size': winwheelPercentToDegrees(7)},
-            {'textFontFamily' : 'Cabin','strokeStyle': 'rgba(255,255,255,0)','fillStyle' : '#f6a84a', 'text' : 'No Forbidden Words','size': winwheelPercentToDegrees(14)},
-            {'textFontFamily' : 'Cabin','strokeStyle': 'rgba(255,255,255,0)','fillStyle' : '#89f26e', 'text' : 'Statue Teller','size': winwheelPercentToDegrees(21)},
-            {'textFontFamily' : 'Cabin','strokeStyle': 'rgba(255,255,255,0)','fillStyle' : '#f6776d', 'text' : 'One Guesser','size': winwheelPercentToDegrees(21)},
-            {'textFontFamily' : 'Cabin','strokeStyle': 'rgba(255,255,255,0)','fillStyle' : '#BBDEFB', 'text' : 'Round Killer','size': winwheelPercentToDegrees(14)},
-            {'textFontFamily' : 'Cabin','strokeStyle': 'rgba(255,255,255,0)','fillStyle' : '#b068b1', 'text' : 'All Guess','size': winwheelPercentToDegrees(14)}
-          ],
+          'segments'    : scope.segments,
           'lineWidth'   : 0,
           'animation' :
           {
               'type'          : 'spinToStop',
               'duration'      : scope.duration,
-              'spins'         : 6
+              'spins'         : scope.turns
           }
         });
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from app import session,socketio
+from app import socketio
 import sys
 from flask import request
 

@@ -8,7 +8,7 @@ class GameTeam(Base):
     game_id         = Column(Integer,ForeignKey("game.id"))
     team_id         = Column(Integer,ForeignKey("team.id"))
     player_id       = Column(Integer,ForeignKey("player.id"))
-    team_name       = Column(String)
+    team_name       = Column(String(128))
     team_count      = Column(Integer)
 
     # TODO: what else will we need?

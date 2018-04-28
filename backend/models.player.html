@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module models.player</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="models.html"><font color="#ffffff">models</font></a>.player</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/aron/programming/buzzwords/backend/models/player.py">/home/aron/programming/buzzwords/backend/models/player.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="re.html">re</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="models.player.html#Player">Player</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Player">class <strong>Player</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>-&nbsp;the&nbsp;<a href="builtins.html#object">object</a>&nbsp;representation&nbsp;of&nbsp;a&nbsp;taboo&nbsp;player<br>
+&nbsp;<br>
+:ivar&nbsp;id:&nbsp;the&nbsp;primary&nbsp;key&nbsp;of&nbsp;the&nbsp;table<br>
+:ivar&nbsp;nickname:&nbsp;the&nbsp;chosen&nbsp;name&nbsp;of&nbsp;the&nbsp;player,&nbsp;must&nbsp;have&nbsp;between&nbsp;2&nbsp;and&nbsp;255&nbsp;characters&nbsp;long<br>
+:ivar&nbsp;email:&nbsp;email&nbsp;of&nbsp;the&nbsp;player&nbsp;which&nbsp;must&nbsp;be&nbsp;unique&nbsp;across&nbsp;the&nbsp;whole&nbsp;system<br>
+:ivar&nbsp;role:&nbsp;a&nbsp;player&nbsp;can&nbsp;have&nbsp;one&nbsp;of&nbsp;the&nbsp;four&nbsp;roles;&nbsp;teller,&nbsp;moderator,&nbsp;guesser&nbsp;or&nbsp;observer<br>
+:ivar&nbsp;teamID:&nbsp;a&nbsp;foreign&nbsp;key&nbsp;from&nbsp;the&nbsp;team&nbsp;table&nbsp;to&nbsp;keep&nbsp;track&nbsp;of&nbsp;the&nbsp;team&nbsp;the&nbsp;player&nbsp;belongs&nbsp;to<br>
+:ivar&nbsp;game:&nbsp;used&nbsp;in&nbsp;the&nbsp;game&nbsp;class&nbsp;to&nbsp;enable&nbsp;the&nbsp;game&nbsp;keep&nbsp;a&nbsp;list&nbsp;of&nbsp;all&nbsp;players&nbsp;in&nbsp;the&nbsp;game,&nbsp;initially&nbsp;I&nbsp;found&nbsp;sqlalchemy&nbsp;working&nbsp;this&nbsp;way,&nbsp;I&nbsp;will&nbsp;see&nbsp;if&nbsp;moving&nbsp;this&nbsp;to&nbsp;the&nbsp;game&nbsp;class&nbsp;can&nbsp;still&nbsp;work<br>
+:ivar&nbsp;turnTeller:&nbsp;used&nbsp;by&nbsp;the&nbsp;Turn&nbsp;class&nbsp;to&nbsp;keep&nbsp;track&nbsp;of&nbsp;the&nbsp;player&nbsp;whose&nbsp;has&nbsp;a&nbsp;"teller&nbsp;role"<br>
+:ivar&nbsp;turnModerator:&nbsp;used&nbsp;by&nbsp;the&nbsp;Turn&nbsp;class&nbsp;to&nbsp;keep&nbsp;track&nbsp;of&nbsp;the&nbsp;player&nbsp;whose&nbsp;has&nbsp;a&nbsp;"moderator&nbsp;role"<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Player-__init__"><strong>__init__</strong></a>(self, nickname, email, role)</dt></dl>
+
+<dl><dt><a name="Player-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><tt>#&nbsp;TODO:&nbsp;what&nbsp;else&nbsp;will&nbsp;we&nbsp;need?</tt></dd></dl>
+
+<dl><dt><a name="Player-isGuesser"><strong>isGuesser</strong></a>(self)</dt><dd><tt>-&nbsp;checks&nbsp;if&nbsp;the&nbsp;player&nbsp;is&nbsp;a&nbsp;guesser<br>
+:return:&nbsp;True&nbsp;if&nbsp;player's&nbsp;role&nbsp;is&nbsp;guesser,&nbsp;False&nbsp;otherwise<br>
+:rtype:&nbsp;bool</tt></dd></dl>
+
+<dl><dt><a name="Player-isModerator"><strong>isModerator</strong></a>(self)</dt><dd><tt>-&nbsp;checks&nbsp;if&nbsp;the&nbsp;player&nbsp;is&nbsp;a&nbsp;moderator<br>
+:return:&nbsp;True&nbsp;if&nbsp;player's&nbsp;role&nbsp;is&nbsp;moderator,&nbsp;False&nbsp;otherwise<br>
+:rtype:&nbsp;bool</tt></dd></dl>
+
+<dl><dt><a name="Player-isObserver"><strong>isObserver</strong></a>(self)</dt><dd><tt>-&nbsp;checks&nbsp;if&nbsp;the&nbsp;player&nbsp;is&nbsp;an&nbsp;observer<br>
+:return:&nbsp;True&nbsp;if&nbsp;player's&nbsp;role&nbsp;is&nbsp;observer,&nbsp;False&nbsp;otherwise<br>
+:rtype:&nbsp;bool</tt></dd></dl>
+
+<dl><dt><a name="Player-isTeller"><strong>isTeller</strong></a>(self)</dt><dd><tt>-&nbsp;checks&nbsp;if&nbsp;the&nbsp;player&nbsp;is&nbsp;a&nbsp;teller<br>
+:return:&nbsp;True&nbsp;if&nbsp;player's&nbsp;role&nbsp;is&nbsp;teller,&nbsp;False&nbsp;otherwise<br>
+:rtype:&nbsp;bool</tt></dd></dl>
+
+<dl><dt><a name="Player-setGuesser"><strong>setGuesser</strong></a>(self)</dt><dd><tt>-&nbsp;sets&nbsp;the&nbsp;role&nbsp;of&nbsp;the&nbsp;player&nbsp;to&nbsp;GUESSER</tt></dd></dl>
+
+<dl><dt><a name="Player-setModerator"><strong>setModerator</strong></a>(self)</dt><dd><tt>-&nbsp;sets&nbsp;the&nbsp;role&nbsp;of&nbsp;the&nbsp;player&nbsp;to&nbsp;MODERATOR</tt></dd></dl>
+
+<dl><dt><a name="Player-setObserver"><strong>setObserver</strong></a>(self)</dt><dd><tt>-&nbsp;sets&nbsp;the&nbsp;role&nbsp;of&nbsp;the&nbsp;player&nbsp;to&nbsp;OBSERVER</tt></dd></dl>
+
+<dl><dt><a name="Player-setTeller"><strong>setTeller</strong></a>(self)</dt><dd><tt>-&nbsp;sets&nbsp;the&nbsp;role&nbsp;of&nbsp;the&nbsp;player&nbsp;to&nbsp;TELLER</tt></dd></dl>
+
+<hr>
+Static methods defined here:<br>
+<dl><dt><a name="Player-emailExists"><strong>emailExists</strong></a>(session, email)</dt><dd><tt>-&nbsp;checks&nbsp;if&nbsp;the&nbsp;entered&nbsp;email&nbsp;already&nbsp;exists<br>
+:param&nbsp;session:&nbsp;database&nbsp;session<br>
+:type&nbsp;session:&nbsp;sqlalchemy.orm.Session<br>
+:param&nbsp;email:&nbsp;player's&nbsp;email<br>
+:type&nbsp;email:&nbsp;string<br>
+:return:&nbsp;True&nbsp;if&nbsp;the&nbsp;email&nbsp;exists,&nbsp;False&nbsp;otherwise<br>
+:rtype:&nbsp;bool</tt></dd></dl>
+
+<dl><dt><a name="Player-findPlayerByEmail"><strong>findPlayerByEmail</strong></a>(session, email)</dt><dd><tt>-&nbsp;finds&nbsp;the&nbsp;player&nbsp;by&nbsp;email<br>
+:param&nbsp;session:&nbsp;database&nbsp;session<br>
+:type&nbsp;session:&nbsp;sqlalchemy.orm.Session<br>
+:param&nbsp;email:&nbsp;player's&nbsp;email<br>
+:type&nbsp;email:&nbsp;string<br>
+:return:&nbsp;<a href="#Player">Player</a>&nbsp;if&nbsp;the&nbsp;player&nbsp;exists,&nbsp;None&nbsp;otherwise<br>
+:rtype:&nbsp;<a href="#Player">Player</a></tt></dd></dl>
+
+<dl><dt><a name="Player-findPlayerById"><strong>findPlayerById</strong></a>(session, id)</dt><dd><tt>-&nbsp;finds&nbsp;the&nbsp;player&nbsp;by&nbsp;id<br>
+:param&nbsp;session:&nbsp;database&nbsp;session<br>
+:type&nbsp;session:&nbsp;sqlalchemy.orm.Session<br>
+:param&nbsp;id:&nbsp;player's&nbsp;id<br>
+:type&nbsp;id:&nbsp;int<br>
+:return:&nbsp;<a href="#Player">Player</a>&nbsp;if&nbsp;the&nbsp;player&nbsp;exists,&nbsp;None&nbsp;otherwise<br>
+:rtype:&nbsp;<a href="#Player">Player</a></tt></dd></dl>
+
+<dl><dt><a name="Player-isValidPlayer"><strong>isValidPlayer</strong></a>(data)</dt><dd><tt>-&nbsp;validates&nbsp;the&nbsp;form&nbsp;data&nbsp;used&nbsp;for&nbsp;creating&nbsp;the&nbsp;player<br>
+:param&nbsp;data:&nbsp;the&nbsp;key-value&nbsp;pairs&nbsp;of&nbsp;the&nbsp;form&nbsp;data&nbsp;received&nbsp;from&nbsp;the&nbsp;front&nbsp;end<br>
+:type&nbsp;data:&nbsp;dictionary<br>
+:return:&nbsp;the&nbsp;dictionary&nbsp;with&nbsp;key&nbsp;valid&nbsp;=&nbsp;False&nbsp;if&nbsp;not&nbsp;all&nbsp;data&nbsp;is&nbsp;not&nbsp;valid,&nbsp;valid&nbsp;=&nbsp;True&nbsp;if&nbsp;all&nbsp;data&nbsp;is&nbsp;valid<br>
+:rtype:&nbsp;dictionary</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>GUESSER</strong> = 3<br>
+<strong>MODERATOR</strong> = 2<br>
+<strong>OBSERVER</strong> = 4<br>
+<strong>TELLER</strong> = 1<br>
+<strong>http_session</strong> = &lt;LocalProxy unbound&gt;</td></tr></table>
+</body></html>
