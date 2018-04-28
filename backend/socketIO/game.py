@@ -83,7 +83,6 @@ def init_game(data):
         # inform the creator of the game error
         errorMessage = feedback['message']
         return
-    print("socketIOClients is :" ,globalVars.socketIOClients)
     initiator = PlayerModel.findPlayerByEmail(session,  globalVars.socketIOClients[request.sid])
 
     gameArgs = {k:v for(k,v) in data.items() if k in ['name','turnDuration','numberOfTeams','maxPlayersPerTeam','pointsToWin','skipPenaltyAfter','withGameChangers'] }
@@ -260,7 +259,7 @@ def setup_turn_roles(gameID,gameChanger=-1):
     game = GameModel.getGameById(gameID,session)
     players = game.getAllPlayers()
     round = game.getCurrentRound()
-    turn = round.getCurrentTurn()
+    turn = round.getCurrentTurn(session)
 
     moderator = turn.getModerator()
     teller = turn.getTeller()
@@ -323,8 +322,7 @@ def roll_wheel(data):
     game = GameModel.getGameById(gameID,session)
     # round = game.getCurrentRound()
     round = RoundModel.getLastRound(session, game.id)
-    # turn = round.getCurrentTurn()
-    turn = Turn.getLastTurn(session, round.id)
+    turn = TurnModel.getLastTurn(session, round.id)
     gameChanger = turn.setGameChanger()
     rollWheel = {
         'gameID' : gameID,
@@ -350,7 +348,7 @@ def roll_wheel_test(data):
     print_item(data,"Rolling wheel: ")
     game = GameModel.getGameById(gameID,session)
     round = game.getCurrentRound()
-    turn = round.getCurrentTurn()
+    turn = round.getCurrentTurn(session)
     gameChanger = turn.setGameChangerTest(data['changerID'])
     rollWheel = {
         'gameID' : gameID,
@@ -371,7 +369,7 @@ def start_turn(data):
 
     game = GameModel.getGameById(gameID,session)
     round = game.getCurrentRound()
-    turn = round.getCurrentTurn()
+    turn = round.getCurrentTurn(session)
 
     moderator = turn.getModerator()
     teller = turn.getTeller()
@@ -435,7 +433,8 @@ def load_next_card(data):
 
     game = GameModel.getGameById(gameID,session)
     round = game.getCurrentRound()
-    turn = round.getCurrentTurn()
+    turn = round.getCurrentTurn(session)
+    players=game.getAllPlayers()
 
     moderator = turn.getModerator()
     teller = turn.getTeller()
@@ -463,7 +462,7 @@ def pause_timer(data):
     game = GameModel.getGameById(gameID,session)
     round = game.getCurrentRound()
     session.commit()
-    turn = round.getCurrentTurn()
+    turn = round.getCurrentTurn(session)
     turnID = turn.id
     timer = globalVars.turnTimers[turnID]
     timer.pause()
@@ -477,7 +476,7 @@ def resume_timer(data):
     gameID = data['gameID']
     game = GameModel.getGameById(gameID,session)
     round = game.getCurrentRound()
-    turn = round.getCurrentTurn()
+    turn = round.getCurrentTurn(session)
     turnID = turn.id
     timer = globalVars.turnTimers[turnID]
     timer.resume()
@@ -493,7 +492,7 @@ def turn_complete(data):
     game = GameModel.getGameById(gameID,session)
     players = game.getAllPlayers()
     round = game.getCurrentRound()
-    turn = round.getCurrentTurn()
+    turn = round.getCurrentTurn(session)
     teamScoreData = turn.getAllTeamScores()
 
     print_item(game,"CHECKING Game.isGameOver()")

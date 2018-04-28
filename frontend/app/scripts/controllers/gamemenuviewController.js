@@ -14,8 +14,9 @@ angular.module('frontendApp')
     '$state',
     '$http',
     'loginUser',
+    '$mdToast',
     'debug',
-function ($scope,gameService,$state,$http,loginUser,debug) {
+function ($scope,gameService,$state,$http,loginUser,$mdToast,debug) {
 
   if(debug) console.log("GM View controller");
 
@@ -35,6 +36,7 @@ function ($scope,gameService,$state,$http,loginUser,debug) {
   };
   $scope.turnDurationOptions= [20,30,60];
   $scope.skipOptions= ['infinite',0,3,5];
+  $scope.pointsOptions= [10,30,60];
 
   $scope.gameData.teamData = [];
   $scope.collapseAll = function(data) {
@@ -90,6 +92,34 @@ function ($scope,gameService,$state,$http,loginUser,debug) {
     if(debug){
       console.log($scope.gameData.selectedFreeSkips);
     };
+  };
+
+  $scope.showSimpleToast = function() {
+    var pinTo = $scope.getToastPosition();
+
+    $mdToast.show(
+      $mdToast.simple()
+        .textContent('Simple Toast!')
+        .position(pinTo )
+        .hideDelay(3000)
+    );
+  };
+
+  $scope.showActionToast = function() {
+    var pinTo = $scope.getToastPosition();
+    var toast = $mdToast.simple()
+      .textContent('Marked as read')
+      .action('UNDO')
+      .highlightAction(true)
+      .highlightClass('md-accent')// Accent is used by default, this just demonstrates the usage.
+      .position(pinTo);
+
+    $mdToast.show(toast).then(function(response) {
+      if ( response == 'ok' ) {
+        alert('You clicked the \'UNDO\' action.');
+      }
+    });
+
   };
 
 }]);
