@@ -21,7 +21,8 @@ angular.module('frontendApp')
       teams: {},
       modifier: {},
       assignedRole : {},
-      turnState : 'initializing'
+      turnState : 'initializing',
+      card : {}
     };
 
     var deferred = $q.defer();
@@ -40,6 +41,7 @@ angular.module('frontendApp')
 
     socket.on('turn_finished',function(data){
       currentTurn['turnState'] = 'finished';
+      currentTurn['card']['isPhrase'] = "";
     });
 
     socket.on('timer_finished',function(data){
@@ -77,6 +79,11 @@ angular.module('frontendApp')
     var getGame = function(){
       return deferred.promise;
     };
+
+    socket.on('is_phrase',function(data){
+      console.log("Card is phrase: ",data);
+      Object.assign(currentTurn.card,data);
+    });
 
     socket.on('turn_role_assignment',function(data){
       console.log("ROLE ASSIGNMENT:",data);

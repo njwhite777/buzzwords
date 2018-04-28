@@ -298,7 +298,7 @@ class Turn(Base):
             'card': {
                 'buzzword' : card.buzzword,
                 'forbiddenwords': json.loads(card.forbiddenWords),
-                'phrase' : card.isPhrase,
+                'isPhrase' : card.isPhrase,
             },
             'showCard' : True
         }

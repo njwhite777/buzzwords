@@ -6,7 +6,7 @@ from flask import request
 import sys
 import time
 import globalVars
-from constants import ROUND_KILLER,ALL_GUESSERS,WITHOUT_GAME_CHANGERS
+from constants import ROUND_KILLER,ALL_GUESSERS,WITHOUT_GAME_CHANGERS,GAME_READY
 
 def print_item(item,message):
     print("#################################")
@@ -21,7 +21,7 @@ def print_item(item,message):
 def request_games():
     print("I am requesting!")
     session = globalVars.Session()
-    games = GameModel.getAllGames(session)
+    games = GameModel.getAllGames(session,filter=GAME_READY)
     gDict = dict()
     for game in games:
         maxPlayersPerTeam = game.maxPlayersPerTeam
@@ -385,8 +385,17 @@ def start_turn(data):
 
     emit('load_card',cardData,room=globalVars.socketIOClients[teller.email],namespace='/io/card')
     emit('load_card',cardData,room=globalVars.socketIOClients[moderator.email],namespace='/io/card')
-    turn.startTimer()
 
+    if (cardData['card']['isPhrase']==1):
+        isPhrase = "True"
+    else:
+        isPhrase = "False"
+
+    for player in players:
+
+        emit('is_phrase',{ 'isPhrase': isPhrase },room=globalVars.socketIOClients[player.email],namespace='/io/game')
+
+    turn.startTimer()
     session.commit()
     session.close()
 
@@ -405,6 +414,15 @@ def load_next_card(data):
     cardData['showCard'] = True
     emit('load_card',cardData,room=globalVars.socketIOClients[teller.email],namespace='/io/card')
     emit('load_card',cardData,room=globalVars.socketIOClients[moderator.email],namespace='/io/card')
+
+    if (cardData['card']['isPhrase']==1):
+        isPhrase = "True"
+    else:
+        isPhrase = "False"
+
+    for player in players:
+        emit('is_phrase',{ 'isPhrase': isPhrase },room=globalVars.socketIOClients[player.email],namespace='/io/game')
+
     session.commit()
     session.close()
 
