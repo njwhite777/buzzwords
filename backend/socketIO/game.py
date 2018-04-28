@@ -83,7 +83,7 @@ def init_game(data):
         # inform the creator of the game error
         errorMessage = feedback['message']
         return
-    print("socketIOClients is :" ,socketIOClients)
+    print("socketIOClients is :" ,globalVars.socketIOClients)
     initiator = PlayerModel.findPlayerByEmail(session,  globalVars.socketIOClients[request.sid])
 
     gameArgs = {k:v for(k,v) in data.items() if k in ['name','turnDuration','numberOfTeams','maxPlayersPerTeam','pointsToWin','skipPenaltyAfter','withGameChangers'] }
