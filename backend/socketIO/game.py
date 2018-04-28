@@ -321,8 +321,10 @@ def roll_wheel(data):
     duration = data['duration']
     print_item(data,"Rolling wheel: ")
     game = GameModel.getGameById(gameID,session)
-    round = game.getCurrentRound()
-    turn = round.getCurrentTurn()
+    # round = game.getCurrentRound()
+    round = RoundModel.getLastRound(session, game.id)
+    # turn = round.getCurrentTurn()
+    turn = Turn.getLastTurn(session, round.id)
     gameChanger = turn.setGameChanger()
     rollWheel = {
         'gameID' : gameID,

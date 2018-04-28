@@ -20,8 +20,9 @@ class Team(Base):
     name        = Column(String(256))
     maxPlayersPerTeam=Column(Integer)
     score = Column(Integer)
+    numberOfTurns = Column(Integer)
     players = relationship("Player", backref = "team", lazy = False)
-    turns = relationship("Turn", backref = "team", lazy = False)
+    turns = relationship("Turn", backref = "team", lazy = True)
     gameId = Column(Integer, ForeignKey('game.id'), nullable=True)
 
     def __init__(self, name,maxPlayersPerTeam=5):
@@ -29,6 +30,7 @@ class Team(Base):
         self.score = 0
         self.maxPlayersPerTeam=maxPlayersPerTeam
         self.turns = []
+        self.numberOfTurns = 0
 
     def addPlayer(self,player):
         """
@@ -76,13 +78,21 @@ class Team(Base):
         """
         return session.query(Team).get(id)
 
-    def numberOfTurns(self):
+    def numberOfTurnsOld(self):
         """
             - returns the number of turns the team has played so far
             :return: the number of turns the team has played so far
             :rtype: int
         """
         return len(self.turns)
+
+    # def numberOfTurns(self):
+    #     """
+    #         - returns the number of turns the team has played so far
+    #         :return: the number of turns the team has played so far
+    #         :rtype: int
+    #     """
+    #     return Turn.getNumberOfTeamTurns()
 
     def __repr__(self):
         """string representaion of the team object"""
