@@ -39,13 +39,13 @@ class Turn(Base):
     startTime = Column(DateTime, default=datetime.datetime.utcnow)
     gameChangerNumber = Column(Integer)
     duration = Column(Integer)
-    cardId = Column(Integer, ForeignKey('card.id'), nullable=True)
     turnDuration = Column(Integer)
 
     gameId = Column(Integer, ForeignKey('game.id'), nullable=False)
     roundId = Column(Integer, ForeignKey('round.id'), nullable=True)
     teamId = Column(Integer, ForeignKey('team.id'), nullable=True)
-    card = relationship("Card", foreign_keys=cardId, lazy = False,post_update=True)
+    cardId = Column(Integer,ForeignKey('card.id'), nullable=True)
+    card = relationship("Card", foreign_keys=cardId,lazy=False)
     turnTellerId = Column(Integer, ForeignKey('player.id'), nullable=True)
     teller = relationship('Player', foreign_keys=turnTellerId,post_update=True)
     turnModeratorId = Column(Integer, ForeignKey('player.id'), nullable=True)
@@ -287,6 +287,7 @@ class Turn(Base):
             :return: the selected card
             :rtype: models.Card
         """
+        session = globalVars.Session.object_session(self)
         unusedCards = self.round.game.getUnusedCards()
         if len(unusedCards) == 0:
             return None
@@ -358,6 +359,7 @@ class Turn(Base):
             :param callback: the method called when the timer is paused or has expired
             :type callback: "callback method"
         """
+        session = globalVars.Session.object_session(self)
         players=self.round.game.getAllPlayers()
         playerEmails = [ player.email for player in players ]
         duration = self.turnDuration
@@ -367,6 +369,9 @@ class Turn(Base):
             duration*=.5
         timer = Timer(duration=duration,playerEmails=playerEmails,gameID=self.round.game.id,turnID=self.id)
         globalVars.turnTimers[self.id]=timer
+        # We need to do this here, otherwise, we keep a lock on the DB for the duration of the turn.
+        session.commit()
+        session.close()
         timer.run()
 
     def getTimer(self):
