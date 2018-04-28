@@ -134,7 +134,7 @@ class Game(Base):
         return session.query(Game).get(int(game_id))
 
     @staticmethod
-    def getAllGames(session):
+    def getAllGames(session,filter=2):
         """
             - returns the list of all games in the system
             :param session: the database session
@@ -142,7 +142,7 @@ class Game(Base):
             :return: the list of all games in the system
             :rtype: list<models.Game>
         """
-        return session.query(Game).all()
+        return session.query(Game).filter(Game.gameState<=filter).all()
 
     def setStatePaused(self):
         """

@@ -3,7 +3,7 @@ import datetime
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import sessionmaker, relationship
 from . import Base
-from .turn import Turn 
+from .turn import Turn
 
 class Round(Base):
     """
@@ -35,6 +35,9 @@ class Round(Base):
     @staticmethod
     def getLastRound(session, gameId):
         return session.query(Round).filter(Round.gameId==gameId).order_by(Round.id.desc()).first()
+
+    def getRoundById(roundID,session):
+        return session.query(Round).get(int(roundID))
 
     def addTurn(self, turn):
         """
