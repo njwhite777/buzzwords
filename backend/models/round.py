@@ -20,6 +20,10 @@ class Round(Base):
         self.turns = []
         self.game = game
 
+    @staticmethod
+    def getRoundById(roundID,session):
+        return session.query(Round).get(int(roundID))
+
     def addTurn(self, turn):
         self.turns.append(turn)
 

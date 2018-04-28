@@ -27,6 +27,9 @@ class Player(Base):
         self.game = None
 
     @staticmethod
+    def numberOfRows(session):
+        return session.query(Player).count()
+    @staticmethod
     def isValidPlayer(data):
         feedback = Validator.isValidPlayer(data)
         return feedback

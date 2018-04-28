@@ -82,7 +82,8 @@ def init_game(data):
         # inform the creator of the game error
         errorMessage = feedback['message']
         return
-    initiator = PlayerModel.findPlayerByEmail(session, socketIOClients[request.sid]) #socketIOClients[request.sid].id
+    print("socketIOClients is :" ,socketIOClients)
+    initiator = PlayerModel.findPlayerByEmail(session, socketIOClients[request.sid])
 
     gameArgs = {k:v for(k,v) in data.items() if k in ['name','turnDuration','numberOfTeams','maxPlayersPerTeam','pointsToWin','skipPenaltyAfter','withGameChangers'] }
     # TODO: UNDO THIS!!!###############
@@ -112,7 +113,7 @@ def init_game(data):
 
         tData['name'] = teamObj['name']
         tData['id'] = team.id
-        tData['gameID'] = team.id
+        tData['teamID'] = team.id
         tData['visible'] = True
         tData['playerCount'] = len(team.players)
         tData['maxPlayers'] = game.maxPlayersPerTeam
@@ -191,7 +192,9 @@ def validate_game_start(data):
         ogData[game.id] = gData
         emit('players_on_team',ogData,broadcast=True)
     if(game.readyToStart()):
+        print("\n\nGame can be lunched Now!!!!!!!\n\n")
         emit('show_game_start_button_enabled',room=socketIOClients[initiatorEmail],namespace='/io/view')
+        emit('show_game_start_button_enabled1', namespace='/io/view')
 
     session.close()
 
@@ -326,6 +329,30 @@ def roll_wheel(data):
         'name': gameChanger.name
     }
     emit('my_roll_result',rollWheel)
+    time.sleep(duration + 1.5)
+    emit('enable_start_turn_button')
+    session.commit()
+    session.close()
+
+
+#Test method to set specific game changer I want
+@socketio.on('roll_wheel_test',namespace='/io/game')
+def roll_wheel_test(data):
+    session = Session()
+    gameID = data['gameID']
+    duration = data['duration']
+    print_item(data,"Rolling wheel: ")
+    game = GameModel.getGameById(gameID,session)
+    round = game.getCurrentRound()
+    turn = round.getCurrentTurn()
+    gameChanger = turn.setGameChangerTest(data['changerID'])
+    rollWheel = {
+        'gameID' : gameID,
+        'rollID' : gameChanger.gameChangerId,
+        'description' : gameChanger.description,
+        'name': gameChanger.name
+    }
+    emit('my_roll_result_test',rollWheel)
     time.sleep(duration + 1.5)
     emit('enable_start_turn_button')
     session.commit()
