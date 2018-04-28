@@ -57,7 +57,7 @@ class Game(Base):
     createdTimeStamp = Column(DateTime, default=datetime.datetime.utcnow)
     initiatorID = Column(Integer, ForeignKey('player.id'), nullable=True)
 
-    initiator = relationship("Player", foreign_keys=initiatorID, lazy = False, uselist=False)
+    initiator = relationship("Player", foreign_keys=initiatorID, lazy = True, uselist=False)
     teams = relationship("Team", backref = "game", lazy = False, order_by = "Team.id")
     rounds = relationship("Round", backref = "game", lazy = True)
     usedCards = relationship("Card",secondary=usedCards,lazy = True)

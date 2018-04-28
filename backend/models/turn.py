@@ -45,7 +45,7 @@ class Turn(Base):
     roundId = Column(Integer, ForeignKey('round.id'), nullable=True)
     teamId = Column(Integer, ForeignKey('team.id'), nullable=True)
     cardId = Column(Integer,ForeignKey('card.id'), nullable=True)
-    card = relationship("Card", foreign_keys=cardId,lazy=False)
+    card = relationship("Card", foreign_keys=cardId,lazy=True)
     turnTellerId = Column(Integer, ForeignKey('player.id'), nullable=True)
     teller = relationship('Player', foreign_keys=turnTellerId,post_update=True)
     turnModeratorId = Column(Integer, ForeignKey('player.id'), nullable=True)

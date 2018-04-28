@@ -25,7 +25,7 @@ class Player(Base):
     role = Column(Integer)
     teamID = Column(Integer, ForeignKey('team.id'), nullable=True)
 
-    game = relationship("Game",lazy = False, uselist=False)
+    game = relationship("Game",lazy = True, uselist=False)
     turnTeller = relationship("Turn", foreign_keys='Turn.turnTellerId', backref = "turnTeller", lazy = False, uselist=False)
     turnModerator = relationship("Turn", foreign_keys='Turn.turnModeratorId', backref = "turnModerator", lazy = False, uselist=False)
 
