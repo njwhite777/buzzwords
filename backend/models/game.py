@@ -9,13 +9,7 @@ from . import Base
 from constants import *
 from .validator import *
 import globalVars
-
-# association table with the gameID and cardID to keep track of the cards used in a particular game
-usedCards = Table('used_cards',
-    Base.metadata,
-    Column('game_id', Integer, ForeignKey('game.id'), primary_key=True),
-    Column('card_id', Integer, ForeignKey('card.id'), primary_key=True)
-)
+import json
 
 class Game(Base):
     """
@@ -46,6 +40,8 @@ class Game(Base):
     __tablename__ = 'game'
     id   = Column(Integer, primary_key=True)
     name = Column(String(256))
+    randomizedCardIds = Column(String(3000))
+    cardIndex = Column(Integer)
     gameState = Column(Integer)
     turnDuration = Column(Integer)
     withGameChangers = Column(Integer)
@@ -60,7 +56,6 @@ class Game(Base):
     initiator = relationship("Player", foreign_keys=initiatorID, lazy = True, uselist=False)
     teams = relationship("Team", backref = "game", lazy = False, order_by = "Team.id")
     rounds = relationship("Round", backref = "game", lazy = True)
-    usedCards = relationship("Card",secondary=usedCards,lazy = True)
 
     def __init__(self,initiator,name=None,turnDuration=30,numberOfTeams=2,maxPlayersPerTeam=5,pointsToWin=30,skipPenaltyAfter=3,withGameChangers=1,minRequiredPlayers=2):
         self.name = name
@@ -73,10 +68,11 @@ class Game(Base):
         self.minRequiredPlayers = minRequiredPlayers
         self.skipPenaltyAfter = skipPenaltyAfter
         self.initiator = initiator
-        self.usedCards = []
         self.players = []
         self.rounds = []
         self.teams = []
+        self.randomizedCardIds = json.dumps(Card.getRandomizeCardIds())
+        self.cardIndex = 0
 
     @staticmethod
     def numberOfRows(session):
@@ -172,14 +168,6 @@ class Game(Base):
         """
         self.gameState=GAME_READY
 
-    def addUsedCard(self, card):
-        """
-            - adds the selected card to the list of used cards so it cannot be used again in the same game
-            :param card: the selected card
-            :type card: models.Card
-        """
-        self.usedCards.append(card)
-
     def addTeam(self,team):
         """
             - add the team in the list of teams participating in this game
@@ -196,14 +184,6 @@ class Game(Base):
             :type round: models.Round
         """
         self.rounds.append(round)
-
-    def getUsedCards(self):
-        """
-            - returns the list of all used cards in the game
-            :return: the list of used cards
-            :rtype: list<models.Card>
-        """
-        return self.used_cards
 
     def getAllPlayers(self):
         """
@@ -240,29 +220,17 @@ class Game(Base):
                 guessers.append(player)
         return guessers
 
-    def getUsedCardsIds(self):
-        """
-            - generates and returns a list of used card ids
-            - used in generating the query for finding the unused cards
-            :return: the list of used card ids
-            :rtype: list<int>
-        """
-        usedCardIds = []
-        for card in self.usedCards:
-            usedCardIds.append(card.id)
-        return usedCardIds
-
-    def getUnusedCards(self):
-        """
-            - generates the list of unused cards in the game
-            :return: the list of all unused cards in the game
-            :rtype: list<models.Card>
-        """
-        session=globalVars.Session()
-        query = session.query(Card).filter(~(Card.id.in_(self.getUsedCardsIds())))
-        all = query.all()
-        session.close()
-        return all
+    def getNextCard(self, session):
+        # hardcoding so far, to be replaced by the number of cards read from the card table
+        if (self.cardIndex > 200):
+            self.cardIndex = 0
+            self.randomizedCardIds = json.dumps(Card.getRandomizeCardIds())
+            session.commit()
+        cardIdsList = json.loads(self.randomizedCardIds)
+        card = Card.findCardById(session, cardIdsList[self.cardIndex])
+        session.commit()
+        self.cardIndex += 1
+        return card
 
     def readyToStart(self):
         """
@@ -289,14 +257,6 @@ class Game(Base):
             return False
         return self.teamHasReachedThreshold()
 
-    def hasAtLeastOneRoundOld(self):
-        """
-            - checks if the game has had at least one round
-            :return: True if the game has at least a single round, False otherwise
-            :rtype: bool
-        """
-        return len(self.rounds) > 0
-
     def hasAtLeastOneRound(self, session):
         """
             - checks if the game has had at least one round
@@ -317,20 +277,6 @@ class Game(Base):
             if team.numberOfTurns != turns:
                 return False
         return True
-
-    def getCurrentRoundOld(self):
-        """
-            - finds the latest round in the game
-            - if no round yet in the game, a new round is created
-            :return: the latest added round in the game
-            :rtype: models.Round
-        """
-        session = globalVars.Session.object_session(self)
-        if not self.rounds:
-            newRound = Round(number=0,game=self)
-            self.rounds.append(newRound)
-            session.commit()
-        return self.rounds[len(self.rounds) - 1]
 
     def getCurrentRound(self):
         """
@@ -361,36 +307,6 @@ class Game(Base):
             index += 1
         return None
 
-    def createTurnOld(self):
-        """
-            - creates a new turn  and adds it to the current round
-            - if all teams have played equal number of turns, a new round is created
-            :return: new turn created
-            :rtype: models.Turn
-        """
-        session = globalVars.Session.object_session(self)
-        currentRound = self.getCurrentRound()
-        if self.isRoundOver(currentRound):
-            nextRoundNumber = currentRound.number + 1
-            newRound = Round(number=nextRoundNumber,game=self)
-            self.rounds.append(newRound)
-            currentRound = newRound
-            session.add(currentRound)
-            session.commit()
-        lastTurn = currentRound.getCurrentTurn()
-        if lastTurn:
-            lastTeam = lastTurn.team
-            nextTeam = self.getRoundNextTeam(lastTeam)
-        else:
-            nextTeam = self.teams[0]
-        turn = Turn(team=nextTeam,round=currentRound,game=self,turnDuration=self.turnDuration)
-        session.add(turn)
-        session.commit()
-        turn.setPlayerRoles()
-        # currentRound.addTurn(turn)
-        session.commit()
-        return turn
-
     def createTurn(self):
         """
             - creates a new turn  and adds it to the current round
@@ -414,7 +330,6 @@ class Game(Base):
         else:
             nextTeam = self.teams[0]
         turn = Turn(team=nextTeam,round=currentRound,game=self,turnDuration=self.turnDuration)
-        print("number of turns>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", nextTeam.numberOfTurns)
         nextTeam.numberOfTurns += 1
         session.add(turn)
         session.commit()

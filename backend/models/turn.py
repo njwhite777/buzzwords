@@ -7,6 +7,7 @@ from .player import Player
 from .game_changer import *
 from .timer import Timer
 from . import Base
+from .card import Card
 from constants import *
 import json
 from .team import Team as TeamModel
@@ -47,9 +48,9 @@ class Turn(Base):
     cardId = Column(Integer,ForeignKey('card.id'), nullable=True)
     card = relationship("Card", foreign_keys=cardId,lazy=True)
     turnTellerId = Column(Integer, ForeignKey('player.id'), nullable=True)
-    teller = relationship('Player', foreign_keys=turnTellerId,post_update=True)
+    teller = relationship('Player', foreign_keys=turnTellerId,post_update=True, lazy=True)
     turnModeratorId = Column(Integer, ForeignKey('player.id'), nullable=True)
-    moderator = relationship('Player', foreign_keys=turnModeratorId,post_update=True )
+    moderator = relationship('Player', foreign_keys=turnModeratorId,post_update=True, lazy=True )
 
 
     def __init__(self,game,round,team,turnDuration=30):
@@ -175,18 +176,6 @@ class Turn(Base):
                 observer.role = GUESSER
             session.commit()
 
-    def __getRandomUnusedCard(self, cards):
-        """
-            - finds and returns a random card from the list of given cards
-            :param cards: a list of cards
-            :type cards: list<models.Card>
-            :return: the selected card
-            :rtype: models.Card
-        """
-        numberOfCards = len(cards)
-        randomCardIndex = random.randint(0, numberOfCards - 1)
-        return cards[randomCardIndex]
-
     def setPlayerRoles(self):
         """
             - sets the roles of all players before the turn starts
@@ -309,10 +298,9 @@ class Turn(Base):
             :rtype: models.Card
         """
         session = globalVars.Session.object_session(self)
-        unusedCards = self.round.game.getUnusedCards()
-        if len(unusedCards) == 0:
-            return None
-        card = self.__getRandomUnusedCard(unusedCards)
+        # unusedCards = self.round.game.getUnusedCards()
+        # card = self.__getRandomUnusedCard(unusedCards)
+        card = self.round.game.getNextCard(session)
         self.card = card
 
         cardData = {
@@ -324,7 +312,7 @@ class Turn(Base):
             'showCard' : True
         }
 
-        self.round.game.addUsedCard(card)
+        # self.round.game.addUsedCard(card)
         if self.gameChangerNumber == NO_EXCLUDED_WORDS:
             cardData['card']['forbiddenwords'] = []
         return cardData
