@@ -46,7 +46,7 @@
 
     <md-input-container class="md-block" flex-gt-sm>
       <label>Number of Teams </label>
-      <input name="numberOfTeams" id="gameData.numberOfTeams" type = "number" ng-model ="gameData.numberOfTeams" ng-change="forceBack(gameData,'numberOfTeams',5,1)" ng-model-options='{debounce:1000}'>
+      <input name="numberOfTeams" id="gameData.numberOfTeams" type = "number" ng-model ="gameData.numberOfTeams" ng-change="forceBack(gameData,'numberOfTeams',5,2)" ng-model-options='{debounce:1000}'>
     </md-input-container>
   </div>
     <md-list>
@@ -63,7 +63,7 @@
   </md-input-container>
 
   <md-input-container class="md-block" flex-gt-sm>
-    Max Players/Team <input name="playerNumber" id="gameData.maxPlayersPerTeam" type = "number" ng-change="forceBack(gameData,'maxPlayersPerTeam',6,2);formFieldChanged(gameData.maxPlayersPerTeam)" ng-model-options='{debounce:1000}'  ng-model ="gameData.maxPlayersPerTeam">
+    Max Players/Team <input name="playerNumber" id="gameData.maxPlayersPerTeam" type = "number" ng-change="forceBack(gameData,'maxPlayersPerTeam',5,2);formFieldChanged(gameData.maxPlayersPerTeam)" ng-model-options='{debounce:1000}'  ng-model ="gameData.maxPlayersPerTeam">
   </md-input-container>
 
   <!-- <md-input-container class="md-block" flex-gt-sm>
@@ -71,13 +71,13 @@
   </md-input-container> -->
 
   <md-input-container class="md-block" flex-gt-sm> Turn Duration
-  <md-select  placeholder="Turn Duration" ng-change="getData();formFieldChanged(gameData.turnDuration)" ng-model="gameData.turnDuration">
+  <md-select  placeholder="Turn Duration" ng-change="formFieldChanged(gameData.turnDuration)" ng-model="gameData.turnDuration">
     <md-option ng-value="opt" ng-repeat="opt in turnDurationOptions" >{{ opt }}</md-option>
   </md-select>
   </md-input-container>
 
   <md-input-container class="md-block" flex-gt-sm> Free Skips
-  <md-select  placeholder="Free Skips" ng-change="getData();formFieldChanged(gameData.skipPenaltyAfter)" ng-model="gameData.skipPenaltyAfter">
+  <md-select  placeholder="Free Skips" ng-change="formFieldChanged(gameData.skipPenaltyAfter)" ng-model="gameData.skipPenaltyAfter">
     <md-option ng-value="opt" ng-repeat="opt in skipOptions" >{{ opt }}</md-option>
   </md-select>
   </md-input-container>

@@ -6,6 +6,7 @@ from flask import request
 import sys
 import time
 import globalVars
+from models import validator
 from constants import ROUND_KILLER,ALL_GUESSERS,WITHOUT_GAME_CHANGERS,GAME_READY
 
 def print_item(item,message):
@@ -51,13 +52,16 @@ def request_games():
 def validate_game(data):
     # TODO: returns if the game is valid or not.
     # emits only to the requesting client.
-    if(data['_gameValid']):
-        data['valid']=True
-        print_item(data,'Game config: ')
-        emit('show_game_init_button_enabled',data)
+    validatorObj = validator.Validator()
+    returnMessage = validatorObj.isValidGame(data)
+
+    if(returnMessage['valid']):
+        print()
+        print("VALID GAME!!!")
+        print(returnMessage)
+        emit('show_game_init_button_enabled',returnMessage)
     else:
-        data['valid']=False
-        emit('show_game_init_button_enabled',data)
+        emit('show_game_init_button_enabled',returnMessage)
 
 # init_game: once a game is validated, a client should be able to transmit an init_game.
 #  once this has happened and the game has been inited in the db,

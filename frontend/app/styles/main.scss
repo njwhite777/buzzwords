@@ -37,6 +37,13 @@ $default-font: $font-cabin;
   width: $size;
 }
 
+.md-toast-text{
+  font-size: 20px;
+}
+.md-toast-content{
+  padding: 12px;
+}
+
 .md-icon-72 {
   @include md-icon-size(72px);
 }

@@ -8,7 +8,7 @@
  */
 
 angular.module('frontendApp')
-  .service('gameService',['socketService','$http','currentGameService','debug',function(socketService,$http,currentGameService,debug){
+  .service('gameService',['socketService','$http','currentGameService','$rootScope','debug',function(socketService,$http,currentGameService,$rootScope,debug){
     // This service listens to the created game event and adds a new game to the list when one is created.
 
     var games = {};
@@ -26,7 +26,7 @@ angular.module('frontendApp')
     // Called with every update of for fields.
     var validateGameConfig = function(game){
       gameCreateData.game = game;
-      gameCreateData.game._gameValid = true;
+      console.log("VALIDATING GAME",game);
       socket.emit('validate_game_config',gameCreateData.game);
     };
 
@@ -48,14 +48,18 @@ angular.module('frontendApp')
     // Game initialization:
     // Handles the event wherein the backend tells us the game is ready to be initialized.
     socket.on('show_game_init_button_enabled',function(data){
+      // Must get the game name here
       if(data.name == gameCreateData.game.name){
         gameCreateData.showGameStartButton=true;
         gameCreateData.backendValidatedGame=data;
+      }else{
+        gameCreateData.showGameStartButton=false;
+        $rootScope.$emit('invalid_game_message',data);
       }
     });
 
     // Called when player clicks the button to initialize the game
-    var initGame = function(){
+    var initGame = function() {
       socket.emit('init_game',gameCreateData.backendValidatedGame);
     }
     // #############################################################

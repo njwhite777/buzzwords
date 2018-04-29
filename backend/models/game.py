@@ -98,7 +98,8 @@ class Game(Base):
             :return: a dictionary with valid = True if all the data is valid, if part of the data is invalid a dictionary with valid = False and message = "error message" is returned
             :rtype: dictionary
         """
-        feedback = Validator.isValidGame(data)
+        validator = Validator()
+        feedback = validator.isValidGame(data)
         if not feedback['valid']:
             return feedback
         if Game.gameNameExists(session, data['name']):

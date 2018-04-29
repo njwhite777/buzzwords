@@ -143,7 +143,7 @@ class Validator():
             return {'valid' : False, 'message' : 'invalid email'}
         return {'valid' : True, 'message' : 'valid'}
 
-    def isValidGame(data):
+    def isValidGame(self,data):
         """
             - validates all the game input received from the client application
             :param data: user input in a dictionary
@@ -167,6 +167,15 @@ class Validator():
         minNumberOfPointsToWin = 10
         maxNumberOfPointsToWin = 60
 
+        if('teamData' in data):
+            teamNames = [ team['name'] for team in data['teamData'] ]
+            for idx,teamName in enumerate(teamNames):
+                if( teamName in teamNames[idx+1:] ):
+                    return {'valid' : False, 'message' : 'Team names must be unique in each game!'}
+            for team in data['teamData']:
+                if(not Validator.isBetween(len(team['name']),2,128)):
+                    return {'valid' : False, 'message' : 'Team names must be longer than 2 characters and less than 128 characters'}
+
         if (not Validator.isLengthBetween(data['name'], minGameLength, maxGameLength)):
             return {'valid' : False, 'message' : 'game name must be between ' + str(minGameLength) + ' and ' + str(maxGameLength) + ' characters'}
         elif (not Validator.isBetween(data['turnDuration'],minTurnDuration,maxTurnDuration)):
@@ -178,4 +187,5 @@ class Validator():
         elif (not Validator.isBetween(data['pointsToWin'],minNumberOfPointsToWin,maxNumberOfPointsToWin)):
             return {'valid' : False, 'message' : 'points to win must be between ' + str(minNumberOfPointsToWin) + ' and ' + str(maxNumberOfPointsToWin) + ' inclusive'}
         else:
-            return {'valid' : True, 'message' : 'Valid'}
+            data['valid']= True
+            return data
