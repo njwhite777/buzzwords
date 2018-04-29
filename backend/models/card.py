@@ -2,6 +2,8 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import sessionmaker, relationship, session
 from . import Base
+import random
+import globalVars
 
 class Card(Base):
     """
@@ -62,6 +64,20 @@ class Card(Base):
             :rtype: Card
         """
         return session.query(Card).get(id)
+
+    @staticmethod
+    def getRandomizeCardIds():
+        # numberOfCards = Card.numberOfRows(session) # can't think of any easy way of passing the session, hardcoding to 200
+        numberOfCards = 200
+        allIds = []
+        randomizedIds = []
+        for i in range(1, numberOfCards + 1):
+            allIds.append(i)
+        for i in range(0, numberOfCards):
+            index = random.randint(0, numberOfCards - i - 1)
+            randomizedIds.append(allIds[index])
+            allIds.remove(allIds[index])
+        return randomizedIds
 
     def removeForbiddenWords(self):
         """removes forbidden words from the card, used when "NO_FORBIDDEN_WORDS" game changer has been selected"""
