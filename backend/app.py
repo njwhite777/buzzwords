@@ -47,3 +47,4 @@ def getQuizletCards(login='Nathan_White34',client_id='SN77uEA94G',endpoint='2589
         session.add(card)
     session.commit()
     session.close()
+
