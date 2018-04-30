@@ -47,6 +47,7 @@ class Game(Base):
     withGameChangers = Column(Integer)
     pointsToWin = Column(Integer)
     maxPlayersPerTeam = Column(Integer)
+    maxRoundsPerGame = Column(Integer)
     numberOfTeams = Column(Integer)
     skipPenaltyAfter = Column(Integer)
     minRequiredPlayers=Column(Integer)
@@ -57,16 +58,17 @@ class Game(Base):
     teams = relationship("Team", backref = "game", lazy = False, order_by = "Team.id")
     rounds = relationship("Round", backref = "game", lazy = True)
 
-    def __init__(self,initiator,name=None,turnDuration=60,numberOfTeams=2,maxPlayersPerTeam=5,pointsToWin=30,skipPenaltyAfter=3,withGameChangers=1,minRequiredPlayers=2):
+    def __init__(self,initiator,name=None,turnDuration=60,numberOfTeams=2,maxPlayersPerTeam=5,maxRoundsPerGame=5,pointsToWin=30,skipPenaltyAfter=3,withGameChangers=1,minRequiredPlayers=2):
         self.name = name
         self.gameState    = GAME_CREATED
         self.turnDuration = turnDuration
-        self.withGameChangers = withGameChangers
         self.pointsToWin  = pointsToWin
-        self.maxPlayersPerTeam = maxPlayersPerTeam
         self.numberOfTeams = numberOfTeams
-        self.minRequiredPlayers = minRequiredPlayers
+        self.maxRoundsPerGame = maxRoundsPerGame
         self.skipPenaltyAfter = skipPenaltyAfter
+        self.withGameChangers = withGameChangers
+        self.maxPlayersPerTeam = maxPlayersPerTeam
+        self.minRequiredPlayers = minRequiredPlayers
         self.initiator = initiator
         self.players = []
         self.rounds = []
@@ -256,7 +258,10 @@ class Game(Base):
             return False
         elif not(self.teamsHaveEqualTurns()):
             return False
-        return self.teamHasReachedThreshold()
+        return self.teamHasReachedThreshold() or self.reachedMaxRounds()
+
+    def reachedMaxRounds(self):
+        return self.maxRoundsPerGame == len(self.rounds)
 
     def hasAtLeastOneRound(self, session):
         """
@@ -356,7 +361,6 @@ class Game(Base):
         for team in self.teams:
             print(team.name, team.score, self.pointsToWin)
             if team.score >= self.pointsToWin:
-                print('we have a winner')
                 return True
         return False
 
@@ -364,5 +368,5 @@ class Game(Base):
         """
             - returns the string representation of the game object
         """
-        return "<Game(id='{}', name='{}', pointsToWin='{}')>".format(
-            self.id,self.name,self.pointsToWin)
+        return "<Game(id='{}', name='{}', pointsToWin='{}',maxRoundsPerGame={})>".format(
+            self.id,self.name,self.pointsToWin,self.maxRoundsPerGame)

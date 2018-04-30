@@ -32,6 +32,7 @@ function ($scope,gameService,$state,$http,loginUser,$mdToast,$rootScope,debug) {
     pointsToWin : 30,
     numberOfTeams: 2,
     skipPenaltyAfter : 3,
+    maxRoundsPerGame: 5,
     gameChangers : true,
     name:""
   };
@@ -42,7 +43,8 @@ function ($scope,gameService,$state,$http,loginUser,$mdToast,$rootScope,debug) {
     'skipPenaltyAfter' : 'Free Skips',
     'maxPlayersPerTeam': 'Max Players/Team',
     'numberOfTeams' : 'Number of Teams',
-    'pointsToWin' : 'Points to Win'
+    'pointsToWin' : 'Points to Win',
+    'maxRoundsPerGame': "The maximum rounds per game"
   }
 
   $scope.gameData.teamData = [];

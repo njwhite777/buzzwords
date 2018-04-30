@@ -50,6 +50,7 @@ angular.module('frontendApp')
     socket.on('show_game_init_button_enabled',function(data){
       // Must get the game name here
       if(data.name == gameCreateData.game.name){
+        console.log("HERE!!!",data);
         gameCreateData.showGameStartButton=true;
         gameCreateData.backendValidatedGame=data;
       }else{
