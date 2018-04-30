@@ -91,7 +91,7 @@ def init_game(data):
 
     gameArgs = {k:v for(k,v) in data.items() if k in ['name','turnDuration','numberOfTeams','maxPlayersPerTeam','pointsToWin','skipPenaltyAfter','withGameChangers'] }
     # TODO: UNDO THIS!!!###############
-    gameArgs['turnDuration'] = 5
+    # gameArgs['turnDuration'] = 10
     gameArgs['pointsToWin'] = 5
     ###################################
     gameArgs['initiator'] = initiator

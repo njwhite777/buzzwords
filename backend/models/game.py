@@ -57,7 +57,7 @@ class Game(Base):
     teams = relationship("Team", backref = "game", lazy = False, order_by = "Team.id")
     rounds = relationship("Round", backref = "game", lazy = True)
 
-    def __init__(self,initiator,name=None,turnDuration=30,numberOfTeams=2,maxPlayersPerTeam=5,pointsToWin=30,skipPenaltyAfter=3,withGameChangers=1,minRequiredPlayers=2):
+    def __init__(self,initiator,name=None,turnDuration=60,numberOfTeams=2,maxPlayersPerTeam=5,pointsToWin=30,skipPenaltyAfter=3,withGameChangers=1,minRequiredPlayers=2):
         self.name = name
         self.gameState    = GAME_CREATED
         self.turnDuration = turnDuration
