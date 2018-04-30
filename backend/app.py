@@ -9,6 +9,7 @@ import quizlet
 import json
 import sys
 from models import Base as AppModelBase
+from IPython import embed
 
 app=Flask(__name__)
 app.config.from_object('settings')
@@ -26,6 +27,7 @@ if(app.config['ENVIRONMENT'] == 'dev'):
     engine = create_engine(app.config['DB_URI'])
     Session = sessionmaker(bind=engine)
     if(app.config['REBUILDDB']):
+        print("rebuilding db")
         create_db(engine)
         AppModelBase.metadata.create_all(engine)
 elif(app.config['ENVIRONMENT'] == 'prod'):
@@ -51,3 +53,5 @@ def getQuizletCards(login='Nathan_White34',client_id='SN77uEA94G',endpoint='2589
         session.add(card)
     session.commit()
     session.close()
+
+embed()
