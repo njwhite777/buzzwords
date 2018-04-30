@@ -1,0 +1,238 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module models.game</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="models.html"><font color="#ffffff">models</font></a>.game</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/aron/programming/buzzwords/backend/models/game.py">/home/aron/programming/buzzwords/backend/models/game.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="datetime.html">datetime</a><br>
+</td><td width="25%" valign=top><a href="re.html">re</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="models.game.html#Game">Game</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Game">class <strong>Game</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>-&nbsp;the&nbsp;class&nbsp;representaion&nbsp;of&nbsp;the&nbsp;game<br>
+:ivar&nbsp;id:&nbsp;the&nbsp;primary&nbsp;key&nbsp;of&nbsp;the&nbsp;table<br>
+:ivar&nbsp;name:&nbsp;the&nbsp;name&nbsp;of&nbsp;the&nbsp;game,&nbsp;must&nbsp;be&nbsp;between&nbsp;2&nbsp;and&nbsp;255&nbsp;characters&nbsp;inclusive<br>
+:ivar&nbsp;gameState:&nbsp;the&nbsp;game&nbsp;can&nbsp;be&nbsp;in&nbsp;one&nbsp;of&nbsp;the&nbsp;5&nbsp;states:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;GAME_CREATED&nbsp;=&nbsp;1&nbsp;#&nbsp;the&nbsp;game&nbsp;has&nbsp;been&nbsp;created&nbsp;but&nbsp;is&nbsp;not&nbsp;ready&nbsp;/&nbsp;valid&nbsp;to&nbsp;start<br>
+&nbsp;&nbsp;&nbsp;&nbsp;GAME_READY&nbsp;=&nbsp;2&nbsp;#&nbsp;the&nbsp;game&nbsp;can&nbsp;be&nbsp;started<br>
+&nbsp;&nbsp;&nbsp;&nbsp;GAME_PLAYING&nbsp;=&nbsp;3&nbsp;#&nbsp;the&nbsp;game&nbsp;has&nbsp;been&nbsp;started&nbsp;and&nbsp;is&nbsp;in&nbsp;playing&nbsp;mode<br>
+&nbsp;&nbsp;&nbsp;&nbsp;GAME_PAUSED&nbsp;=&nbsp;4&nbsp;#&nbsp;the&nbsp;game&nbsp;has&nbsp;been&nbsp;paused<br>
+&nbsp;&nbsp;&nbsp;&nbsp;GAME_COMPLETE&nbsp;=&nbsp;5&nbsp;#&nbsp;the&nbsp;game&nbsp;is&nbsp;over<br>
+:ivar&nbsp;turnDuration:&nbsp;the&nbsp;default&nbsp;duration&nbsp;of&nbsp;the&nbsp;turn&nbsp;in&nbsp;seconds,&nbsp;provide&nbsp;by&nbsp;the&nbsp;game&nbsp;creator<br>
+:ivar&nbsp;withGameChangers:&nbsp;the&nbsp;value&nbsp;which&nbsp;tells&nbsp;whether&nbsp;game&nbsp;is&nbsp;to&nbsp;be&nbsp;played&nbsp;with&nbsp;or&nbsp;without&nbsp;game&nbsp;changers,currently&nbsp;not&nbsp;used,&nbsp;will&nbsp;be&nbsp;added&nbsp;in&nbsp;the&nbsp;next&nbsp;version<br>
+:ivar&nbsp;pointsToWin:&nbsp;the&nbsp;number&nbsp;of&nbsp;points&nbsp;if&nbsp;reached&nbsp;by&nbsp;one&nbsp;or&nbsp;more&nbsp;teams&nbsp;the&nbsp;game&nbsp;is&nbsp;over&nbsp;after&nbsp;all&nbsp;teams&nbsp;have&nbsp;played&nbsp;equal&nbsp;number&nbsp;of&nbsp;turns,&nbsp;provided&nbsp;by&nbsp;the&nbsp;game&nbsp;creator<br>
+:ivar&nbsp;maxPlayersPerTeam:&nbsp;the&nbsp;maximum&nbsp;number&nbsp;of&nbsp;accpted&nbsp;players&nbsp;in&nbsp;team,&nbsp;provided&nbsp;by&nbsp;the&nbsp;game&nbsp;creator<br>
+:ivar&nbsp;numberOfTeams:&nbsp;number&nbsp;of&nbsp;teams&nbsp;in&nbsp;the&nbsp;game,&nbsp;privided&nbsp;by&nbsp;the&nbsp;game&nbsp;creator<br>
+:ivar&nbsp;skipPenaltyAfter:&nbsp;the&nbsp;number&nbsp;of&nbsp;free&nbsp;skips&nbsp;provided&nbsp;in&nbsp;each&nbsp;turn,&nbsp;has&nbsp;no&nbsp;impact&nbsp;if&nbsp;UNLIMITED_SKIPS&nbsp;game&nbsp;changer&nbsp;is&nbsp;selected<br>
+:ivar&nbsp;minRequiredPlayers:&nbsp;the&nbsp;minimum&nbsp;number&nbsp;of&nbsp;players&nbsp;allowed&nbsp;in&nbsp;the&nbsp;team,&nbsp;the&nbsp;default&nbsp;is&nbsp;two(2)<br>
+:ivar&nbsp;createdTimeStamp:&nbsp;date&nbsp;and&nbsp;time&nbsp;the&nbsp;game&nbsp;has&nbsp;been&nbsp;created<br>
+:ivar&nbsp;initiatorID:&nbsp;the&nbsp;foreign&nbsp;key&nbsp;from&nbsp;the&nbsp;player&nbsp;table&nbsp;to&nbsp;keep&nbsp;track&nbsp;of&nbsp;the&nbsp;game&nbsp;creator<br>
+:ivar&nbsp;initiator:&nbsp;the&nbsp;player&nbsp;who&nbsp;iniated&nbsp;the&nbsp;game<br>
+:ivar&nbsp;teams:&nbsp;the&nbsp;list&nbsp;of&nbsp;teams&nbsp;in&nbsp;the&nbsp;game<br>
+:ivar&nbsp;rounds:&nbsp;the&nbsp;list&nbsp;of&nbsp;rounds&nbsp;in&nbsp;the&nbsp;game<br>
+:ivar&nbsp;usedCards:&nbsp;the&nbsp;list&nbsp;of&nbsp;cards&nbsp;which&nbsp;have&nbsp;already&nbsp;been&nbsp;used&nbsp;in&nbsp;the&nbsp;game<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Game-__init__"><strong>__init__</strong></a>(self, initiator, name=None, turnDuration=30, numberOfTeams=2, maxPlayersPerTeam=5, pointsToWin=30, skipPenaltyAfter=3, withGameChangers=1, minRequiredPlayers=2)</dt></dl>
+
+<dl><dt><a name="Game-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><tt>-&nbsp;returns&nbsp;the&nbsp;string&nbsp;representation&nbsp;of&nbsp;the&nbsp;game&nbsp;<a href="builtins.html#object">object</a></tt></dd></dl>
+
+<dl><dt><a name="Game-addRound"><strong>addRound</strong></a>(self, round)</dt><dd><tt>-&nbsp;adds&nbsp;a&nbsp;new&nbsp;round&nbsp;in&nbsp;the&nbsp;list&nbsp;of&nbsp;rounds&nbsp;played&nbsp;in&nbsp;the&nbsp;game<br>
+-&nbsp;a&nbsp;new&nbsp;round&nbsp;is&nbsp;created&nbsp;every&nbsp;time&nbsp;the&nbsp;first&nbsp;team&nbsp;starts&nbsp;a&nbsp;new&nbsp;turn<br>
+:param&nbsp;round:&nbsp;the&nbsp;new&nbsp;round&nbsp;to&nbsp;be&nbsp;added&nbsp;to&nbsp;the&nbsp;game<br>
+:type&nbsp;round:&nbsp;models.Round</tt></dd></dl>
+
+<dl><dt><a name="Game-addTeam"><strong>addTeam</strong></a>(self, team)</dt><dd><tt>-&nbsp;add&nbsp;the&nbsp;team&nbsp;in&nbsp;the&nbsp;list&nbsp;of&nbsp;teams&nbsp;participating&nbsp;in&nbsp;this&nbsp;game<br>
+:param&nbsp;team:&nbsp;the&nbsp;new&nbsp;team&nbsp;to&nbsp;be&nbsp;added<br>
+:type&nbsp;team:&nbsp;models.Team</tt></dd></dl>
+
+<dl><dt><a name="Game-addUsedCard"><strong>addUsedCard</strong></a>(self, card)</dt><dd><tt>-&nbsp;adds&nbsp;the&nbsp;selected&nbsp;card&nbsp;to&nbsp;the&nbsp;list&nbsp;of&nbsp;used&nbsp;cards&nbsp;so&nbsp;it&nbsp;cannot&nbsp;be&nbsp;used&nbsp;again&nbsp;in&nbsp;the&nbsp;same&nbsp;game<br>
+:param&nbsp;card:&nbsp;the&nbsp;selected&nbsp;card<br>
+:type&nbsp;card:&nbsp;models.Card</tt></dd></dl>
+
+<dl><dt><a name="Game-createTurn"><strong>createTurn</strong></a>(self)</dt><dd><tt>-&nbsp;creates&nbsp;a&nbsp;new&nbsp;turn&nbsp;&nbsp;and&nbsp;adds&nbsp;it&nbsp;to&nbsp;the&nbsp;current&nbsp;round<br>
+-&nbsp;if&nbsp;all&nbsp;teams&nbsp;have&nbsp;played&nbsp;equal&nbsp;number&nbsp;of&nbsp;turns,&nbsp;a&nbsp;new&nbsp;round&nbsp;is&nbsp;created<br>
+:return:&nbsp;new&nbsp;turn&nbsp;created<br>
+:rtype:&nbsp;models.Turn</tt></dd></dl>
+
+<dl><dt><a name="Game-getAllPlayers"><strong>getAllPlayers</strong></a>(self)</dt><dd><tt>-&nbsp;returns&nbsp;the&nbsp;list&nbsp;of&nbsp;all&nbsp;players&nbsp;participating&nbsp;in&nbsp;the&nbsp;game<br>
+:return:&nbsp;the&nbsp;list&nbsp;of&nbsp;all&nbsp;players&nbsp;in&nbsp;the&nbsp;game<br>
+:rtype:&nbsp;list&lt;models.Player&gt;</tt></dd></dl>
+
+<dl><dt><a name="Game-getCurrentRound"><strong>getCurrentRound</strong></a>(self)</dt><dd><tt>-&nbsp;finds&nbsp;the&nbsp;latest&nbsp;round&nbsp;in&nbsp;the&nbsp;game<br>
+-&nbsp;if&nbsp;no&nbsp;round&nbsp;yet&nbsp;in&nbsp;the&nbsp;game,&nbsp;a&nbsp;new&nbsp;round&nbsp;is&nbsp;created<br>
+:return:&nbsp;the&nbsp;latest&nbsp;added&nbsp;round&nbsp;in&nbsp;the&nbsp;game<br>
+:rtype:&nbsp;models.Round</tt></dd></dl>
+
+<dl><dt><a name="Game-getGuessers"><strong>getGuessers</strong></a>(self)</dt><dd><tt>-&nbsp;returns&nbsp;the&nbsp;list&nbsp;of&nbsp;all&nbsp;guessers&nbsp;in&nbsp;the&nbsp;current&nbsp;turn<br>
+:return:&nbsp;the&nbsp;list&nbsp;of&nbsp;all&nbsp;guessers&nbsp;in&nbsp;the&nbsp;current&nbsp;turn<br>
+:rtype:&nbsp;list&lt;models.Player&gt;</tt></dd></dl>
+
+<dl><dt><a name="Game-getObservers"><strong>getObservers</strong></a>(self)</dt><dd><tt>-&nbsp;returns&nbsp;the&nbsp;list&nbsp;of&nbsp;all&nbsp;observers&nbsp;in&nbsp;the&nbsp;current&nbsp;turn<br>
+:return:&nbsp;the&nbsp;list&nbsp;of&nbsp;all&nbsp;observers&nbsp;in&nbsp;the&nbsp;current&nbsp;turn<br>
+:rtype:&nbsp;list&lt;models.Player&gt;</tt></dd></dl>
+
+<dl><dt><a name="Game-getRoundNextTeam"><strong>getRoundNextTeam</strong></a>(self, currentTeam)</dt><dd><tt>-&nbsp;uses&nbsp;the&nbsp;currentTeam&nbsp;on&nbsp;deck&nbsp;to&nbsp;find&nbsp;the&nbsp;team&nbsp;to&nbsp;play&nbsp;the&nbsp;next&nbsp;turn<br>
+:return:&nbsp;the&nbsp;team&nbsp;to&nbsp;play&nbsp;the&nbsp;next&nbsp;turn<br>
+:rtype:&nbsp;models.Team</tt></dd></dl>
+
+<dl><dt><a name="Game-getUnusedCards"><strong>getUnusedCards</strong></a>(self)</dt><dd><tt>-&nbsp;generates&nbsp;the&nbsp;list&nbsp;of&nbsp;unused&nbsp;cards&nbsp;in&nbsp;the&nbsp;game<br>
+:return:&nbsp;the&nbsp;list&nbsp;of&nbsp;all&nbsp;unused&nbsp;cards&nbsp;in&nbsp;the&nbsp;game<br>
+:rtype:&nbsp;list&lt;models.Card&gt;</tt></dd></dl>
+
+<dl><dt><a name="Game-getUsedCards"><strong>getUsedCards</strong></a>(self)</dt><dd><tt>-&nbsp;returns&nbsp;the&nbsp;list&nbsp;of&nbsp;all&nbsp;used&nbsp;cards&nbsp;in&nbsp;the&nbsp;game<br>
+:return:&nbsp;the&nbsp;list&nbsp;of&nbsp;used&nbsp;cards<br>
+:rtype:&nbsp;list&lt;models.Card&gt;</tt></dd></dl>
+
+<dl><dt><a name="Game-getUsedCardsIds"><strong>getUsedCardsIds</strong></a>(self)</dt><dd><tt>-&nbsp;generates&nbsp;and&nbsp;returns&nbsp;a&nbsp;list&nbsp;of&nbsp;used&nbsp;card&nbsp;ids<br>
+-&nbsp;used&nbsp;in&nbsp;generating&nbsp;the&nbsp;query&nbsp;for&nbsp;finding&nbsp;the&nbsp;unused&nbsp;cards<br>
+:return:&nbsp;the&nbsp;list&nbsp;of&nbsp;used&nbsp;card&nbsp;ids<br>
+:rtype:&nbsp;list&lt;int&gt;</tt></dd></dl>
+
+<dl><dt><a name="Game-hasAtLeastOneRound"><strong>hasAtLeastOneRound</strong></a>(self)</dt><dd><tt>-&nbsp;checks&nbsp;if&nbsp;the&nbsp;game&nbsp;has&nbsp;had&nbsp;at&nbsp;least&nbsp;one&nbsp;round<br>
+:return:&nbsp;True&nbsp;if&nbsp;the&nbsp;game&nbsp;has&nbsp;at&nbsp;least&nbsp;a&nbsp;single&nbsp;round,&nbsp;False&nbsp;otherwise<br>
+:rtype:&nbsp;bool</tt></dd></dl>
+
+<dl><dt><a name="Game-isGameOver"><strong>isGameOver</strong></a>(self)</dt><dd><tt>-&nbsp;checks&nbsp;if&nbsp;the&nbsp;game&nbsp;is&nbsp;over,<br>
+-&nbsp;the&nbsp;game&nbsp;is&nbsp;over&nbsp;when&nbsp;one&nbsp;of&nbsp;the&nbsp;team&nbsp;has&nbsp;reached&nbsp;the&nbsp;points&nbsp;to&nbsp;win&nbsp;and&nbsp;all&nbsp;teams&nbsp;have&nbsp;played&nbsp;equal&nbsp;number&nbsp;of&nbsp;rounds<br>
+:return:&nbsp;True&nbsp;if&nbsp;the&nbsp;game&nbsp;is&nbsp;over,&nbsp;False&nbsp;otherwise<br>
+:rtype:&nbsp;bool</tt></dd></dl>
+
+<dl><dt><a name="Game-isRoundOver"><strong>isRoundOver</strong></a>(self, currentRound)</dt><dd><tt>-&nbsp;checks&nbsp;if&nbsp;the&nbsp;round&nbsp;is&nbsp;over,&nbsp;i.e&nbsp;all&nbsp;teams&nbsp;have&nbsp;played&nbsp;equla&nbsp;number&nbsp;of&nbsp;rounds<br>
+:return:&nbsp;True&nbsp;if&nbsp;the&nbsp;round&nbsp;is&nbsp;over,&nbsp;False&nbsp;otherwise<br>
+:rtype:&nbsp;bool</tt></dd></dl>
+
+<dl><dt><a name="Game-readyToStart"><strong>readyToStart</strong></a>(self)</dt><dd><tt>-&nbsp;checks&nbsp;if&nbsp;the&nbsp;minimum&nbsp;condition&nbsp;for&nbsp;the&nbsp;game&nbsp;to&nbsp;start&nbsp;are&nbsp;met<br>
+:return:&nbsp;True&nbsp;if&nbsp;the&nbsp;game&nbsp;can&nbsp;start,&nbsp;False&nbsp;otherwise<br>
+:rtype:&nbsp;bool</tt></dd></dl>
+
+<dl><dt><a name="Game-setStateComplete"><strong>setStateComplete</strong></a>(self)</dt><dd><tt>-&nbsp;set&nbsp;when&nbsp;the&nbsp;game&nbsp;is&nbsp;over<br>
+-&nbsp;done&nbsp;by&nbsp;the&nbsp;system</tt></dd></dl>
+
+<dl><dt><a name="Game-setStatePaused"><strong>setStatePaused</strong></a>(self)</dt><dd><tt>-&nbsp;the&nbsp;state&nbsp;of&nbsp;the&nbsp;game&nbsp;is&nbsp;saved&nbsp;including&nbsp;the&nbsp;timer,&nbsp;resuming&nbsp;restarts&nbsp;the&nbsp;game<br>
+-&nbsp;done&nbsp;by&nbsp;the&nbsp;moderator</tt></dd></dl>
+
+<dl><dt><a name="Game-setStateReady"><strong>setStateReady</strong></a>(self)</dt><dd><tt>-&nbsp;set&nbsp;when&nbsp;the&nbsp;game&nbsp;is&nbsp;in&nbsp;a&nbsp;valid&nbsp;condition&nbsp;to&nbsp;be&nbsp;started&nbsp;but&nbsp;not&nbsp;yet&nbsp;started<br>
+-&nbsp;done&nbsp;by&nbsp;the&nbsp;system</tt></dd></dl>
+
+<dl><dt><a name="Game-setStateStart"><strong>setStateStart</strong></a>(self)</dt><dd><tt>-&nbsp;the&nbsp;game&nbsp;is&nbsp;ready&nbsp;to&nbsp;start<br>
+-&nbsp;done&nbsp;when&nbsp;the&nbsp;first&nbsp;turn&nbsp;in&nbsp;the&nbsp;game&nbsp;is&nbsp;started</tt></dd></dl>
+
+<dl><dt><a name="Game-teamHasReachedThreshold"><strong>teamHasReachedThreshold</strong></a>(self)</dt><dd><tt>-&nbsp;checks&nbsp;if&nbsp;any&nbsp;of&nbsp;the&nbsp;teams&nbsp;has&nbsp;reached&nbsp;the&nbsp;minimum&nbsp;number&nbsp;of&nbsp;points&nbsp;to&nbsp;win&nbsp;the&nbsp;game<br>
+:return:&nbsp;True&nbsp;if&nbsp;any&nbsp;of&nbsp;team&nbsp;has&nbsp;reached&nbsp;the&nbsp;minimum&nbsp;number&nbsp;of&nbsp;points&nbsp;to&nbsp;win&nbsp;the&nbsp;game,&nbsp;False&nbsp;otherwise<br>
+:rtype:&nbsp;bool</tt></dd></dl>
+
+<dl><dt><a name="Game-teamsHaveEqualTurns"><strong>teamsHaveEqualTurns</strong></a>(self)</dt><dd><tt>-&nbsp;checks&nbsp;if&nbsp;all&nbsp;teams&nbsp;have&nbsp;played&nbsp;equal&nbsp;number&nbsp;of&nbsp;turns<br>
+-&nbsp;since&nbsp;the&nbsp;teams&nbsp;play&nbsp;in&nbsp;the&nbsp;same&nbsp;order&nbsp;we&nbsp;need&nbsp;not&nbsp;compare&nbsp;each&nbsp;team&nbsp;with&nbsp;every&nbsp;other&nbsp;team<br>
+:return:&nbsp;True&nbsp;if&nbsp;all&nbsp;teams&nbsp;have&nbsp;played&nbsp;equal&nbsp;number&nbsp;of&nbsp;turns,&nbsp;False&nbsp;otherwise<br>
+:rtype:&nbsp;bool</tt></dd></dl>
+
+<hr>
+Static methods defined here:<br>
+<dl><dt><a name="Game-gameNameExists"><strong>gameNameExists</strong></a>(session, name)</dt><dd><tt>-&nbsp;checks&nbsp;if&nbsp;the&nbsp;provided&nbsp;game&nbsp;name&nbsp;exists&nbsp;in&nbsp;the&nbsp;list&nbsp;of&nbsp;games&nbsp;which&nbsp;are&nbsp;not&nbsp;yet&nbsp;unplayable<br>
+-&nbsp;the&nbsp;name&nbsp;can&nbsp;only&nbsp;be&nbsp;reused&nbsp;if&nbsp;the&nbsp;game&nbsp;with&nbsp;a&nbsp;name&nbsp;collision&nbsp;has&nbsp;already&nbsp;started&nbsp;(not&nbsp;in&nbsp;the&nbsp;list&nbsp;of&nbsp;the&nbsp;games&nbsp;to&nbsp;be&nbsp;joined)<br>
+:param&nbsp;name:&nbsp;the&nbsp;name&nbsp;of&nbsp;the&nbsp;new&nbsp;game&nbsp;to&nbsp;be&nbsp;created<br>
+:type&nbsp;name:&nbsp;string<br>
+:param&nbsp;session:&nbsp;database&nbsp;session<br>
+:type&nbsp;session:&nbsp;sqlalchemy.Session<br>
+:return:&nbsp;True&nbsp;if&nbsp;the&nbsp;name&nbsp;exists,&nbsp;False&nbsp;otherwise<br>
+:rtype:&nbsp;bool</tt></dd></dl>
+
+<dl><dt><a name="Game-getAllGames"><strong>getAllGames</strong></a>(session)</dt><dd><tt>-&nbsp;returns&nbsp;the&nbsp;list&nbsp;of&nbsp;all&nbsp;games&nbsp;in&nbsp;the&nbsp;system<br>
+:param&nbsp;session:&nbsp;the&nbsp;database&nbsp;session<br>
+:type&nbsp;session:&nbsp;sqlalchemy.Session<br>
+:return:&nbsp;the&nbsp;list&nbsp;of&nbsp;all&nbsp;games&nbsp;in&nbsp;the&nbsp;system<br>
+:rtype:&nbsp;list&lt;models.<a href="#Game">Game</a>&gt;</tt></dd></dl>
+
+<dl><dt><a name="Game-getGameById"><strong>getGameById</strong></a>(game_id, session)</dt><dd><tt>-&nbsp;returns&nbsp;the&nbsp;game&nbsp;<a href="builtins.html#object">object</a>&nbsp;with&nbsp;the&nbsp;given&nbsp;game_id<br>
+:param&nbsp;session:&nbsp;database&nbsp;session<br>
+:type&nbsp;session:&nbsp;sqlalchemy.Session<br>
+:param&nbsp;game_id:&nbsp;primary&nbsp;key&nbsp;of&nbsp;the&nbsp;game&nbsp;table<br>
+:type&nbsp;game_id:&nbsp;int<br>
+:return:&nbsp;the&nbsp;game&nbsp;<a href="builtins.html#object">object</a>&nbsp;if&nbsp;the&nbsp;game_id&nbsp;exists,&nbsp;None&nbsp;otherwise<br>
+:rtype:&nbsp;models.<a href="#Game">Game</a></tt></dd></dl>
+
+<dl><dt><a name="Game-isValidGame"><strong>isValidGame</strong></a>(session, data)</dt><dd><tt>-&nbsp;validates&nbsp;the&nbsp;game&nbsp;details&nbsp;received&nbsp;from&nbsp;the&nbsp;client,&nbsp;also&nbsp;checks&nbsp;that&nbsp;the&nbsp;game&nbsp;name&nbsp;does&nbsp;not&nbsp;exist&nbsp;from&nbsp;the&nbsp;list&nbsp;of&nbsp;games&nbsp;not&nbsp;yet&nbsp;playable<br>
+:param&nbsp;data:&nbsp;game&nbsp;info&nbsp;received&nbsp;from&nbsp;the&nbsp;client<br>
+:type&nbsp;data:&nbsp;dictionary<br>
+:param&nbsp;session:&nbsp;database&nbsp;session<br>
+:type&nbsp;session:&nbsp;sqlalchemy.Session<br>
+:return:&nbsp;a&nbsp;dictionary&nbsp;with&nbsp;valid&nbsp;=&nbsp;True&nbsp;if&nbsp;all&nbsp;the&nbsp;data&nbsp;is&nbsp;valid,&nbsp;if&nbsp;part&nbsp;of&nbsp;the&nbsp;data&nbsp;is&nbsp;invalid&nbsp;a&nbsp;dictionary&nbsp;with&nbsp;valid&nbsp;=&nbsp;False&nbsp;and&nbsp;message&nbsp;=&nbsp;"error&nbsp;message"&nbsp;is&nbsp;returned<br>
+:rtype:&nbsp;dictionary</tt></dd></dl>
+
+<dl><dt><a name="Game-numberOfRows"><strong>numberOfRows</strong></a>(session)</dt><dd><tt>-&nbsp;returns&nbsp;number&nbsp;of&nbsp;all&nbsp;games&nbsp;created&nbsp;in&nbsp;the&nbsp;system<br>
+:return:&nbsp;the&nbsp;number&nbsp;of&nbsp;all&nbsp;games&nbsp;created&nbsp;in&nbsp;the&nbsp;system<br>
+:rtype:&nbsp;int</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>ALL_GUESSERS</strong> = 7<br>
+<strong>DOUBLE_ROUND_TIME</strong> = 0<br>
+<strong>GAME_COMPLETE</strong> = 5<br>
+<strong>GAME_CREATED</strong> = 1<br>
+<strong>GAME_PAUSED</strong> = 4<br>
+<strong>GAME_PLAYING</strong> = 3<br>
+<strong>GAME_READY</strong> = 2<br>
+<strong>GUESSER</strong> = 3<br>
+<strong>HALF_ROUND_TIME</strong> = 1<br>
+<strong>IS_PHRASE</strong> = 0<br>
+<strong>MODERATOR</strong> = 2<br>
+<strong>NORMAL_TURN</strong> = 8<br>
+<strong>NOT_PHRASE</strong> = 1<br>
+<strong>NO_EXCLUDED_WORDS</strong> = 3<br>
+<strong>OBSERVER</strong> = 4<br>
+<strong>ONE_GUESSER</strong> = 5<br>
+<strong>ROUND_KILLER</strong> = 6<br>
+<strong>STATUE_TELLER</strong> = 4<br>
+<strong>Session</strong> = sessionmaker(class_='Session', autocommit=False,...(sqlite:///db/dev.sqlite), expire_on_commit=True)<br>
+<strong>TELLER</strong> = 1<br>
+<strong>UNLIMITED_SKIPS</strong> = 2<br>
+<strong>WITHOUT_GAME_CHANGERS</strong> = 2<br>
+<strong>WITH_GAME_CHANGERS</strong> = 1<br>
+<strong>usedCards</strong> = Table('used_cards', MetaData(bind=None), Column(..., primary_key=True, nullable=False), schema=None)</td></tr></table>
+</body></html>

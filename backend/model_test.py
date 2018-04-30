@@ -27,18 +27,49 @@ class TestDataBase(unittest.TestCase):
         self.session.commit()
         self.assertEqual(PlayerModel.numberOfRows(self.session),50)
 
+        print("\n\n*************Test add exist Player**********************\n\n")
+        member2_email = "member2@bsu.edu"
+        if(PlayerModel.emailExists(self.session, member2_email)):
+            print ("the entered email already exists")
+        else:
+            member2 = PlayerModel("Member2", "member2@bsu.edu",3)
+            self.session.add(member2)
+            self.session.flush()
+            self.session.commit()
+        self.assertEqual(PlayerModel.numberOfRows(self.session),50)
+
+        print("\n\n*************Test add invalid email Player***************\n\n")
+        member3_email = ""
+        member3_name = "member3"
+        data = {
+            "email": member3_email,
+            "username" : member3_name
+        }
+        feedback = PlayerModel.isValidPlayer(data)
+        self.assertFalse(feedback["valid"])
+        self.assertEqual(feedback["message"], 'invalid email')
+
+        print("\n\n*************Test add invalid username Player***************\n\n")
+        member4_email = "hguo@bsu.edu"
+        member4_name = ""
+        data = {
+            "email": member4_email,
+            "username" : member4_name
+        }
+        feedback = PlayerModel.isValidPlayer(data)
+        print(feedback)
+        self.assertFalse(feedback["valid"])
+        self.assertEqual(feedback["message"],'username must be between 2 and 255  characters inclusive')
+
     def test2GameCreate(self):
+        print("\n\n*************Test add new valid game with 7 teams**************\n\n")
         initiator = PlayerModel.findPlayerById(self.session, 1)
         #print ("Email: " + initiator.email)
         game = GameModel(initiator, "CS699", 60)
         team1 = TeamModel("Team 1")
         team2 = TeamModel("Team 2")
         team3 = TeamModel("Team 3")
-        team4 = TeamModel("Team 4")
-        team5 = TeamModel("Team 5")
-        team6 = TeamModel("Team 6")
-        team7 = TeamModel("Team 7")
-        teams = [team1, team2, team3, team4, team5, team6, team7]
+        teams = [team1, team2, team3]
         initiator.team = team1
         self.session.flush()
         game.teams = teams
@@ -50,7 +81,108 @@ class TestDataBase(unittest.TestCase):
         self.assertEqual(cGame.teams, teams)
         self.assertEqual(team1.gameId, 1)
 
+        print("\n\n*************Test add invalid gamename **************************\n\n")
+        gameData = {
+            "maxPlayersPerTeam": 2,
+            "turnDuration" : 30,
+            "pointsToWin" : 30,
+            "numberOfTeams": 2,
+            "skipPenaltyAfter" : 3,
+            "gameChangers" : True,
+            "name":"",
+            "initiatorTeam":{
+            "name":"team1"
+            },
+            "teamData":[
+            {"name":"team1"},
+            {"name":"team2"}
+            ]
+        }
+        feedback = GameModel.isValidGame(self.session,gameData)
+        self.assertFalse(feedback["valid"])
+        self.assertEqual(feedback["message"],'game name must be between 2 and 255 characters')
 
+        print("\n\n*************Test add invalid turnDuration **************************\n\n")
+        gameData = {
+            "maxPlayersPerTeam": 2,
+            "turnDuration" : 0,
+            "pointsToWin" : 30,
+            "numberOfTeams": 2,
+            "skipPenaltyAfter" : 3,
+            "gameChangers" : True,
+            "name":"game123",
+            "initiatorTeam":{
+            "name":"team1"
+            },
+            "teamData":[
+            {"name":"team1"},
+            {"name":"team2"}
+            ]
+        }
+        feedback = GameModel.isValidGame(self.session,gameData)
+        self.assertFalse(feedback["valid"])
+        self.assertEqual(feedback["message"],"turn duration must be between 30 and 120 inclusive")
+
+        print("\n\n*************Test add invalid teams *****************************\n\n")
+        gameData = {
+            "maxPlayersPerTeam": 2,
+            "turnDuration" : 30,
+            "pointsToWin" : 30,
+            "numberOfTeams": 0,
+            "skipPenaltyAfter" : 3,
+            "gameChangers" : True,
+            "name":"game123",
+            "initiatorTeam":{
+            "name":"team1"
+            },
+            "teamData":[
+            ]
+        }
+        feedback = GameModel.isValidGame(self.session,gameData)
+        self.assertFalse(feedback["valid"])
+        self.assertEqual(feedback["message"],"number of teams must be between 2 and 5 inclusive")
+
+        print("\n\n*************Test add invalid players in one team *****************************\n\n")
+        gameData = {
+            "maxPlayersPerTeam": 10,
+            "turnDuration" : 30,
+            "pointsToWin" : 30,
+            "numberOfTeams": 2,
+            "skipPenaltyAfter" : 3,
+            "gameChangers" : True,
+            "name":"game123",
+            "initiatorTeam":{
+            "name":"team1"
+            },
+            "teamData":[
+            {"name":"team1"},
+            {"name":"team2"}
+            ]
+        }
+        feedback = GameModel.isValidGame(self.session,gameData)
+        self.assertFalse(feedback["valid"])
+        self.assertEqual(feedback["message"],"number of players in a team must be between 2 and 5 inclusive")
+
+        print("\n\n*************Test add invalid points to win *****************************\n\n")
+        gameData = {
+            "maxPlayersPerTeam": 2,
+            "turnDuration" : 30,
+            "pointsToWin" : 1,
+            "numberOfTeams": 2,
+            "skipPenaltyAfter" : 3,
+            "gameChangers" : True,
+            "name":"game123",
+            "initiatorTeam":{
+            "name":"team1"
+            },
+            "teamData":[
+            {"name":"team1"},
+            {"name":"team2"}
+            ]
+        }
+        feedback = GameModel.isValidGame(self.session,gameData)
+        self.assertFalse(feedback["valid"])
+        self.assertEqual(feedback["message"],"points to win must be between 10 and 60 inclusive")
 
     def test3JoinTeam(self):
         player1 = PlayerModel.findPlayerById(self.session, 2)

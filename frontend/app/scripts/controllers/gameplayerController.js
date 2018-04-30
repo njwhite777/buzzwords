@@ -14,5 +14,6 @@ angular.module('frontendApp')
     $scope.showPlay= false;
     $scope.game = currentGameService.currentGame;
     $scope.turn = currentGameService.currentTurn;
-  
+    $scope.turn.isPhrase = "";
+
 }]);

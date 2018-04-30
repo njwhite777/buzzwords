@@ -1,0 +1,203 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module models.turn</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="models.html"><font color="#ffffff">models</font></a>.turn</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/aron/programming/buzzwords/backend/models/turn.py">/home/aron/programming/buzzwords/backend/models/turn.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="datetime.html">datetime</a><br>
+</td><td width="25%" valign=top><a href="json.html">json</a><br>
+</td><td width="25%" valign=top><a href="random.html">random</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="models.turn.html#Turn">Turn</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Turn">class <strong>Turn</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>-&nbsp;the&nbsp;<a href="builtins.html#object">object</a>&nbsp;representation&nbsp;of&nbsp;a&nbsp;turn<br>
+:ivar&nbsp;id:&nbsp;the&nbsp;primary&nbsp;key&nbsp;of&nbsp;the&nbsp;table<br>
+:ivar&nbsp;numberOfSkips:&nbsp;the&nbsp;number&nbsp;of&nbsp;times&nbsp;the&nbsp;team&nbsp;can&nbsp;skip&nbsp;in&nbsp;a&nbsp;turn&nbsp;without&nbsp;being&nbsp;penalized,&nbsp;refreshed&nbsp;after&nbsp;every&nbsp;turn<br>
+:ivar&nbsp;startTime:&nbsp;the&nbsp;time&nbsp;the&nbsp;turn&nbsp;started<br>
+:ivar&nbsp;gameChangerNumber:&nbsp;the&nbsp;id&nbsp;of&nbsp;the&nbsp;selected&nbsp;game&nbsp;changer&nbsp;number<br>
+:ivar&nbsp;duration:&nbsp;duration&nbsp;of&nbsp;the&nbsp;turn,&nbsp;can&nbsp;vary&nbsp;depending&nbsp;on&nbsp;the&nbsp;game&nbsp;changer<br>
+:ivar&nbsp;cardId:&nbsp;a&nbsp;foreign&nbsp;key&nbsp;from&nbsp;the&nbsp;card&nbsp;table&nbsp;to&nbsp;keep&nbsp;track&nbsp;of&nbsp;the&nbsp;card&nbsp;being&nbsp;played,&nbsp;updated&nbsp;every&nbsp;time&nbsp;there&nbsp;is&nbsp;infraction,&nbsp;a&nbsp;card&nbsp;is&nbsp;skipped&nbsp;or&nbsp;a&nbsp;point&nbsp;is&nbsp;awarded&nbsp;for&nbsp;getting&nbsp;the&nbsp;correct&nbsp;guess<br>
+:ivar&nbsp;turnDuration:&nbsp;duplicate<br>
+:ivar&nbsp;gameId:&nbsp;a&nbsp;foreign&nbsp;key&nbsp;from&nbsp;the&nbsp;game&nbsp;table&nbsp;to&nbsp;keep&nbsp;track&nbsp;of&nbsp;the&nbsp;game&nbsp;in&nbsp;which&nbsp;the&nbsp;turn&nbsp;belongs<br>
+:ivar&nbsp;roundId:&nbsp;a&nbsp;foreign&nbsp;key&nbsp;from&nbsp;the&nbsp;round&nbsp;table&nbsp;to&nbsp;keep&nbsp;track&nbsp;of&nbsp;the&nbsp;round&nbsp;in&nbsp;which&nbsp;the&nbsp;turn&nbsp;belongs<br>
+:ivar&nbsp;teamId:&nbsp;a&nbsp;foreign&nbsp;key&nbsp;from&nbsp;the&nbsp;team&nbsp;table&nbsp;to&nbsp;keep&nbsp;track&nbsp;of&nbsp;the&nbsp;team&nbsp;playing&nbsp;the&nbsp;turn<br>
+:ivar&nbsp;card:&nbsp;the&nbsp;card&nbsp;being&nbsp;played<br>
+:ivar&nbsp;turnTellerId:&nbsp;the&nbsp;foreign&nbsp;key&nbsp;to&nbsp;the&nbsp;player&nbsp;table&nbsp;containing&nbsp;the&nbsp;id&nbsp;the&nbsp;player&nbsp;with&nbsp;a&nbsp;"teller&nbsp;role"<br>
+:ivar&nbsp;turnModeratorId:&nbsp;the&nbsp;foreign&nbsp;key&nbsp;to&nbsp;the&nbsp;player&nbsp;table&nbsp;containing&nbsp;the&nbsp;id&nbsp;the&nbsp;player&nbsp;with&nbsp;a&nbsp;"moderator&nbsp;role"<br>
+:ivar&nbsp;teller:&nbsp;the&nbsp;player&nbsp;whose&nbsp;role&nbsp;is&nbsp;the&nbsp;teller,&nbsp;changed&nbsp;in&nbsp;each&nbsp;turn<br>
+:ivar&nbsp;moderator:&nbsp;the&nbsp;player&nbsp;whose&nbsp;role&nbsp;is&nbsp;the&nbsp;moderator,&nbsp;changed&nbsp;in&nbsp;each&nbsp;turn<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Turn-__init__"><strong>__init__</strong></a>(self, game, round, team, turnDuration=30)</dt></dl>
+
+<dl><dt><a name="Turn-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><tt>-&nbsp;the&nbsp;string&nbsp;representation&nbsp;of&nbsp;the&nbsp;<a href="#Turn">Turn</a>&nbsp;<a href="builtins.html#object">object</a></tt></dd></dl>
+
+<dl><dt><a name="Turn-awardTeam"><strong>awardTeam</strong></a>(self)</dt><dd><tt>-&nbsp;award&nbsp;the&nbsp;point&nbsp;to&nbsp;the&nbsp;team&nbsp;which&nbsp;is&nbsp;on&nbsp;deck</tt></dd></dl>
+
+<dl><dt><a name="Turn-awardTeamByID"><strong>awardTeamByID</strong></a>(self, teamID)</dt><dd><tt>-&nbsp;awards&nbsp;the&nbsp;point&nbsp;to&nbsp;the&nbsp;team&nbsp;for&nbsp;correctly&nbsp;guessing&nbsp;the&nbsp;buzzword<br>
+-&nbsp;the&nbsp;card&nbsp;wonCount&nbsp;is&nbsp;also&nbsp;updated&nbsp;for&nbsp;future&nbsp;card&nbsp;analysis<br>
+:param&nbsp;teamID:&nbsp;the&nbsp;id&nbsp;of&nbsp;the&nbsp;team&nbsp;to&nbsp;be&nbsp;awarded&nbsp;a&nbsp;point,&nbsp;we&nbsp;need&nbsp;teamID&nbsp;when&nbsp;the&nbsp;ALL_GUESSERS&nbsp;game&nbsp;changer&nbsp;has&nbsp;been&nbsp;selected&nbsp;in&nbsp;which&nbsp;any&nbsp;team&nbsp;can&nbsp;be&nbsp;awared&nbsp;a&nbsp;point<br>
+:type&nbsp;teamID:&nbsp;int</tt></dd></dl>
+
+<dl><dt><a name="Turn-getAllTeamScores"><strong>getAllTeamScores</strong></a>(self)</dt><dd><tt>-&nbsp;returns&nbsp;the&nbsp;score&nbsp;of&nbsp;each&nbsp;team&nbsp;in&nbsp;the&nbsp;game<br>
+:return:&nbsp;the&nbsp;dictionary&nbsp;containing&nbsp;the&nbsp;score&nbsp;of&nbsp;each&nbsp;team&nbsp;in&nbsp;the&nbsp;game<br>
+:rtype:&nbsp;dictionary</tt></dd></dl>
+
+<dl><dt><a name="Turn-getGameChanger"><strong>getGameChanger</strong></a>(self)</dt><dd><tt>-&nbsp;returns&nbsp;the&nbsp;selected&nbsp;game&nbsp;changer&nbsp;<a href="builtins.html#object">object</a><br>
+:return:&nbsp;the&nbsp;selected&nbsp;game&nbsp;changer<br>
+:rtype:&nbsp;models.GameChanger</tt></dd></dl>
+
+<dl><dt><a name="Turn-getGuessers"><strong>getGuessers</strong></a>(self)</dt><dd><tt>-&nbsp;returns&nbsp;the&nbsp;list&nbsp;of&nbsp;players&nbsp;who&nbsp;are&nbsp;guessers&nbsp;in&nbsp;this&nbsp;turn<br>
+:return:&nbsp;list&nbsp;of&nbsp;guessers&nbsp;in&nbsp;the&nbsp;turn<br>
+:rtype:&nbsp;list&lt;models.Player&gt;</tt></dd></dl>
+
+<dl><dt><a name="Turn-getModerator"><strong>getModerator</strong></a>(self)</dt><dd><tt>-&nbsp;returns&nbsp;the&nbsp;moderator&nbsp;in&nbsp;the&nbsp;turn<br>
+:return:&nbsp;the&nbsp;moderator&nbsp;in&nbsp;the&nbsp;turn<br>
+:rtype:&nbsp;models.Player</tt></dd></dl>
+
+<dl><dt><a name="Turn-getObservers"><strong>getObservers</strong></a>(self)</dt><dd><tt>-&nbsp;returns&nbsp;the&nbsp;list&nbsp;of&nbsp;players&nbsp;who&nbsp;are&nbsp;observers&nbsp;in&nbsp;this&nbsp;turn<br>
+:return:&nbsp;list&nbsp;of&nbsp;observers&nbsp;in&nbsp;the&nbsp;turn<br>
+:rtype:&nbsp;list&lt;models.Player&gt;</tt></dd></dl>
+
+<dl><dt><a name="Turn-getRandomPlayer"><strong>getRandomPlayer</strong></a>(self, players)</dt><dd><tt>-&nbsp;returns&nbsp;a&nbsp;random&nbsp;player&nbsp;from&nbsp;the&nbsp;list&nbsp;of&nbsp;given&nbsp;players,&nbsp;throws&nbsp;exception&nbsp;if&nbsp;the&nbsp;list&nbsp;is&nbsp;empty<br>
+:param&nbsp;players:&nbsp;the&nbsp;list&nbsp;of&nbsp;given&nbsp;players<br>
+:type&nbsp;players:&nbsp;list&lt;models.Player&gt;<br>
+:return:&nbsp;the&nbsp;selected&nbsp;player<br>
+:rtype:&nbsp;models.Player</tt></dd></dl>
+
+<dl><dt><a name="Turn-getRandomTeam"><strong>getRandomTeam</strong></a>(self, teams)</dt><dd><tt>-&nbsp;finds&nbsp;a&nbsp;random&nbsp;team&nbsp;from&nbsp;the&nbsp;list&nbsp;of&nbsp;given&nbsp;teams,&nbsp;throws&nbsp;exception&nbsp;if&nbsp;the&nbsp;list&nbsp;is&nbsp;empty<br>
+:param&nbsp;teams:&nbsp;the&nbsp;list&nbsp;of&nbsp;given&nbsp;teams<br>
+:type&nbsp;teams:&nbsp;list&lt;models.Team&gt;<br>
+:return:&nbsp;the&nbsp;selected&nbsp;team<br>
+:rtype:&nbsp;models.Team</tt></dd></dl>
+
+<dl><dt><a name="Turn-getTeamsNotOnTurn"><strong>getTeamsNotOnTurn</strong></a>(self)</dt><dd><tt>-&nbsp;returns&nbsp;the&nbsp;list&nbsp;of&nbsp;all&nbsp;teams&nbsp;which&nbsp;are&nbsp;not&nbsp;on&nbsp;deck<br>
+:param&nbsp;game:&nbsp;the&nbsp;game&nbsp;<a href="builtins.html#object">object</a>&nbsp;in&nbsp;which&nbsp;the&nbsp;turn&nbsp;belongs<br>
+:type&nbsp;game:&nbsp;models.Game<br>
+:return:&nbsp;the&nbsp;list&nbsp;of&nbsp;all&nbsp;teams&nbsp;not&nbsp;on&nbsp;deck,&nbsp;empty&nbsp;list&nbsp;if&nbsp;none&nbsp;exists<br>
+:rtype:&nbsp;list</tt></dd></dl>
+
+<dl><dt><a name="Turn-getTeller"><strong>getTeller</strong></a>(self)</dt><dd><tt>-&nbsp;returns&nbsp;the&nbsp;teller&nbsp;in&nbsp;the&nbsp;turn<br>
+:return:&nbsp;the&nbsp;teller&nbsp;in&nbsp;the&nbsp;turn<br>
+:rtype:&nbsp;models.Player</tt></dd></dl>
+
+<dl><dt><a name="Turn-getTimer"><strong>getTimer</strong></a>(self)</dt><dd><tt>-&nbsp;returns&nbsp;the&nbsp;timer&nbsp;<a href="builtins.html#object">object</a>&nbsp;associated&nbsp;with&nbsp;this&nbsp;turn<br>
+:return:&nbsp;the&nbsp;timer&nbsp;<a href="builtins.html#object">object</a>&nbsp;which&nbsp;keeps&nbsp;track&nbsp;of&nbsp;the&nbsp;time&nbsp;in&nbsp;this&nbsp;turn<br>
+:rtype:&nbsp;threading.Thread</tt></dd></dl>
+
+<dl><dt><a name="Turn-loadCard"><strong>loadCard</strong></a>(self)</dt><dd><tt>-&nbsp;randomly&nbsp;selects&nbsp;a&nbsp;card&nbsp;from&nbsp;the&nbsp;list&nbsp;of&nbsp;unused&nbsp;cards&nbsp;in&nbsp;the&nbsp;game<br>
+-&nbsp;if&nbsp;the&nbsp;game&nbsp;changer&nbsp;is&nbsp;NO_EXCLUDED_WORDS,&nbsp;the&nbsp;forbidden&nbsp;words&nbsp;are&nbsp;removed<br>
+-&nbsp;the&nbsp;selected&nbsp;card&nbsp;is&nbsp;added&nbsp;into&nbsp;the&nbsp;table&nbsp;of&nbsp;used&nbsp;cards&nbsp;so&nbsp;it&nbsp;cannot&nbsp;be&nbsp;used&nbsp;again&nbsp;in&nbsp;this&nbsp;game<br>
+:return:&nbsp;the&nbsp;selected&nbsp;card<br>
+:rtype:&nbsp;models.Card</tt></dd></dl>
+
+<dl><dt><a name="Turn-penaliseTeam"><strong>penaliseTeam</strong></a>(self)</dt><dd><tt>-&nbsp;deducts&nbsp;one&nbsp;point&nbsp;to&nbsp;the&nbsp;team&nbsp;on&nbsp;deck&nbsp;for&nbsp;an&nbsp;infraction</tt></dd></dl>
+
+<dl><dt><a name="Turn-removeTimer"><strong>removeTimer</strong></a>(self)</dt><dd><tt>-&nbsp;deletes&nbsp;the&nbsp;timer&nbsp;<a href="builtins.html#object">object</a>&nbsp;when&nbsp;it&nbsp;is&nbsp;no&nbsp;longer&nbsp;needed&nbsp;to&nbsp;free&nbsp;memory</tt></dd></dl>
+
+<dl><dt><a name="Turn-setGameChanger"><strong>setGameChanger</strong></a>(self)</dt><dd><tt>-&nbsp;selects&nbsp;and&nbsp;sets&nbsp;the&nbsp;game&nbsp;changer&nbsp;id&nbsp;to&nbsp;the&nbsp;turn<br>
+:return:&nbsp;the&nbsp;selected&nbsp;game&nbsp;changer&nbsp;<a href="builtins.html#object">object</a><br>
+:rtype:&nbsp;models.GameChanger</tt></dd></dl>
+
+<dl><dt><a name="Turn-setPlayerRoles"><strong>setPlayerRoles</strong></a>(self)</dt><dd><tt>-&nbsp;sets&nbsp;the&nbsp;roles&nbsp;of&nbsp;all&nbsp;players&nbsp;before&nbsp;the&nbsp;turn&nbsp;starts<br>
+-&nbsp;the&nbsp;order&nbsp;matters&nbsp;here,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;__setObservers&nbsp;will&nbsp;update&nbsp;the&nbsp;moderator's&nbsp;role&nbsp;if&nbsp;called&nbsp;after&nbsp;__setModerator<br>
+&nbsp;&nbsp;&nbsp;&nbsp;__setGuessers&nbsp;will&nbsp;update&nbsp;the&nbsp;teller's&nbsp;role&nbsp;if&nbsp;called&nbsp;after&nbsp;__setTeller</tt></dd></dl>
+
+<dl><dt><a name="Turn-setTeam"><strong>setTeam</strong></a>(self, team)</dt><dd><tt>-&nbsp;sets&nbsp;the&nbsp;team&nbsp;playing&nbsp;this&nbsp;turn<br>
+:param&nbsp;team:&nbsp;the&nbsp;Team&nbsp;playing&nbsp;this&nbsp;turn<br>
+:type&nbsp;team:&nbsp;Team</tt></dd></dl>
+
+<dl><dt><a name="Turn-skip"><strong>skip</strong></a>(self)</dt><dd><tt>-&nbsp;the&nbsp;current&nbsp;card&nbsp;is&nbsp;skipped<br>
+-&nbsp;the&nbsp;team&nbsp;is&nbsp;penalised&nbsp;for&nbsp;skipping&nbsp;if&nbsp;it&nbsp;has&nbsp;exceeded&nbsp;the&nbsp;number&nbsp;of&nbsp;free&nbsp;skips&nbsp;and&nbsp;the&nbsp;UNLIMITED_SKIPS&nbsp;game&nbsp;changer&nbsp;is&nbsp;not&nbsp;selected</tt></dd></dl>
+
+<dl><dt><a name="Turn-startTimer"><strong>startTimer</strong></a>(self, callback=None)</dt><dd><tt>-&nbsp;starts&nbsp;the&nbsp;timer&nbsp;to&nbsp;keep&nbsp;track&nbsp;of&nbsp;the&nbsp;time&nbsp;used&nbsp;in&nbsp;the&nbsp;turn,&nbsp;called&nbsp;when&nbsp;the&nbsp;"Start&nbsp;<a href="#Turn">Turn</a>"&nbsp;button&nbsp;is&nbsp;clicked<br>
+-&nbsp;checks&nbsp;the&nbsp;selected&nbsp;game&nbsp;changer&nbsp;and&nbsp;updates&nbsp;the&nbsp;duration&nbsp;accordingly<br>
+-&nbsp;the&nbsp;timer&nbsp;<a href="builtins.html#object">object</a>&nbsp;is&nbsp;stored&nbsp;in&nbsp;a&nbsp;global,&nbsp;"turnTimers"&nbsp;dictionary&nbsp;for&nbsp;future&nbsp;use&nbsp;during&nbsp;pausing&nbsp;or&nbsp;stopping<br>
+:param&nbsp;callback:&nbsp;the&nbsp;method&nbsp;called&nbsp;when&nbsp;the&nbsp;timer&nbsp;is&nbsp;paused&nbsp;or&nbsp;has&nbsp;expired<br>
+:type&nbsp;callback:&nbsp;"callback&nbsp;method"</tt></dd></dl>
+
+<dl><dt><a name="Turn-updatePlayerRoles"><strong>updatePlayerRoles</strong></a>(self)</dt><dd><tt>-&nbsp;updates&nbsp;player&nbsp;roles,&nbsp;this&nbsp;happends&nbsp;when&nbsp;the&nbsp;ALL_GUESSERS&nbsp;game&nbsp;changer&nbsp;has&nbsp;been&nbsp;selected&nbsp;in&nbsp;which&nbsp;case&nbsp;all&nbsp;observers&nbsp;have&nbsp;to&nbsp;be&nbsp;updated&nbsp;to&nbsp;guessers</tt></dd></dl>
+
+<hr>
+Static methods defined here:<br>
+<dl><dt><a name="Turn-getTurnById"><strong>getTurnById</strong></a>(turnID, session)</dt><dd><tt>-&nbsp;creates&nbsp;and&nbsp;returns&nbsp;the&nbsp;<a href="#Turn">Turn</a>&nbsp;<a href="builtins.html#object">object</a>&nbsp;with&nbsp;the&nbsp;given&nbsp;primary&nbsp;key<br>
+:param&nbsp;turnID:&nbsp;the&nbsp;primary&nbsp;key&nbsp;of&nbsp;the&nbsp;turn&nbsp;table<br>
+:type&nbsp;turnID:&nbsp;int<br>
+:param&nbsp;session:&nbsp;the&nbsp;database&nbsp;session<br>
+:type&nbsp;session:&nbsp;sqlalchemy.Session<br>
+:return:&nbsp;<a href="#Turn">Turn</a>&nbsp;<a href="builtins.html#object">object</a>&nbsp;if&nbsp;the&nbsp;primary&nbsp;key&nbsp;exists,&nbsp;None&nbsp;otherwsie<br>
+:rtype:&nbsp;<a href="#Turn">Turn</a></tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>ALL_GUESSERS</strong> = 7<br>
+<strong>DOUBLE_ROUND_TIME</strong> = 0<br>
+<strong>GAME_COMPLETE</strong> = 5<br>
+<strong>GAME_CREATED</strong> = 1<br>
+<strong>GAME_PAUSED</strong> = 4<br>
+<strong>GAME_PLAYING</strong> = 3<br>
+<strong>GAME_READY</strong> = 2<br>
+<strong>GUESSER</strong> = 3<br>
+<strong>HALF_ROUND_TIME</strong> = 1<br>
+<strong>IS_PHRASE</strong> = 0<br>
+<strong>MODERATOR</strong> = 2<br>
+<strong>NORMAL_TURN</strong> = 8<br>
+<strong>NOT_PHRASE</strong> = 1<br>
+<strong>NO_EXCLUDED_WORDS</strong> = 3<br>
+<strong>OBSERVER</strong> = 4<br>
+<strong>ONE_GUESSER</strong> = 5<br>
+<strong>ROUND_KILLER</strong> = 6<br>
+<strong>STATUE_TELLER</strong> = 4<br>
+<strong>Session</strong> = sessionmaker(class_='Session', autoflush=True, a...ommit=True, bind=Engine(sqlite:///db/dev.sqlite))<br>
+<strong>TELLER</strong> = 1<br>
+<strong>UNLIMITED_SKIPS</strong> = 2<br>
+<strong>WITHOUT_GAME_CHANGERS</strong> = 2<br>
+<strong>WITH_GAME_CHANGERS</strong> = 1<br>
+<strong>turnTimers</strong> = {}</td></tr></table>
+</body></html>

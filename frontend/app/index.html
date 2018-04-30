@@ -22,13 +22,29 @@
     <audio id="buzzer" src="sounds/buzzer.mp3" autostart="false" ></audio>
 
   </head>
-  <body ng-app="frontendApp" ng-controller="indexController">
-    <div ng-controller="loginController"></div>
-
+  <body ng-app="frontendApp" ng-controller="indexController" class="md-default-theme">
+    <div ng-controller="loginController" ></div>
     <!--[if lte IE 8]>http://localhost:9000/#!/
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-    <div  ng-cloak flex style="height:100%">
+    <md-content  ng-cloak flex style="height:100%" >
+      <!-- <section>
+        <md-sidenav
+          class="md-sidenav-left"
+          md-component-id="left"
+          md-whiteframe="4">
+          <md-toolbar class="md-theme-indigo">
+          <h1 class="md-toolbar-tools">Configure</h1>
+          </md-toolbar>
+          <div layout-padding ng-controller="drawerLeftController" >
+            <md-button ng-click="close()" class="md-primary" hide-gt-md> Close Sidenav Left </md-button>
+            <div>
+              <div ui-view="appmenu"></div>
+            </div>
+          </div>
+        </md-sidenav>
+      </section> -->
+
       <div layout="column">
         <md-toolbar class="md-hue-2">
           <div class="md-toolbar-tools">
@@ -38,29 +54,12 @@
             <h2 flex md-truncate>Configure</h2>
           </div>
         </md-toolbar>
-      </div>
-      <section>
-        <md-sidenav
-          class="md-sidenav-left"
-          md-component-id="left"
 
-          md-whiteframe="4">
-          <!-- <md-toolbar class="md-theme-indigo">
-          <h1 class="md-toolbar-tools">Configure</h1>
-          </md-toolbar> -->
-          <md-content layout-padding ng-controller="drawerLeftController" >
-            <!-- <md-button ng-click="close()" class="md-primary" hide-gt-md> Close Sidenav Left </md-button> -->
-            <div>
-              <div ui-view="appmenu"></div>
-            </div>
-          </md-content>
-        </md-sidenav>
-
-      </section>
-      <md-content class="ui-view-container" flex layout-padding>
+      <div class="ui-view-container" flex layout-padding>
         <div flex ui-view></div>
-      </md-content>
+      </div>
     </div>    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+  </md-content>
      <script>
     //    !function(A,n,g,u,l,a,r){A.GoogleAnalyticsObject=l,A[l]=A[l]||function(){
     //    (A[l].q=A[l].q||[]).push(arguments)},A[l].l=+new Date,a=n.createElement(g),
@@ -100,7 +99,6 @@
         <script src="scripts/controllers/gamemenuviewController.js"></script>
         <script src="scripts/controllers/gameinitiatorviewController.js"></script>
         <script src="scripts/controllers/gameplayerwaitviewController.js"></script>
-        <script src="scripts/controllers/gameplayerturnviewController.js"></script>
         <script src="scripts/controllers/moderatorturnviewController.js"></script>
         <script src="scripts/controllers/tellerrolldieviewController.js"></script>
         <script src="scripts/controllers/endgameController.js"></script>

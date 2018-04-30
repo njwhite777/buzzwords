@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 import argparse
 from flask_cors import CORS
-from db import create_db,delete_db
-from socketIO import *
 from tests import *
-from app import app,socketio,engine,Session
+from flask_socketio import SocketIO
+import globalVars
+from app import create_app,create_db_connection,getQuizletCards
 
 parser = argparse.ArgumentParser()
 
@@ -17,5 +17,20 @@ args = parser.parse_args()
 
 if __name__ == '__main__':
     args = parser.parse_args()
+    parser.parse_args
+    args = vars(args)
+
+    environment = 'dev'
+    # TODO: write command line params.
+    # config = { k:args[k] for k in ['','','','',''] if k in args }
+    app = create_app(app_name="buzzwords",environment=environment,configFile={ 'dev_config' : 'settings','prod_config':''},config={})
+    globalVars.socketio=SocketIO(app,async_handlers=True)
+    globalVars.Session,globalVars.engine = create_db_connection(app,rebuilddb=True)
+    if(environment):
+        getQuizletCards()
+
+    from socketIO import *
+
     CORS(app)
-    socketio.run(app,debug=app.config['DEBUG'],port=app.config['PORT'],host=app.config['HOSTNAME'])
+    # globalVars.socketio.run(app,debug=app.config['DEBUG'],port=app.config['PORT'],host=app.config['HOSTNAME'])
+    globalVars.socketio.run(app,debug=app.config['DEBUG'],port=app.config['PORT'],host=app.config['HOSTNAME'],use_reloader=False)

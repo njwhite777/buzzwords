@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 from models import *
-from app import Session,socketio, socketIOClients,turnTimers
+import globalVars
 from flask_socketio import emit
 from flask import request
 import sys
 import time
-from constants import ROUND_KILLER,ALL_GUESSERS,WITHOUT_GAME_CHANGERS
+import globalVars
+from models import validator
+from constants import ROUND_KILLER,ALL_GUESSERS,WITHOUT_GAME_CHANGERS,GAME_READY
 
 def print_item(item,message):
     print("#################################")
@@ -16,11 +18,11 @@ def print_item(item,message):
 #  list is in the form [{game1info},{game2info},...,{}]
 # client must emit on the /io/game namespace:
 #  'request_games'
-@socketio.on('request_games',namespace='/io/game')
+@globalVars.socketio.on('request_games',namespace='/io/game')
 def request_games():
     print("I am requesting!")
-    session = Session()
-    games = GameModel.getAllGames(session)
+    session = globalVars.Session()
+    games = GameModel.getAllGames(session,filter=GAME_READY)
     gDict = dict()
     for game in games:
         maxPlayersPerTeam = game.maxPlayersPerTeam
@@ -46,17 +48,22 @@ def request_games():
 #  in the form { valid : false }
 # client must emit on the /io/game namespace:
 #  'validate_game'
-@socketio.on('validate_game_config',namespace='/io/game')
+@globalVars.socketio.on('validate_game_config',namespace='/io/game')
 def validate_game(data):
-    # TODO: returns if the game is valid or not.
-    # emits only to the requesting client.
-    if(data['_gameValid']):
-        data['valid']=True
-        print_item(data,'Game config: ')
-        emit('show_game_init_button_enabled',data)
+    print()
+    print()
+    print(data)
+    print()
+    print()
+    validatorObj = validator.Validator()
+    print_item(data,"VALIDATE GAME: ")
+    returnMessage = validatorObj.isValidGame(data)
+    print_item(returnMessage,"RETURN GAME: ")
+
+    if(returnMessage['valid']):
+        emit('show_game_init_button_enabled',returnMessage)
     else:
-        data['valid']=False
-        emit('show_game_init_button_enabled',data)
+        emit('show_game_init_button_enabled',returnMessage)
 
 # init_game: once a game is validated, a client should be able to transmit an init_game.
 #  once this has happened and the game has been inited in the db,
@@ -64,32 +71,32 @@ def validate_game(data):
 #  which tells the game creator's view to switch to the start game view.
 #  At this point the game should become visible to all other clients.
 #  clients who join get the waiting for game view.
-@socketio.on('init_game',namespace='/io/game')
+@globalVars.socketio.on('init_game',namespace='/io/game')
 def init_game(data):
     # TODO: gets passed if the game is valid and tbe user has pressed the init game button
     #  time to build the game in the db and tell the creator's view to switch
     # ...
-    # print("Email:======================" + socketIOClients[request.sid].email)
+    # print("Email:======================" + globalVars.socketIOClients[request.sid].email)
     # if not PlayerModel.is_logged_in():
     #     print ("You are not logged in")
     # else:
     #     initiator = PlayerModel.find_player_by_id(session, 1)
     # print ("The new game: " + str(data))
-    session = Session()
+    session = globalVars.Session()
     # feedback is a dictionary with 'valid' : boolean, 'message' : error message
     feedback = GameModel.isValidGame(session, data)
     if not feedback['valid']:
         # inform the creator of the game error
         errorMessage = feedback['message']
         return
-    initiator = PlayerModel.findPlayerByEmail(session, socketIOClients[request.sid]) #socketIOClients[request.sid].id
+    initiator = PlayerModel.findPlayerByEmail(session,  globalVars.socketIOClients[request.sid])
 
-    gameArgs = {k:v for(k,v) in data.items() if k in ['name','turnDuration','numberOfTeams','maxPlayersPerTeam','pointsToWin','skipPenaltyAfter','withGameChangers'] }
-    # TODO: UNDO THIS!!!###############
-    gameArgs['turnDuration'] = 5
-    gameArgs['pointsToWin'] = 5
-    ###################################
+    print_item(data,"GAME TO INIT:")
+    gameArgs = {k:v for(k,v) in data.items() if k in ['name','turnDuration','numberOfTeams','maxPlayersPerTeam','pointsToWin','skipPenaltyAfter','maxRoundsPerGame','withGameChangers'] }
     gameArgs['initiator'] = initiator
+    # TODO REMOVE THIS #######################V
+    gameArgs['turnDuration'] = 5
+    # TODO REMOVE THIS #######################
     game = GameModel(**gameArgs)
     initiatorTeamName = data['initiatorTeam']['name']
     maxPlayersPerTeam=game.maxPlayersPerTeam
@@ -113,7 +120,7 @@ def init_game(data):
 
         tData['name'] = teamObj['name']
         tData['id'] = team.id
-        tData['gameID'] = team.id
+        tData['teamID'] = team.id
         tData['visible'] = True
         tData['playerCount'] = len(team.players)
         tData['maxPlayers'] = game.maxPlayersPerTeam
@@ -129,10 +136,10 @@ def init_game(data):
     session.close()
 
 
-@socketio.on('join_team',namespace='/io/game')
+@globalVars.socketio.on('join_team',namespace='/io/game')
 def join_team(data):
     # Join player to team. Check the game
-    session = Session()
+    session = globalVars.Session()
     print_item(data,"Join Team: ")
     gameID = data['gameID']
     teamID = data['teamID']
@@ -164,9 +171,9 @@ def join_team(data):
 # 'validate_game_start': once a game is in a waiting state, joining clients should emit
 #  this message.  If the game is indeed ready to start, the server should emit to the starting
 #  client that the game is ready to start and the the start game button should become clickable.
-@socketio.on('validate_game_start',namespace='/io/game')
+@globalVars.socketio.on('validate_game_start',namespace='/io/game')
 def validate_game_start(data):
-    session = Session()
+    session = globalVars.Session()
     gameID = data['gameID']
     game = GameModel.getGameById(gameID,session)
     initiator = game.initiator
@@ -192,16 +199,18 @@ def validate_game_start(data):
         ogData[game.id] = gData
         emit('players_on_team',ogData,broadcast=True)
     if(game.readyToStart()):
-        emit('show_game_start_button_enabled',room=socketIOClients[initiatorEmail],namespace='/io/view')
+        print("\n\nGame can be lunched Now!!!!!!!\n\n")
+        emit('show_game_start_button_enabled',room=globalVars.socketIOClients[initiatorEmail],namespace='/io/view')
+        emit('show_game_start_button_enabled1', namespace='/io/view')
 
     session.close()
 
 # Listens for a start game event from clients.
 #  this should only be possible when a game configuration is valid.
 #
-@socketio.on('start_game',namespace='/io/game')
+@globalVars.socketio.on('start_game',namespace='/io/game')
 def start_game(data):
-    session = Session()
+    session = globalVars.Session()
     print_item(data,'data item to start_game')
     gameID = data['gameID']
     game = GameModel.getGameById(gameID,session)
@@ -213,7 +222,7 @@ def start_game(data):
     start_new_turn(data)
 
 def start_new_turn(data):
-    session = Session()
+    session = globalVars.Session()
     gameID = data['gameID']
     game = GameModel.getGameById(gameID,session)
     session.commit()
@@ -228,7 +237,7 @@ def start_new_turn(data):
 
 
 def setup_turn_views(turnID,skipRoll=False):
-    session = Session()
+    session = globalVars.Session()
     turn = TurnModel.getTurnById(turnID,session)
 
     moderator   = turn.getModerator()
@@ -237,26 +246,26 @@ def setup_turn_views(turnID,skipRoll=False):
     guessers    = turn.getGuessers()
 
     if(skipRoll):
-        socketio.emit('swap_view',{ 'swapView' : 'teller' },room=socketIOClients[teller.email],namespace='/io/view')
+        globalVars.socketio.emit('swap_view',{ 'swapView' : 'teller' },room=globalVars.socketIOClients[teller.email],namespace='/io/view')
     else:
-        socketio.emit('swap_view',{ 'swapView' : 'tellerrolldie' },room=socketIOClients[teller.email],namespace='/io/view')
-    socketio.emit('swap_view',{ 'swapView' : 'moderator' },room=socketIOClients[moderator.email],namespace='/io/view')
+        globalVars.socketio.emit('swap_view',{ 'swapView' : 'tellerrolldie' },room=globalVars.socketIOClients[teller.email],namespace='/io/view')
+    globalVars.socketio.emit('swap_view',{ 'swapView' : 'moderator' },room=globalVars.socketIOClients[moderator.email],namespace='/io/view')
 
     for guesser in guessers:
-        socketio.emit('swap_view',{'swapView':'gameplayerturn'},room=socketIOClients[guesser.email],namespace='/io/view')
+        globalVars.socketio.emit('swap_view',{'swapView':'gameplayerturn'},room=globalVars.socketIOClients[guesser.email],namespace='/io/view')
     for observer in observers:
-        socketio.emit('swap_view',{'swapView':'gameplayerturn'},room=socketIOClients[observer.email],namespace='/io/view')
+        globalVars.socketio.emit('swap_view',{'swapView':'gameplayerturn'},room=globalVars.socketIOClients[observer.email],namespace='/io/view')
 
     session.commit()
     session.close()
 
 
 def setup_turn_roles(gameID,gameChanger=-1):
-    session = Session()
+    session = globalVars.Session()
     game = GameModel.getGameById(gameID,session)
     players = game.getAllPlayers()
     round = game.getCurrentRound()
-    turn = round.getCurrentTurn()
+    turn = round.getCurrentTurn(session)
 
     moderator = turn.getModerator()
     teller = turn.getTeller()
@@ -304,21 +313,22 @@ def setup_turn_roles(gameID,gameChanger=-1):
         'teams': teams,
     }
     for player in players:
-        socketio.emit('turn_data',turnData,room=socketIOClients[player.email],namespace='/io/game')
+        globalVars.socketio.emit('turn_data',turnData,room=globalVars.socketIOClients[player.email],namespace='/io/game')
     for observer in observers:
-        socketio.emit('turn_role_assignment',{ 'role' : 'observer' },room=socketIOClients[observer.email],namespace='/io/game')
+        globalVars.socketio.emit('turn_role_assignment',{ 'role' : 'observer' },room=globalVars.socketIOClients[observer.email],namespace='/io/game')
     for guesser in guessers:
-        socketio.emit('turn_role_assignment',{ 'role' : 'guesser' },room=socketIOClients[guesser.email],namespace='/io/game')
+        globalVars.socketio.emit('turn_role_assignment',{ 'role' : 'guesser' },room=globalVars.socketIOClients[guesser.email],namespace='/io/game')
 
-@socketio.on('roll_wheel',namespace='/io/game')
+@globalVars.socketio.on('roll_wheel',namespace='/io/game')
 def roll_wheel(data):
-    session = Session()
+    session = globalVars.Session()
     gameID = data['gameID']
     duration = data['duration']
     print_item(data,"Rolling wheel: ")
     game = GameModel.getGameById(gameID,session)
-    round = game.getCurrentRound()
-    turn = round.getCurrentTurn()
+    # round = game.getCurrentRound()
+    round = RoundModel.getLastRound(session, game.id)
+    turn = TurnModel.getLastTurn(session, round.id)
     gameChanger = turn.setGameChanger()
     rollWheel = {
         'gameID' : gameID,
@@ -329,19 +339,43 @@ def roll_wheel(data):
     print_item(rollWheel,"ROLL RESULT WAS")
     emit('my_roll_result',rollWheel)
 
-    time.sleep(duration + 1.5)
+    globalVars.socketio.sleep(duration + 1.5)
     emit('enable_start_turn_button')
     session.commit()
     session.close()
 
-@socketio.on('starting_turn',namespace='/io/game')
+
+#Test method to set specific game changer I want
+@globalVars.socketio.on('roll_wheel_test',namespace='/io/game')
+def roll_wheel_test(data):
+    session = globalVars.Session()
+    gameID = data['gameID']
+    duration = data['duration']
+    print_item(data,"Rolling wheel: ")
+    game = GameModel.getGameById(gameID,session)
+    round = game.getCurrentRound()
+    turn = round.getCurrentTurn(session)
+    gameChanger = turn.setGameChangerTest(data['changerID'])
+    rollWheel = {
+        'gameID' : gameID,
+        'rollID' : gameChanger.gameChangerId,
+        'description' : gameChanger.description,
+        'name': gameChanger.name
+    }
+    emit('my_roll_result_test',rollWheel)
+    globalVars.socketio.sleep(duration + 1.5)
+    emit('enable_start_turn_button')
+    session.commit()
+    session.close()
+
+@globalVars.socketio.on('starting_turn',namespace='/io/game')
 def start_turn(data):
-    session = Session()
+    session = globalVars.Session()
     gameID = data['gameID']
 
     game = GameModel.getGameById(gameID,session)
     round = game.getCurrentRound()
-    turn = round.getCurrentTurn()
+    turn = round.getCurrentTurn(session)
 
     moderator = turn.getModerator()
     teller = turn.getTeller()
@@ -361,7 +395,7 @@ def start_turn(data):
 
         if(game.isGameOver()):
             for player in players:
-                emit('swap_view',{ 'swapView' : 'endgame'},room=socketIOClients[player.email],namespace='/io/view')
+                emit('swap_view',{ 'swapView' : 'endgame'},room=globalVars.socketIOClients[player.email],namespace='/io/view')
             session.commit()
             session.close()
             return
@@ -373,72 +407,90 @@ def start_turn(data):
 
 
     for player in players:
-        emit('roll_result',rollWheel,room=socketIOClients[player.email],namespace='/io/game')
-        emit('turn_started',{ 'turnID' : turn.id },room=socketIOClients[player.email],namespace='/io/game')
+        emit('roll_result',rollWheel,room=globalVars.socketIOClients[player.email],namespace='/io/game')
+        emit('turn_started',{ 'turnID' : turn.id },room=globalVars.socketIOClients[player.email],namespace='/io/game')
 
     cardData = turn.loadCard()
     print_item(cardData,"CURRENT CARD IS")
     cardData['showCard'] = True
-    emit('swap_view',{'swapView':'teller'},room=socketIOClients[teller.email],namespace='/io/view')
-    time.sleep(1)
+    emit('swap_view',{'swapView':'teller'},room=globalVars.socketIOClients[teller.email],namespace='/io/view')
+    globalVars.socketio.sleep(1)
 
-    emit('load_card',cardData,room=socketIOClients[teller.email],namespace='/io/card')
-    emit('load_card',cardData,room=socketIOClients[moderator.email],namespace='/io/card')
-    turn.startTimer(timer_notify_turn_complete)
+    emit('load_card',cardData,room=globalVars.socketIOClients[teller.email],namespace='/io/card')
+    emit('load_card',cardData,room=globalVars.socketIOClients[moderator.email],namespace='/io/card')
 
+    if (cardData['card']['isPhrase']==1):
+        isPhrase = "True"
+    else:
+        isPhrase = "False"
+
+    for player in players:
+
+        emit('is_phrase',{ 'isPhrase': isPhrase },room=globalVars.socketIOClients[player.email],namespace='/io/game')
+
+    turn.startTimer()
     session.commit()
     session.close()
 
-@socketio.on('load_next_card',namespace='/io/game')
+@globalVars.socketio.on('load_next_card',namespace='/io/game')
 def load_next_card(data):
-    session = Session()
+    session = globalVars.Session()
     gameID = data['gameID']
 
     game = GameModel.getGameById(gameID,session)
     round = game.getCurrentRound()
-    turn = round.getCurrentTurn()
+    turn = round.getCurrentTurn(session)
+    players=game.getAllPlayers()
 
     moderator = turn.getModerator()
     teller = turn.getTeller()
     cardData = turn.loadCard()
     cardData['showCard'] = True
-    emit('load_card',cardData,room=socketIOClients[teller.email],namespace='/io/card')
-    emit('load_card',cardData,room=socketIOClients[moderator.email],namespace='/io/card')
+    emit('load_card',cardData,room=globalVars.socketIOClients[teller.email],namespace='/io/card')
+    emit('load_card',cardData,room=globalVars.socketIOClients[moderator.email],namespace='/io/card')
+
+    if (cardData['card']['isPhrase']==1):
+        isPhrase = "True"
+    else:
+        isPhrase = "False"
+
+    for player in players:
+        emit('is_phrase',{ 'isPhrase': isPhrase },room=globalVars.socketIOClients[player.email],namespace='/io/game')
+
     session.commit()
     session.close()
 
-@socketio.on("pause_timer",namespace="/io/timer")
+@globalVars.socketio.on("pause_timer",namespace="/io/timer")
 def pause_timer(data):
-    session = Session()
+    session = globalVars.Session()
     print_item(data,"PAUSING TIMER")
     gameID = data['gameID']
     game = GameModel.getGameById(gameID,session)
     round = game.getCurrentRound()
     session.commit()
-    turn = round.getCurrentTurn()
+    turn = round.getCurrentTurn(session)
     turnID = turn.id
-    timer = turnTimers[turnID]
+    timer = globalVars.turnTimers[turnID]
     timer.pause()
     session.close()
 
 
-@socketio.on("resume_timer",namespace="/io/timer")
+@globalVars.socketio.on("resume_timer",namespace="/io/timer")
 def resume_timer(data):
-    session = Session()
+    session = globalVars.Session()
     print_item(data,"RESUMING TIMER")
     gameID = data['gameID']
     game = GameModel.getGameById(gameID,session)
     round = game.getCurrentRound()
-    turn = round.getCurrentTurn()
+    turn = round.getCurrentTurn(session)
     turnID = turn.id
-    timer = turnTimers[turnID]
+    timer = globalVars.turnTimers[turnID]
     timer.resume()
     session.close()
 
-@socketio.on("timer_notify_turn_complete",namespace="/io/game")
-def timer_notify_turn_complete(data):
-    session = Session()
-    print_item(data,"TURN COMPLETE!!!")
+@globalVars.socketio.on("turn_complete",namespace="/io/game")
+def turn_complete(data):
+    session = globalVars.Session()
     # TODO: notify clients of turn completion
     # TODO: sleep for a second.
     # TODO: start next turn!
@@ -446,13 +498,13 @@ def timer_notify_turn_complete(data):
     game = GameModel.getGameById(gameID,session)
     players = game.getAllPlayers()
     round = game.getCurrentRound()
-    turn = round.getCurrentTurn()
+    turn = round.getCurrentTurn(session)
     teamScoreData = turn.getAllTeamScores()
 
     print_item(game,"CHECKING Game.isGameOver()")
     if(game.isGameOver()):
         for player in players:
-            socketio.emit('swap_view',{ 'swapView' : 'endgame'},room=socketIOClients[player.email],namespace='/io/view')
+            globalVars.socketio.emit('swap_view',{ 'swapView' : 'endgame'},room=globalVars.socketIOClients[player.email],namespace='/io/view')
         session.commit()
         session.close()
         return
@@ -460,22 +512,22 @@ def timer_notify_turn_complete(data):
     waitDuration = 2
     for player in players:
         # TODO: ADD SCORE INFO TO turn_finished
-        socketio.emit('turn_finished',{ 'turnID' : turn.id },room=socketIOClients[player.email],namespace='/io/game')
-        socketio.emit('report_score',teamScoreData,room=socketIOClients[player.email],namespace='/io/game')
-        socketio.emit('swap_view',{ 'swapView' : 'waitforturn'},room=socketIOClients[player.email],namespace='/io/view')
+        globalVars.socketio.emit('turn_finished',{ 'turnID' : turn.id },room=globalVars.socketIOClients[player.email],namespace='/io/game')
+        globalVars.socketio.emit('report_score',teamScoreData,room=globalVars.socketIOClients[player.email],namespace='/io/game')
+        globalVars.socketio.emit('swap_view',{ 'swapView' : 'waitforturn'},room=globalVars.socketIOClients[player.email],namespace='/io/view')
 
-    # TODO: figure out how to not do this nastiness.
-    timer = turnTimers[turn.id]
-    del turnTimers[turn.id]
-    time.sleep(waitDuration)
+    timer = globalVars.turnTimers[turn.id]
+    print(timer)
+    del globalVars.turnTimers[turn.id]
+    globalVars.socketio.sleep(waitDuration)
     start_new_turn(data)
 
     session.commit()
     session.close()
 
-@socketio.on('award_penalty',namespace="/io/card")
+@globalVars.socketio.on('award_penalty',namespace="/io/card")
 def award_penalty(data):
-    session = Session()
+    session = globalVars.Session()
     print_item(data,"TAKE POINT RECEIVED")
     turnID = data['turnID']
     turn =  TurnModel.getTurnById(turnID,session)
@@ -484,9 +536,9 @@ def award_penalty(data):
     session.close()
     load_next_card(data)
 
-@socketio.on('award_point',namespace="/io/card")
+@globalVars.socketio.on('award_point',namespace="/io/card")
 def award_point(data):
-    session = Session()
+    session = globalVars.Session()
     turnID = data['turnID']
     teamID = data['teamID']
     turn =  TurnModel.getTurnById(turnID,session)
@@ -495,9 +547,9 @@ def award_point(data):
     session.close()
     load_next_card(data)
 
-@socketio.on('skip_card',namespace="/io/card")
+@globalVars.socketio.on('skip_card',namespace="/io/card")
 def skip_card(data):
-    session = Session()
+    session = globalVars.Session()
     print_item(data,"SKIP RECEIVED")
     turnID = data['turnID']
     turn =  TurnModel.getTurnById(turnID,session)

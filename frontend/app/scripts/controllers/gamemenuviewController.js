@@ -14,8 +14,10 @@ angular.module('frontendApp')
     '$state',
     '$http',
     'loginUser',
+    '$mdToast',
+    '$rootScope',
     'debug',
-function ($scope,gameService,$state,$http,loginUser,debug) {
+function ($scope,gameService,$state,$http,loginUser,$mdToast,$rootScope,debug) {
 
   if(debug) console.log("GM View controller");
 
@@ -24,17 +26,28 @@ function ($scope,gameService,$state,$http,loginUser,debug) {
   $scope.games = gameService.games;
 
   $scope.gameCreateData = gameService.gameCreateData;
+
   $scope.gameData = {
     maxPlayersPerTeam: 3,
-    turnDuration : 30,
+    turnDuration : 60,
     pointsToWin : 30,
     numberOfTeams: 2,
     skipPenaltyAfter : 3,
+    maxRoundsPerGame: 5,
     gameChangers : true,
     name:""
   };
-  $scope.turnDurationOptions= [20,30,60];
+
+  $scope.turnDurationOptions= [30,60,90,120];
   $scope.skipOptions= ['infinite',0,3,5];
+  $scope.pointsOptions= [10,30,60];
+  $scope.prettyOptions={
+    'skipPenaltyAfter' : 'Free Skips',
+    'maxPlayersPerTeam': 'Max Players/Team',
+    'numberOfTeams' : 'Number of Teams',
+    'pointsToWin' : 'Points to Win',
+    'maxRoundsPerGame': "The maximum rounds per game"
+  }
 
   $scope.gameData.teamData = [];
   $scope.collapseAll = function(data) {
@@ -59,6 +72,7 @@ function ($scope,gameService,$state,$http,loginUser,debug) {
           return teams;
         })();
   });
+
   $scope.joinButton = function(game,team){
     //TODO: add team, game in player;
     var player = loginUser.getPlayerDetails();
@@ -71,25 +85,47 @@ function ($scope,gameService,$state,$http,loginUser,debug) {
     gameService.initGame();
   }
 
-  $scope.formFieldChanged = function(field){
-    if(field) gameService.validateGameConfig($scope.gameData);
+  $scope.formFieldChanged = function(data){
+    gameService.validateGameConfig(data);
   }
 
   $scope.forceBack = function(object,fieldString,max,min){
 
     if(object[fieldString] > max){
-      alert(fieldString + " cannot larger than" + max);
       object[fieldString] = max;
-    }else if(object < min){
+      $scope.showSimpleToast($scope.prettyOptions[fieldString] + " cannot be larger than " + max);
+    }else if(object[fieldString] < min){
       object[fieldString] = min;
-      alert(fieldString + " cannot less than" + min);
+      $scope.showSimpleToast($scope.prettyOptions[fieldString] + " cannot be less than " + min);
     }
   }
 
-  $scope.getData = function(){
-    if(debug){
-      console.log($scope.gameData.selectedFreeSkips);
-    };
+  $scope.toastPosition = {
+    bottom: true,
+    right: true
   };
+
+  $scope.getToastPosition = function() {
+
+    return Object.keys($scope.toastPosition)
+      .filter(function(pos) { return $scope.toastPosition[pos]; })
+      .join(' ');
+  };
+
+  $scope.showSimpleToast = function(text) {
+    var pinTo = $scope.getToastPosition();
+    console.log($mdToast.simple());
+    $mdToast.show(
+      $mdToast.simple()
+        .textContent(text)
+        .position(pinTo )
+        .hideDelay(3000)
+    );
+  };
+
+  $rootScope.$on('invalid_game_message',function(event,data){
+    console.log(data);
+    $scope.showSimpleToast(data.message);
+  });
 
 }]);

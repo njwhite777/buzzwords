@@ -1,0 +1,241 @@
+<div style="text-align: right"> Nathan White </div>
+<div style="text-align: right"> Aron Kageza </div>
+<div style="text-align: right"> Hanquing Guo </div>
+<div style="text-align: right"> 20180424 </div>
+<div style="text-align: right"> Rev 1.0 </div>
+Notes:
+	Evaluating Software Models
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1) {'relative error': ['actual development effort', 'estimated development effort', 'software model', 'predictive value']} : pg. 1
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2) {'mean relative error': ['mean', 'sum', 'predict', 'criteria']} : pg. 1
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3) {'magnitude of the relative error': ['bias', 'absolute', 'adjust', 'magnitude']} : pg. 1
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4) {'Mean magnitude of relative error': ['mean', 'effort estimation', 'average', 'acceptable']} : pg. 1
+	Object-Oriented Analysis and Design
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5) {'OO Analysis': ['investigation', 'describe', 'concept', 'problem domain']} : pg. 1
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6) {'OO Design': ['define ', 'logical software objects', 'implement', 'Object']} : pg. 1
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7) {'Conceptual model': ['abstract', 'object', 'block', 'attributes']} : pg. 2
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8) {'collaboration diagram': ['message', 'data flow', 'illustrating', 'function']} : pg. 2
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9) {'class diagrams': ['components', 'object block', 'combined model', 'function and attribute']} : pg. 3
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10) {'UML': ['object-oriented analysis', 'methodology', 'visualizing', 'development life cycle']} : pg. 3
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11) {'multiplicity': ['relationship', 'interaction', 'objects', 'number']} : pg. 8
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;12) {'navigation': ['direction', 'multiplicity', 'arrow', 'association']} : pg. 8
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;13) {'inheritance': ['relationship', 'super-class', 'sub-class', 'common attributes']} : pg. 8
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;14) {'include relationship': ['function', 'reuse', 'use case', 'consequence']} : pg. 8
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;15) {'misuse case': ['privacy and security', 'hostile', 'hacker', 'threat']} : pg. 10
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;16) {'actors': ['interact', 'system', 'player', 'relationship']} : pg. 5
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;17) {'attributes': ['class', 'definition', 'requirement', 'variable']} : pg. 7
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;18) {'operations': ['function', 'interaction', 'behavior', 'parameters']} : pg. 7
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;19) {'class': ['Types', 'Primitives', 'Inheritance', 'School']} : pg. 4
+	Risk Management
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;20) {'Risk Strategy': ['Reactive', 'Proactive', 'Plan', 'Minimize']} : pg. 1
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;21) {'Software Risks': ['Project', 'Technical', 'Business', 'Categories']} : pg. 2
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;22) {'Risk Identification': ['Size', 'Impact', 'Probability', 'Quantify']} : pg. 2
+	Introduction to Software Engineering
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;23) {'Waterfall Model': ['Feedback Loops', 'Documentation-driven', 'Easier Maintenance', 'Lacking Client Feedback', 'Tiered']} : pg. 2
+	Introduction to software engineer
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;24) {'Reuse Model': ['Refine', 'Object', 'Copy', 'Extract']} : pg. 5
+	Introduction to software engineer:
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;25) {'Confidentiality': ['Employer', 'Secret', 'Respect ', 'Leak']} : pg. 8
+	What is project planning:
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;26) {'Code Modification': ['Change', 'Reuse', 'Modify software', 'Assessment']} : pg. 6
+	Design Principles
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;27) {'Abstraction': ['Module', 'Object', 'Class', 'Design']} : pg. 1
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;28) {'Software Design': ['Computer Science', 'Structure', 'System', 'Analysis']} : pg. 1
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;29) {'Fan-out': ['Module', 'Fan-in', 'Call', 'Number']} : pg. 3
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;30) {'Fan-in': ['Module', 'Fan-out', 'Number', 'Call']} : pg. 3
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;31) {'Cohesion': ['Module', 'Association', 'Function', 'Coupling']} : pg. 3
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;32) {'Coupling': ['Module', 'Class', 'Interdependence', 'Cohesion']} : pg. 3
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;33) {'Functional Cohesion': ['Module', 'All', 'Task', 'Function']} : pg. 4
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;34) {'Sequential Cohesion': ['Module', 'Input', 'Output', 'Function']} : pg. 4
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;35) {'Communication Cohesion': ['Input', 'Output', 'Same', 'Function']} : pg. 4
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;36) {'Procedural Cohesion': ['Different', 'Control', 'Function', 'Unrelated']} : pg. 4
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;37) {'Temporal Cohesion': ['Function', 'Time', 'Module', 'Permanent']} : pg. 4
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;38) {'Logical Cohesion': ['Function', 'Outside', 'Flag', 'Execute']} : pg. 4
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;39) {'Coincidental Cohesion': ['Function', 'Random', 'Accidental', 'Unexpected']} : pg. 4
+	Use Case-based Requirements
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;40) {'Use case': ['Object Oriented', 'Actors', 'Actions', 'Oval']} : pg. 2
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;41) {'Scenario': ['Use case', 'Actions', 'Sequence', 'Behavior']} : pg. 2
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;42) {'Actor': ['User', 'Use Case', 'Information', 'Stick']} : pg. 3
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;43) {'Use Case Diagram': ['Use Case', 'Actors', 'Visual', 'Picture']} : pg. 5
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;44) {'Preconditions': ['Main Flow', 'Use Case', 'Before', 'Start']} : pg. 6
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;45) {'Main Flow': ['Use Case', 'Actor', 'Steps', 'Sub flow']} : pg. 6
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;46) {'extend relationship': ['condition', 'optional behavior', 'scenario', 'exceptional']} : pg. 9
+	What is Project Planning
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;47) {'BRAK': ['Code', 'Requirements', 'Estimation', 'Volatility', 'Text']} : pg. 7
+	Introduction to software engineering
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;48) {'Extreme Programming': ['Stories', 'Features', 'Builds', 'Test Cases', 'Pair', 'Continuous']} : pg. 3
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;49) {'Synchronize and Stabilize': ['Microsoft', 'Requirements', 'Specifications', 'End of day']} : pg. 4
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;50) {'Fountain Model': ['Waterfall', 'Cycles', 'Serial', 'Dependency']} : pg. 4
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;51) {'Spiral Model': ['Risk', 'Precede', 'Evaluate', 'Plan']} : pg. 4
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;52) {'Object Oriented Programming': ['Class', 'Object', 'Inheritance', 'Encapsulation']} : pg. 4
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;53) {'Unit test': ['Program', 'Part', 'Code', 'Function']} : pg. 2
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;54) {'Maintenance': ['Cost', 'Time', 'During', 'Bug']} : pg. 2
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;55) {'Documentation': ['Text', 'Customer', 'Tutorial', 'Guideline ']} : pg. 6
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;56) {'Maintainability': ['Needs', 'Software', 'Technical support', 'Time']} : pg. 7
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;57) {'Dependability': ['Reliable', 'Robust', 'Availability', 'System']} : pg. 7
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;58) {'Efficiency': ['Trustworthy', 'Unused resources', 'Efficient', 'Useful output']} : pg. 7
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;59) {'Usability': ['Discover-able', 'Usable', 'Satisfaction', 'Errors']} : pg. 7
+	The Structured Specification
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;60) {'Data Dictionary': ['Document', 'Meaning', 'Description', 'Terms']} : pg. 3
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;61) {'DFD': ['Design', 'Data', 'Diagram', 'Flow']} : pg. 1
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;62) {'Functional Specification': ['Analyst', 'Requirements', 'User', 'Document']} : pg. 1
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;63) {'Data Store': ['DFD', 'Keep', 'Diagram', 'Design']} : pg. 1
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;64) {'Terminators': ['DFD', 'External', 'Sources', 'Sinks']} : pg. 1
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;65) {'Contextual Level': ['DFD', 'Zero', 'Top', 'Design']} : pg. 2
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;66) {'Decision Trees': ['Design', 'Diagram', 'Branch', 'Picture']} : pg. 4
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;67) {'ERDs': ['Entity', 'Diagram', 'Design', 'Data']} : pg. 4
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;68) {'Functional Primitive': ['DFD', 'Last', 'Design', 'Break']} : pg. 4
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;69) {'Structured Specification': ['functional specification', 'readings', 'user', 'document']} : pg. 1
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;70) {'Terminator': ['DFD', 'external data sources', 'diagrams', 'destinations']} : pg. 1
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;71) {'Component Variations': ['flow type', 'process', 'store', 'operations']} : pg. 2
+	Notes on Software Testing
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;72) {'Black Box Testing': ['Specifications', 'API', 'Inputs ', 'Outputs']} : pg. ?
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;73) {'White Box Testing': ['Method', 'Known', 'Source', 'Inside']} : pg. ?
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;74) {'Naive Testing': ['Simplistic', 'Execution', 'Cases', 'Guessing']} : pg. ?
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;75) {'Exhaustive Path': ['Brute', 'All', 'Combinations', 'Traverse']} : pg. ?
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;76) {'Test Plan': ['Management', 'Coverage', 'Verify', 'Box']} : pg. 3
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;77) {'Random Input Testing': ['Bad', 'Poor', 'Stochastic', 'Noise']} : pg. 4
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;78) {'Equivalence Partition': ['Sets', 'Intersection', 'Union', 'Divide']} : pg. 4
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;79) {'Boundary Value Analysis': ['One', 'Limits', 'Ranges', 'Condition']} : pg. 4
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;80) {'Error Guessing': ['Experience', 'Analysis', 'Intuition', 'Knowledge']} : pg. 4
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;81) {'Logic Coverage': ['Statement ', 'Path', 'Branch ', 'Condition']} : pg. 11
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;82) {'Infeasible Path': ['Unreachable', 'Traversal', 'Execution', 'Impossible']} : pg. 12
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;83) {'Statement Coverage': ['Verify', 'Once', 'Logic', 'Strategy']} : pg. 12
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;84) {'Path Coverage': ['Potential', 'Conditions', 'All', 'Combinations']} : pg. 13
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;85) {'Condition Coverage': ['Test', 'Each', 'Logical', 'Boolean']} : pg. 14
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;86) {'Defect Density Model': ['Testing', 'Time', 'Effort', 'Minimized']} : pg. 18
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;87) {'Saturation Effect': ['False', 'Reliability', 'Estimates', 'Misled']} : pg. 18
+	Design Techniques
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;88) {'Data Flow Oriented Design': ['process', 'DFD', 'structure', 'program']} : pg. 1
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;89) {'Top-Down Function Design': ['function', 'module', 'software', 'information driven']} : pg. 1
+	What is project planning
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;90) {'Planning': ['Task', 'Organization', 'Design', 'Dependency']} : pg. 1
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;91) {'Metrics': ['Models', 'Predicts', 'Measures', 'System']} : pg. 2
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;92) {'Critical Path': ['Plan', 'Complete', 'Longest', 'Project']} : pg. 2
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;93) {'Function Points': ['Measure', 'Compute', 'LOC', 'Cost']} : pg. 4
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;94) {'Empirical Validation': ['Analyze', 'Data Collection', 'Proof', 'Experiment ']} : pg. 2
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;95) {'Effort': ['Cost', 'Duration', 'Work time', 'Measure']} : pg. 2
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;96) {'Risk': ['Avoid', 'Estimate', 'Evaluate', 'Analyze']} : pg. 1
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;97) {'Estimates': ['Approximation', 'Calculation', 'Guess', 'Analyze']} : pg. 3
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;98) {'Size Metrics': ['Operators', 'Operands', 'Occurrences', 'LOC']} : pg. 3
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;99) {'Macro-Model': ['Scale', 'Productivity', 'Big', 'Size']} : pg. 4
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;100) {'Early Planning': ['Estimate', 'Schedule', 'Tasks', 'Dependency']} : pg. 1
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;101) {'Emperical': ['Verified', 'Science', 'Theoretical', 'Data']} : pg. 2
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;102) {'Code Metric': ['Code', 'Data structure', 'Complexity ', 'Logic']} : pg. 3
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;103) {'Effort estimation': ['Past experience ', 'Data', 'Formal model', 'Average methods']} : pg. 4
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;104) {'Total effort': ['Development cost', 'Theoretical', 'Statistical', 'Mathematical']} : pg. 4
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;105) {'Criteria': ['Validity', 'Judge', 'Model', 'Objectivity']} : pg. 5
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;106) {'COCOMO': ['Tool', 'Estimate', 'Schedule', 'Cost']} : pg. 5
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;107) {'Product Attributes': ['Software Reliability', 'Data base', 'Complexity ', 'Cost driver']} : pg. 6
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;108) {'Personnel Attributes': ['Analyst Capability', 'Application Experience', 'Programmer Capability', 'Programming Language ']} : pg. 6
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;109) {'Computer Attributes': ['Execution Time', 'Storage Constraint', 'Turnaround time', 'Virtual Machine']} : pg. 6
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;110) {'Estimating Techniques': ['Algorithmic', 'Top-Down', 'Bottom-Up', 'Expert Judgment', 'Analogy']} : pg. 8
+	Software Quality Assurance
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;111) {'Reliability': ['Crash', 'Intended', 'Test', 'Quality']} : pg. 1
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;112) {'Process Specific Activities': ['KPA', 'Maturity', 'Levels', 'Testing']} : pg. 3
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;113) {'Quality Assurance': ['Review', 'Methods', 'Procedures', 'Guaratee']} : pg. 3
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;114) {'Prevention Costs': ['Quality', 'Planning', 'Reviews', 'Training']} : pg. 2
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;115) {'Failure Cost': ['Analysis', 'Project', 'Retest', 'Postmortem']} : pg. 2
+	Notes on software testing
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;116) {'Path Testing': ['Input', 'Output', 'Execution', 'Follow']} : pg. 11
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;117) {'Symbolic Evaluation': ['Methods', 'Dynamic', 'Global', 'Testing']} : pg. 10
+Book:
+	Software Engineering
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;118) {'Mongolian Horde': ['Add', 'Behind', 'Mythical Man Month', 'Schedule', 'Productivity']} : pg. 24
+	Project Management Concepts
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;119) {'Steakholders': ['Managers', 'Practitioners', 'Customers', 'End User']} : pg. 687
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;120) {'Organizational Paradigms': ['Closed', 'Random', 'Open', 'Synchronous']} : pg. 690
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;121) {'Agile': ['Satisfaction', 'Incremental', 'Informal', 'Simplicity']} : pg. 691
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;122) {'Software Scope': ['Context', 'Information', 'Function', 'Features']} : pg. 694
+	Understanding Requirements
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;123) {'requirement': ['Customer', 'Model', 'Change', 'Design']} : pg. 131
+	Software Process Structure
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;124) {'Software Engineering': ['Process Management', 'System', 'Development', 'Discipline']} : pg. 15
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;125) {'Process Flow': ['Iterative', 'Linear', 'Parallel', 'Umbrella']} : pg. 31
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;126) {'Umbrella Activities': ['tracking', 'risk', 'quality', 'configuration', 'technical']} : pg. 31
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;127) {'Communication': ['Talk', 'Speak', 'Telephone', 'Internet']} : pg. 34
+	Product Metrics
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;128) {'External Inputs': ['User', 'Outside', 'Function', 'Output']} : pg. 659
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;129) {'External Outputs': ['User', 'Information', 'Report', 'Input']} : pg. 659
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;130) {'Measure': ['Size', 'Dimension', 'Extent', 'Capacity']} : pg. 655
+	User Interface Design
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;131) {'Analysis': ['Design', 'Implementation', 'Document', 'Critical']} : pg. 317
+	Quality Managementt
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;132) {'Quality of Conformance': ['Degree', 'Requirements', 'End-user', 'Comply']} : pg. 414
+	Modeling
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;133) {'Requirements Engineering': ['Communication', 'Needs', 'Process', 'Project']} : pg. 132
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;134) {'Inception': ['Start', 'Beginning', 'Product', 'Idea']} : pg. 133
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;135) {'Ubiquitous Computing': ['Processors', 'Distributed', 'Everywhere', 'Commonplace']} : pg. 133
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;136) {'Elicitation': ['Ask', 'Objective', 'Accomplish', 'Use']} : pg. 134
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;137) {'Problem of Scope': ['Boundary', 'Space', 'Domain', 'Context']} : pg. 134
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;138) {'Problem of Understanding': ['Unsure', 'Limitations', 'Communication', 'Partial']} : pg. 134
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;139) {'Problem of Volatility': ['Requirements', 'Change', 'Time', 'Quickly']} : pg. 134
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;140) {'Goal-Oriented': ['Long-Term', 'Purpose', 'Achieve', 'Requirements']} : pg. 134
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;141) {'Elaboration': ['Expand', 'Elicitation', 'Inception', 'Refined']} : pg. 134
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;142) {'User Scenario': ['Describe', 'Actors', 'Scene', 'Workflow']} : pg. 135
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;143) {'Negotiation': ['Compromise', 'Reconcile', 'Argue', 'Requirements']} : pg 135
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;144) {'Iterative Approach': ['Sequential', 'Technique', 'Systematic', 'Requirements']} : pg 135
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;145) {'Specification': ['Document', 'Model', 'Prototype', 'Description']} : pg. 135
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;146) {'Validation': ['Verify', 'Assess', 'Quality', 'Review']} : pg. 136
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;147) {'Requirements Managment': ['Activities', 'Life Cycle', 'System', 'Track']} : pg. 138
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;148) {'Software Engineer': ['Design', 'Manage', 'System', 'Programmer']} : pg. 138
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;149) {'Collaboration': ['Together', 'Group', 'Coordinate', 'Work']} : pg. 140
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;150) {'Questions': ['Ask', 'Gather', 'Query', 'Inquire']} : pg. 140
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;151) {'Business Need': ['Identify', 'Recognize', 'Project', 'Inception']} : pg. 133
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;152) {'Task Analysis': ['Perform', 'Circumstance', 'Sequence', 'Workflow']} : pg. 326
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;153) {'Task Elaboration': ['Function', 'List', 'Breakdown', 'Design']} : pg. 328
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;154) {'Workflow Analysis': ['Multiple', 'Process', 'User', 'Technique']} : pg. 328
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;155) {'Swimlane': ['Diagram', 'Pool', 'Water', 'Users']} : pg. 329
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;156) {'Design Pattern': ['Abstraction', 'Solution', 'Interface', 'Common']} : pg. 334
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;157) {'Response Time': ['Delay', 'Lag', 'Bad', 'Variable']} : pg. 335
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;158) {'Accessibility': ['Impaired', 'Disability', 'Usable', 'Guidelines']} : pg. 336
+	Design Concepts
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;159) {'Pseudocode': ['Design', 'Program', 'Flow', 'Language']} : pg. 247
+	Process and Project Metrics
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;160) {'Defect': ['Error', 'Bug', 'Crash', 'Failure']} : pg. 450
+	Risk Management
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;161) {'Performance Risk': ['Requirements', 'Uncertainty', 'Cost', 'Support']} : pg. 782
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;162) {'Cost Risk': ['Budget', 'Maintain', 'Price', 'Uncertainty']} : pg. 782
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;163) {'Support Risk': ['Uncertainty', 'Correct', 'Help', 'Enhance']} : pg. 782
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;164) {'Schedule Risk': ['Uncertainty', 'Project', 'Time', 'Deliver']} : pg. 782
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;165) {'Risk Estimation': ['Projection', 'Likelihood', 'Impact', 'Determine']} : pg. 782
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;166) {'RMMM': ['Plan', 'Probability', 'Strategy', 'Minimize']} : pg. 785
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;167) {'Cutoff Line': ['Risk', 'Terminate', 'Estimate', 'Identification']} : pg. 784
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;168) {'Fire-fighting': ['Crisis', 'Panic', 'Project', 'Problem']} : pg. 778
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;169) {'Uncertainty': ['Unknown', 'Unsure', 'Minimize', 'Risk']} : pg. 778
+	Quality Management
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;170) {'User Interface': ['Input', 'Output', 'Keyboard', 'Screen', 'Website']} : pg. 672
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;171) {'Cyclomatic Complexity': ['Linear', 'Independent', 'Metric', 'Testing']} : pg. 455
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;172) {'Validation Testing': ['Requirements', 'Software', 'Verify', 'Develop']} : pg. 484
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;173) {'System Testing': ['Mesh', 'Integrate', 'High', 'Performance']} : pg. 471
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;174) {'Smoke Testing': ['Integration', 'Development', 'Time-critical', 'Assessment']} : pg. 479
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;175) {'Alpha Tests': ['Developer', 'End-User', 'Process', 'Integrated']} : pg. 485
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;176) {'Beta Test': ['End-user', 'Developer', 'Live', 'Environment']} : pg. 485
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;177) {'Stress Testing': ['Load', 'Volume', 'Resources', 'Demand']} : pg. 487
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;178) {'Configuration Testing': ['Environment', 'Deployment', 'Documentation', 'Installed']} : pg 487
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;179) {'Security Testing': ['Penetration', 'Vulnerability', 'Attack', 'Hack']} : pg. 486
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;180) {'Recovery Testing': ['Failure', 'Automatic', 'Human-intervention', 'Resilience']} : pg. 486
+	Managing Software Projects
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;181) {'Resources': ['Human', 'Software', 'Environmental', 'Hardware']} : pg. 732
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;182) {'Decomposition': ['Break', 'Parts', 'Smaller', 'Problem']} : pg. 734
+	The Nature Of Software
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;183) {'Embedded Software': ['Firmware', 'Hardware', 'Controller', 'Processor', 'PROM']} : pg. 7
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;184) {'Cloud Computing': ['Internet', 'Remote', 'Resource', 'Azure/Google/AWS']} : pg. 10
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;185) {'Process Pattern': ['Solution', 'Resolution', 'Template', 'Planning']} : pg. 35
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;186) {'Modeling': ['Sketch', 'Mock-up', 'Miniature', 'Scale']} : pg. 17
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;187) {'Customer': ['Request', 'Pay', 'Requirements', 'Person']} : pg. 17
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;188) {'Obsolete': ['Outdated', 'Expired', 'Extinct', 'Deprecated']} : pg. 22
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;189) {'HTML': ['Hypertext', 'HTTP', 'Protocol', 'Browser']} : pg. 10
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;190) {'Algorithm': ['Code', 'Program', 'Processor', 'Computer']} : pg. 21
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;191) {'Compiler': ['Assemble', 'Execute', 'Program', 'Code']} : pg. 7
+	Software Testing Strategies
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;192) {'Independent Test Group': ['Separate', 'Complete', 'Procedure', 'Correct']} : pg. 469
+	Software Quality Assurance
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;193) {'Standards': ['Ensure', 'Conform', 'Voluntary', 'SQA']} : pg. 450
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;194) {'Audit': ['Review', 'Conformity', 'Quality', 'Certification']} : pg. 450
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;195) {'Six Sigma': ['Standard', 'High', 'Define', 'Measure']} : pg. 458
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;196) {'Failures-in-time': ['Statistical', 'Measure', 'Reliability', 'Billion']} : pg. 460
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;197) {'Mean-time-to-failure': ['Average', 'Duration', 'Program', 'Crash']} : pg. 450
+	Process Models
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;198) {'Prescriptive Model': ['Structure', 'Order', 'Sequential', 'Process']} : pg. 41
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;199) {'Process Model': ['Activity', 'Action', 'Flow', 'Software']} : pg. 41
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;200) {'Prototyping': ['Software', 'Requirement', 'Model', 'Evolutionary']} : pg. 45

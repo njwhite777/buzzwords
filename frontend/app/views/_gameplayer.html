@@ -16,6 +16,7 @@
         <div layout-padding>Teller: {{ turn.roles.teller.nickname }}</div>
         <div layout-padding>Moderator: {{ turn.roles.moderator.nickname }}</div>
         <div layout-padding>Turn Modifier: {{ turn.modifier.name || "Waiting for teller to roll." }} </div>
+        <div layout-padding>Is Phrase: {{ turn.card.isPhrase || "Waiting for card." }} </div>
       </div>
     </div>
   </md-content>
