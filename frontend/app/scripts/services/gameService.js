@@ -26,7 +26,6 @@ angular.module('frontendApp')
     // Called with every update of for fields.
     var validateGameConfig = function(game){
       gameCreateData.game = game;
-      console.log("VALIDATING GAME",game);
       socket.emit('validate_game_config',gameCreateData.game);
     };
 

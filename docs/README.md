@@ -25,7 +25,7 @@ The following section describes the project development, the tools, subsystems, 
 #### <a name="Subsystems"></a>Subsystems:  
 
 ##### Frontend:
-The frontend subsytem includes all of the UI components of the application.  
+The frontend subsystem includes all of the UI components of the application.  
 
 ##### Backend:
 The backend subsystem includes the database, game model, and necessary communications software to implement the interface with game clients.
