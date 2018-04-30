@@ -99,11 +99,3 @@ Flask should spin up and a socketio server should now be listening on port 5000 
 #### <a name="Production_Environment_Setup"></a>Production Environment Setup:
 In order to set up the application for execution in a production environment, the front end files and all necessary resources should be available in some statically accessible web directory.
 #### <a name="Running_in_Production"></a>Running in Production:
-
-User's Manual:
-=
-One of the main advantages of our implementation is that there is no necessary installation procedure for our application.  
-
-#### <a name="The_Interface"></a>The Interface  
-#### <a name="Game_Rules"></a>Game Rules  
-#### <a name="Game_Changers"></a>Game Changers
