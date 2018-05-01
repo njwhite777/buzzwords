@@ -1,4 +1,4 @@
-HOSTNAME="localhost"
+HOSTNAME="0.0.0.0"
 DEBUG=True
 ENVIRONMENT="dev"
 DB_URI_TEMPLATE="sqlite:///db/{}.sqlite"

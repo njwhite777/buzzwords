@@ -6,7 +6,7 @@
 
 User's Manual:
 =
-One of the main advantages of our implementation is that there is no necessary installation procedure for our application.  Hence, it is possible to use the application by simply browsing to its location online.
+One of the main advantages of our implementation is that there is no necessary installation procedure for our application.  Hence, it is possible to use the application by simply browsing to its location online.  For the purpose of the in-class demonstration, a server will be availible at http://cs690s2018.dhcp.bsu.edu/#!/.
 
 #### <a name="The_Interface"></a>Using The Interface  
 ##### Create a New Game:
@@ -46,7 +46,7 @@ At the end of a turn, a screen will display updating players to the current scor
 <img src="wait_for_new_turn.png" style="height:300px;"></img>
 
 #### Game Play:
-Game play will roughly approximate taboo rules.
+Game play will roughly follow taboo rules.
 
 ##### Game Changer Selection:
 1) The teller will roll the wheel to select the game changer for that turn.
