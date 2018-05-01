@@ -50,15 +50,17 @@ def request_games():
 #  'validate_game'
 @globalVars.socketio.on('validate_game_config',namespace='/io/game')
 def validate_game(data):
-    # TODO: returns if the game is valid or not.
-    # emits only to the requesting client.
+    print()
+    print()
+    print(data)
+    print()
+    print()
     validatorObj = validator.Validator()
+    print_item(data,"VALIDATE GAME: ")
     returnMessage = validatorObj.isValidGame(data)
+    print_item(returnMessage,"RETURN GAME: ")
 
     if(returnMessage['valid']):
-        print()
-        print("VALID GAME!!!")
-        print(returnMessage)
         emit('show_game_init_button_enabled',returnMessage)
     else:
         emit('show_game_init_button_enabled',returnMessage)
@@ -89,12 +91,12 @@ def init_game(data):
         return
     initiator = PlayerModel.findPlayerByEmail(session,  globalVars.socketIOClients[request.sid])
 
-    gameArgs = {k:v for(k,v) in data.items() if k in ['name','turnDuration','numberOfTeams','maxPlayersPerTeam','pointsToWin','skipPenaltyAfter','withGameChangers'] }
-    # TODO: UNDO THIS!!!###############
-    gameArgs['turnDuration'] = 5
-    gameArgs['pointsToWin'] = 5
-    ###################################
+    print_item(data,"GAME TO INIT:")
+    gameArgs = {k:v for(k,v) in data.items() if k in ['name','turnDuration','numberOfTeams','maxPlayersPerTeam','pointsToWin','skipPenaltyAfter','maxRoundsPerGame','withGameChangers'] }
     gameArgs['initiator'] = initiator
+    # TODO REMOVE THIS #######################V
+    gameArgs['turnDuration'] = 5
+    # TODO REMOVE THIS #######################
     game = GameModel(**gameArgs)
     initiatorTeamName = data['initiatorTeam']['name']
     maxPlayersPerTeam=game.maxPlayersPerTeam

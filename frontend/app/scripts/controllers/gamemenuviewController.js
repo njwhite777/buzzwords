@@ -26,15 +26,18 @@ function ($scope,gameService,$state,$http,loginUser,$mdToast,$rootScope,debug) {
   $scope.games = gameService.games;
 
   $scope.gameCreateData = gameService.gameCreateData;
+
   $scope.gameData = {
     maxPlayersPerTeam: 3,
     turnDuration : 60,
     pointsToWin : 30,
     numberOfTeams: 2,
     skipPenaltyAfter : 3,
+    maxRoundsPerGame: 5,
     gameChangers : true,
     name:""
   };
+
   $scope.turnDurationOptions= [30,60,90,120];
   $scope.skipOptions= ['infinite',0,3,5];
   $scope.pointsOptions= [10,30,60];
@@ -42,7 +45,8 @@ function ($scope,gameService,$state,$http,loginUser,$mdToast,$rootScope,debug) {
     'skipPenaltyAfter' : 'Free Skips',
     'maxPlayersPerTeam': 'Max Players/Team',
     'numberOfTeams' : 'Number of Teams',
-    'pointsToWin' : 'Points to Win'
+    'pointsToWin' : 'Points to Win',
+    'maxRoundsPerGame': "The maximum rounds per game"
   }
 
   $scope.gameData.teamData = [];
@@ -68,6 +72,7 @@ function ($scope,gameService,$state,$http,loginUser,$mdToast,$rootScope,debug) {
           return teams;
         })();
   });
+
   $scope.joinButton = function(game,team){
     //TODO: add team, game in player;
     var player = loginUser.getPlayerDetails();
@@ -80,8 +85,8 @@ function ($scope,gameService,$state,$http,loginUser,$mdToast,$rootScope,debug) {
     gameService.initGame();
   }
 
-  $scope.formFieldChanged = function(field){
-    gameService.validateGameConfig($scope.gameData);
+  $scope.formFieldChanged = function(data){
+    gameService.validateGameConfig(data);
   }
 
   $scope.forceBack = function(object,fieldString,max,min){

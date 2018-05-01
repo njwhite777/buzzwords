@@ -25,7 +25,7 @@ app
   .constant('debug', true )
   .constant('socketIOConfig',
     {
-      'host' : 'localhost',
+      'host' : 'cs690s2018.dhcp.bsu.edu',
       // 'host' : '192.168.1.5',
       'port' : 5000,
       'proto' : 'http://',

@@ -24,44 +24,43 @@
   </head>
   <body ng-app="frontendApp" ng-controller="indexController" class="md-default-theme">
     <div ng-controller="loginController" ></div>
-
     <!--[if lte IE 8]>http://localhost:9000/#!/
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-    <div  ng-cloak flex style="height:100%" style="overflow:hidden;" >
-      <section>
+    <md-content  ng-cloak flex style="height:100%" >
+      <!-- <section>
         <md-sidenav
           class="md-sidenav-left"
           md-component-id="left"
-
           md-whiteframe="4">
-          <!-- <md-toolbar class="md-theme-indigo">
+          <md-toolbar class="md-theme-indigo">
           <h1 class="md-toolbar-tools">Configure</h1>
-          </md-toolbar> -->
+          </md-toolbar>
           <div layout-padding ng-controller="drawerLeftController" >
-            <!-- <md-button ng-click="close()" class="md-primary" hide-gt-md> Close Sidenav Left </md-button> -->
+            <md-button ng-click="close()" class="md-primary" hide-gt-md> Close Sidenav Left </md-button>
             <div>
               <div ui-view="appmenu"></div>
             </div>
           </div>
         </md-sidenav>
+      </section> -->
 
-      </section>
       <div layout="column">
         <md-toolbar class="md-hue-2">
-          <div class="md-toolbar-tools">
+          <!-- <div class="md-toolbar-tools">
             <md-button class="md-icon-button" aria-label="Settings" ng-disabled="false" ng-click="toggleLeftDrawer()" ng-hide="isOpenLeft()">
               <i class="material-icons md-light">menu</i>
             </md-button>
             <h2 flex md-truncate>Configure</h2>
-          </div>
+          </div> -->
+          <h4 layout-padding> CS690 Buzzwords</h4>
         </md-toolbar>
 
       <div class="ui-view-container" flex layout-padding>
         <div flex ui-view></div>
       </div>
     </div>    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
-  </div>
+  </md-content>
      <script>
     //    !function(A,n,g,u,l,a,r){A.GoogleAnalyticsObject=l,A[l]=A[l]||function(){
     //    (A[l].q=A[l].q||[]).push(arguments)},A[l].l=+new Date,a=n.createElement(g),

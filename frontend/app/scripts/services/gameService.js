@@ -26,7 +26,6 @@ angular.module('frontendApp')
     // Called with every update of for fields.
     var validateGameConfig = function(game){
       gameCreateData.game = game;
-      console.log("VALIDATING GAME",game);
       socket.emit('validate_game_config',gameCreateData.game);
     };
 
@@ -50,6 +49,7 @@ angular.module('frontendApp')
     socket.on('show_game_init_button_enabled',function(data){
       // Must get the game name here
       if(data.name == gameCreateData.game.name){
+        console.log("HERE!!!",data);
         gameCreateData.showGameStartButton=true;
         gameCreateData.backendValidatedGame=data;
       }else{

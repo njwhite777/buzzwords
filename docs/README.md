@@ -22,16 +22,18 @@ The following document explains aspects of the setup and use of our program. The
 ### <a name="The_Project"></a> The Project:
 The following section describes the project development, the tools, subsystems, languages, and environments that were used in the development of the project.  It also includes some architectural information in the section called Subsystems.
 
-#### <a name="Subsystems"></a>Subsystems:
+#### <a name="Subsystems"></a>Subsystems:  
 
 ##### Frontend:
+The frontend subsystem includes all of the UI components of the application.  
 
 ##### Backend:
+The backend subsystem includes the database, game model, and necessary communications software to implement the interface with game clients.
 
 #### <a name="Languages_and_Tools"></a>Languages and Tools:
 Languages:
 - Python3
-- ECS6   
+- Javascript - ECS6   
 
 Frameworks:
 - Angular1
@@ -100,10 +102,6 @@ Flask should spin up and a socketio server should now be listening on port 5000 
 In order to set up the application for execution in a production environment, the front end files and all necessary resources should be available in some statically accessible web directory.
 #### <a name="Running_in_Production"></a>Running in Production:
 
-User's Manual:
-=
-One of the main advantages of our implementation is that there is no necessary installation procedure for our application.  
+The frontend app directory must be copied into a web accessible location. Make sure all necessary bower and node resources are also properly linked from within the web accessible directory. See index to figure out the path that the application expects.  
 
-#### <a name="The_Interface"></a>The Interface  
-#### <a name="Game_Rules"></a>Game Rules  
-#### <a name="Game_Changers"></a>Game Changers
+Set up the backend to run as a process on nginx.

@@ -51,6 +51,20 @@ class CreateGame(threading.Thread):
         playerNumber.clear()
         playerNumber.send_keys(2)
 
+        turnduration = driver.find_element_by_name("turn_duration")
+        turnduration.click()
+        duration = driver.find_element_by_xpath('//md-option[@value="60"]')
+        duration.click()
+
+        maxRoundsPerGame = driver.find_element_by_name("rounds_per_game")
+        maxRoundsPerGame.clear()
+        maxRoundsPerGame.send_keys(3)
+
+        freeskips = driver.find_element_by_name("free_skips")
+        freeskips.click()
+        skipNumber = driver.find_element_by_xpath('//md-option[@value="0"]')
+        skipNumber.click()
+
         create = driver.find_element_by_name("create")
         time.sleep(2)
         create.click()
