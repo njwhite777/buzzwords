@@ -199,9 +199,11 @@ def validate_game_start(data):
         ogData[game.id] = gData
         emit('players_on_team',ogData,broadcast=True)
     if(game.readyToStart()):
-        print("\n\nGame can be lunched Now!!!!!!!\n\n")
         emit('show_game_start_button_enabled',room=globalVars.socketIOClients[initiatorEmail],namespace='/io/view')
         emit('show_game_start_button_enabled1', namespace='/io/view')
+    else:
+        emit('show_game_start_button_disabled',room=globalVars.socketIOClients[initiatorEmail],namespace='/io/view')
+
 
     session.close()
 
@@ -392,14 +394,14 @@ def start_turn(data):
         setup_turn_roles(gameID,gameChanger)
 
     if( gameChanger.gameChangerId == ROUND_KILLER ):
-
+        teamScoreData = turn.getAllTeamScores()
         if(game.isGameOver()):
             for player in players:
+                emit('report_score',teamScoreData,room=globalVars.socketIOClients[player.email],namespace='/io/game')
                 emit('swap_view',{ 'swapView' : 'endgame'},room=globalVars.socketIOClients[player.email],namespace='/io/view')
             session.commit()
             session.close()
             return
-
         start_new_turn(data)
         session.commit()
         session.close()
@@ -453,7 +455,6 @@ def load_next_card(data):
         isPhrase = "True"
     else:
         isPhrase = "False"
-
     for player in players:
         emit('is_phrase',{ 'isPhrase': isPhrase },room=globalVars.socketIOClients[player.email],namespace='/io/game')
 
@@ -501,9 +502,9 @@ def turn_complete(data):
     turn = round.getCurrentTurn(session)
     teamScoreData = turn.getAllTeamScores()
 
-    print_item(game,"CHECKING Game.isGameOver()")
     if(game.isGameOver()):
         for player in players:
+            globalVars.socketio.emit('report_score',teamScoreData,room=globalVars.socketIOClients[player.email],namespace='/io/game')
             globalVars.socketio.emit('swap_view',{ 'swapView' : 'endgame'},room=globalVars.socketIOClients[player.email],namespace='/io/view')
         session.commit()
         session.close()
@@ -511,7 +512,6 @@ def turn_complete(data):
 
     waitDuration = 2
     for player in players:
-        # TODO: ADD SCORE INFO TO turn_finished
         globalVars.socketio.emit('turn_finished',{ 'turnID' : turn.id },room=globalVars.socketIOClients[player.email],namespace='/io/game')
         globalVars.socketio.emit('report_score',teamScoreData,room=globalVars.socketIOClients[player.email],namespace='/io/game')
         globalVars.socketio.emit('swap_view',{ 'swapView' : 'waitforturn'},room=globalVars.socketIOClients[player.email],namespace='/io/view')

@@ -27,6 +27,7 @@ app
     {
       'host' : 'cs690s2018.dhcp.bsu.edu',
       // 'host' : '192.168.1.5',
+      // 'host' : 'localhost',
       'port' : 5000,
       'proto' : 'http://',
       'namespace' : 'io',
@@ -189,5 +190,5 @@ app.config(function($stateProvider,$urlRouterProvider,localStorageServiceProvide
    $stateProvider.state('moderator',moderatorState);
    $stateProvider.state('waitforturn',waitforturnState);
    $stateProvider.state('endgame',endgameState);
-   
+
 });

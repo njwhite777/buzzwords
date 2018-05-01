@@ -84,7 +84,7 @@
 
   <md-input-container class="md-block" flex-gt-sm>
     <label>Points to Win </label>
-    <input name="pointsToWin" id="gameData.pointsToWin" type = "number" ng-model ="gameData.pointsToWin" ng-change="forceBack(gameData,'pointsToWin',60,10)" ng-model-options='{debounce:1000}'>
+    <input name="pointsToWin" id="gameData.pointsToWin" type = "number" ng-model ="gameData.pointsToWin" ng-change="forceBack(gameData,'pointsToWin',60,10);formFieldChanged(gameData)" ng-model-options='{debounce:1000}'>
   </md-input-container>
 
   <md-input-container class="md-block" flex-gt-sm>

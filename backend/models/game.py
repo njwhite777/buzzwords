@@ -241,7 +241,10 @@ class Game(Base):
             :return: True if the game can start, False otherwise
             :rtype: bool
         """
+        numPlayers=self.teams[0].numPlayers()
         for team in self.teams:
+            if(not(team.numPlayers() == numPlayers)):
+                return False
             if not(team.validTeam()):
                 return False
         return True

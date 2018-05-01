@@ -29,6 +29,12 @@ angular.module('frontendApp')
         switchedElements.startButtonDisabled = false;
     });
 
+    socket.on('show_game_start_button_disabled',function(){
+      console.log("disable the start button.");
+      console.log(switchedElements);
+      switchedElements.startButtonDisabled = true;
+    });
+
     return {
       switchedElements : switchedElements
     };
