@@ -33,4 +33,4 @@ if __name__ == '__main__':
 
     CORS(app)
     # globalVars.socketio.run(app,debug=app.config['DEBUG'],port=app.config['PORT'],host=app.config['HOSTNAME'])
-    globalVars.socketio.run(app,debug=app.config['DEBUG'],port=app.config['PORT'],host=app.config['HOSTNAME'],use_reloader=False)
+    #globalVars.socketio.run(app,debug=app.config['DEBUG'],port=app.config['PORT'],host=app.config['HOSTNAME'],use_reloader=False)

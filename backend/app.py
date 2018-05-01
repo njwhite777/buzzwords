@@ -15,7 +15,6 @@ def create_app(app_name=None,environment='dev',configFile=None,config=None):
     if(not(app_name)):
         app_name=__name__
     app=Flask(__name__)
-
     # Check to see if we should be loading from the config file or
     #  the config file pointed to by the env.
     if(configFile and 'dev_config' in configFile):
@@ -28,7 +27,6 @@ def create_app(app_name=None,environment='dev',configFile=None,config=None):
         pass
     return app
 
-# This method is nigh useless...
 def create_db_connection(app,rebuilddb=False):
     if(rebuilddb or 'REBUILDDB' in app.config and app.config['REBUILDDB']):
         rebuilddb = True
@@ -49,3 +47,4 @@ def getQuizletCards(login='Nathan_White34',client_id='SN77uEA94G',endpoint='2589
         session.add(card)
     session.commit()
     session.close()
+

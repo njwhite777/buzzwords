@@ -48,7 +48,8 @@
     "angular-animate": "^1.6.9",
     "angular-aria": "^1.6.9",
     "angular-messages": "^1.6.9",
-    "bower": "^1.8.2",
+    "bower": "^1.8.4",
+    "package.json": "^2.0.1",
     "rethinkdb": "^2.3.3"
   }
 }
