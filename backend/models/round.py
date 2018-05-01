@@ -51,16 +51,6 @@ class Round(Base):
     def isRoundOver(self, session):
         return Turn.getNumberOfTurnsInARound(session, self.id) == len(self.game.teams)
 
-    def getCurrentTurnOld(self):
-        """
-            - returns the last turn to be added in this round, must ensure the turns are returned in the order they were created
-            :return: the last turn to be added to the round, None if the round is new
-            :rtype: Turn
-        """
-        if len(self.turns) == 0:
-            return None
-        return self.turns[len(self.turns) - 1]
-
     def getCurrentTurn(self, session):
         """
             - returns the last turn to be added in this round, must ensure the turns are returned in the order they were created

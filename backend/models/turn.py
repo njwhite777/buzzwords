@@ -42,7 +42,7 @@ class Turn(Base):
     duration = Column(Integer)
     turnDuration = Column(Integer)
 
-    gameId = Column(Integer, ForeignKey('game.id'), nullable=False)
+    # gameId = Column(Integer, ForeignKey('game.id'), nullable=False)
     roundId = Column(Integer, ForeignKey('round.id'), nullable=True)
     teamId = Column(Integer, ForeignKey('team.id'), nullable=True)
     cardId = Column(Integer,ForeignKey('card.id'), nullable=True)
