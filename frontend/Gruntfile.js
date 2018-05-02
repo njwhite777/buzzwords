@@ -16,7 +16,8 @@ module.exports = function (grunt) {
   require('jit-grunt')(grunt, {
     useminPrepare: 'grunt-usemin',
     ngtemplates: 'grunt-angular-templates',
-    cdnify: 'grunt-google-cdn'
+    cdnify: 'grunt-google-cdn',
+    uglify: 'grunt-contrib-uglify-es'
   });
 
   // Configurable paths for the application
@@ -302,6 +303,7 @@ module.exports = function (grunt) {
         assetsDirs: [
           '<%= yeoman.dist %>',
           '<%= yeoman.dist %>/images',
+          '<%= yeoman.dist %>/sounds',
           '<%= yeoman.dist %>/styles'
         ],
         patterns: {
@@ -383,7 +385,7 @@ module.exports = function (grunt) {
           usemin: 'scripts/scripts.js'
         },
         cwd: '<%= yeoman.app %>',
-        src: 'views/{,*/}*.html',
+        src: 'views/**/*.html',
         dest: '.tmp/templateCache.js'
       }
     },
@@ -420,6 +422,8 @@ module.exports = function (grunt) {
             '*.{ico,png,txt}',
             '*.html',
             'images/{,*/}*.{webp}',
+            'sounds/{,*/}*.mp3',
+            'views/{,*/}*.html',
             'styles/fonts/{,*/}*.*'
           ]
         }, {
@@ -497,13 +501,13 @@ module.exports = function (grunt) {
     'useminPrepare',
     'concurrent:dist',
     'postcss',
-    'ngtemplates',
+    // 'ngtemplates',
     'concat',
     'ngAnnotate',
     'copy:dist',
     'cdnify',
     'cssmin',
-    // 'uglify',
+    'uglify',
     'filerev',
     'usemin',
     'htmlmin'

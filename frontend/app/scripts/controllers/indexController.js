@@ -18,7 +18,7 @@ angular.module('frontendApp')
     'viewSwapService',
     'pointsService',
     'debug',
-  function ($scope,$state,$timeout,$mdSidenav,$log,$rootScope,pointsService,debug) {
+  function ($scope,$state,$timeout,$mdSidenav,$log,$rootScope,viewSwapService,pointsService,debug) {
 
     $scope.$on('socket:connect', function (ev, data) {
       console.log(data);

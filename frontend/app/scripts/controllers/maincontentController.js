@@ -8,6 +8,4 @@
  * Controller of the left drawer of the application
  */
 angular.module('frontendApp')
-  .controller('maincontentController', function () {
-
-});
+  .controller('maincontentController',[function () {}]);

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('frontendApp')
-      .service('themeService',function(){
+      .service('themeService',[function(){
         var currentTheme = 'default';
       };
-      
-    )
+
+    ]);

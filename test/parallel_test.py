@@ -13,8 +13,9 @@ binary = FirefoxBinary(r'/usr/bin/firefox')
 class CreateGame(threading.Thread):
     def __init__(self):
         super(CreateGame, self).__init__()
-        self.hostname = "http://cs690s2018.dhcp.bsu.edu"
-        self.port = 80
+        # self.hostname = "http://cs690s2018.dhcp.bsu.edu"
+        self.hostname = "http://0.0.0.0"
+        self.port = "9000"
         self.gamename = "game2"
         self.teams = []
         self.usernames = []
@@ -88,8 +89,10 @@ class CreateGame(threading.Thread):
 class JoinGame(threading.Thread):
     def __init__(self,useremail="hguo@bsu.edu", username="hanqing", gamename="game2",teamname="hard"):
         super(JoinGame,self).__init__()
-        self.hostname = "http://cs690s2018.dhcp.bsu.edu"
-        self.port = 9000
+        # self.hostname = "http://cs690s2018.dhcp.bsu.edu"
+        # self.port = 80
+        self.hostname = "http://0.0.0.0"
+        self.port = "9000"
         self.useremail = useremail
         self.username = username
         self.gamename = gamename

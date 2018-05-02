@@ -1,4 +1,4 @@
-app.directive('buzzer', function ($interval) {
+app.directive('buzzer',['$interval',function ($interval) {
 
   function link(scope, element, attrs) {
 
@@ -34,4 +34,4 @@ app.directive('buzzer', function ($interval) {
       restrict: 'E',
       link: link
   };
-});
+}]);

@@ -95,7 +95,7 @@ def init_game(data):
     gameArgs = {k:v for(k,v) in data.items() if k in ['name','turnDuration','numberOfTeams','maxPlayersPerTeam','pointsToWin','skipPenaltyAfter','maxRoundsPerGame','withGameChangers'] }
     gameArgs['initiator'] = initiator
     # TODO REMOVE THIS #######################V
-    gameArgs['turnDuration'] = 5
+    # gameArgs['turnDuration'] = 5
     # TODO REMOVE THIS #######################
     game = GameModel(**gameArgs)
     initiatorTeamName = data['initiatorTeam']['name']
@@ -198,13 +198,12 @@ def validate_game_start(data):
         gData['teams'][team.id] = tData
         ogData[game.id] = gData
         emit('players_on_team',ogData,broadcast=True)
+    print("HERE and game is",game.readyToStart())
     if(game.readyToStart()):
         emit('show_game_start_button_enabled',room=globalVars.socketIOClients[initiatorEmail],namespace='/io/view')
         emit('show_game_start_button_enabled1', namespace='/io/view')
     else:
         emit('show_game_start_button_disabled',room=globalVars.socketIOClients[initiatorEmail],namespace='/io/view')
-
-
     session.close()
 
 # Listens for a start game event from clients.

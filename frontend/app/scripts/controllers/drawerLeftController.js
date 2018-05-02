@@ -8,10 +8,4 @@
  * Controller of the left drawer of the application
  */
  angular.module('frontendApp')
-  .controller('drawerLeftController', function () {
-
-
-
-  // Do things in the drawer view.
-
-  });
+  .controller('drawerLeftController',[function () {}]);

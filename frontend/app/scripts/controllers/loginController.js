@@ -66,8 +66,6 @@ var RegisterPanelController = function(mdPanelRef,loginUser){
   if(name){
     this.user.name = name;
   }
-  console.log(this.loginPlayerForm);
-
 };
 
 RegisterPanelController.prototype.closeDialog = function() {
@@ -79,3 +77,5 @@ RegisterPanelController.prototype.closeDialog = function() {
   });
   this.loginUser.createNewPlayer(this.user.email,this.user.name);
 };
+
+RegisterPanelController.$inject = ['mdPanelRef','loginUser'];

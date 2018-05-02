@@ -66,12 +66,12 @@ angular.module('frontendApp')
 
     return {
       socket: socket,
-      gameSocket: gameSocket,
-      viewSocket: viewSocket,
-      timerSocket: timerSocket,
-      playerSocket: playerSocket,
+      gameSocket : gameSocket,
+      viewSocket : viewSocket,
+      timerSocket : timerSocket,
+      playerSocket : playerSocket,
       notifySocketReady : notifySocketReady,
-      cardSocket: cardSocket
+      cardSocket : cardSocket
     };
 
 }]);

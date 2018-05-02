@@ -17,6 +17,5 @@ angular.module('frontendApp')
       $scope.finishedGame = function(){
           $state.go('root');
       };
-
     }
 ]);

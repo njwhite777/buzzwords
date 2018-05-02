@@ -8,6 +8,5 @@
  * Controller of the left drawer of the application
  */
 angular.module('frontendApp')
-  .controller('gameplayerwaitviewController', function () {
-
-});
+  .controller('gameplayerwaitviewController',[ function () {
+}]);
