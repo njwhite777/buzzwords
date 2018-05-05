@@ -233,7 +233,6 @@ module.exports = function (grunt) {
         ignorePath: /(\.\.\/){1,2}bower_components\//
       }
     },
-
     // Compiles Sass to CSS and generates necessary files if requested
     compass: {
       options: {

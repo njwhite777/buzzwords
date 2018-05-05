@@ -8,6 +8,7 @@ from flask_socketio import emit
 # TODO: record the player and associate information with the session ID
 @globalVars.socketio.on('player_login',namespace='/io/player')
 def playerLogin(data):
+    print("PLAYER CONNECTED:",data)
     session = globalVars.Session()
     player=PlayerModel.findPlayerByEmail(session,data['email'])
     if(player):

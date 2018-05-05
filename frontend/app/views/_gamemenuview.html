@@ -25,7 +25,7 @@
             </div>
             <div flex>
               <div layout="row" layout-align="end">
-                <md-button name = "{{team.name}}"style="width: 70px;" class="md-secondary md-raised" ng-disabled="team.disableTeamJoin" ng-click="joinButton(game,team)">Join</md-button>
+                <md-button name = "{{ game.name }}.{{team.name}}"style="width: 70px;" class="md-secondary md-raised" ng-disabled="team.disableTeamJoin" ng-click="joinButton(game,team)">Join</md-button>
               </div>
             </div>
           </md-content>

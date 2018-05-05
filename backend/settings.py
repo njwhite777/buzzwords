@@ -1,4 +1,4 @@
-HOSTNAME="0.0.0.0"
+HOSTNAME="10.2.247.45"
 DEBUG=True
 ENVIRONMENT="dev"
 DB_URI_TEMPLATE="sqlite:///db/{}.sqlite"

@@ -25,11 +25,15 @@ app
   .constant('debug', true )
   .constant('socketIOConfig',
     {
-      // 'host' : '10.2.205.55',
-      'host' : '0.0.0.0',
-      // 'host' : '192.168.1.5',
-      // 'host' : 'localhost',
+
+      /* env:dev */
+      // 'host' : '192.168.1.16',
+      // 'port' : 5000,
+      /* env:dev:end */
+      /* env:prod */
+      'host' : '10.2.247.45',
       'port' : 5000,
+      /* env:prod:end */
       'proto' : 'http://',
       'namespace' : 'io',
       'gameSocketName' : 'game',

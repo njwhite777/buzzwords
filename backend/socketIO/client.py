@@ -6,7 +6,7 @@ from flask import request
 # SocketIO emits a connect by default.
 @socketio.on('connect', namespace='/io')
 def clientConnect():
-    # print(request.namespace, file=sys.stderr)
+    print("NEW SOCKET CONNECTION")
     emit('client_connect', {'data': 'Server: SocketIO Client Connected!'})
 
 @socketio.on('disconnect', namespace='/io')

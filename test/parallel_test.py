@@ -1,27 +1,36 @@
+#!/usr/bin/env python
+
 import threading
 from selenium.webdriver.common.keys import Keys
 from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 import time
 import threading
+import argparse
 
+parser = argparse.ArgumentParser()
+parser.add_argument('-n','--number',default=4,help='Number of players')
+parser.add_argument('-u','--url',default="http://0.0.0.0",help='URL to use for the players to join.')
+parser.add_argument('-c','--create',action='store_true',help='Have a player create the game.')
+parser.add_argument('-g','--game',default='game1',help='Give a name to the game.')
+parser.add_argument('-t','--teams',nargs='+',default="team1 team2",help='List the names of the teams that should be in the game.')
+parser.add_argument('-p','--port',default=9000,help='The port to connect to for the client application.')
 
 # capabilities = webdriver.DesiredCapabilities().FIREFOX
 # capabilities["marionette"] = False
 binary = FirefoxBinary(r'/usr/bin/firefox')
 
 class CreateGame(threading.Thread):
-    def __init__(self):
+
+    def __init__(self,useremail="hguo@bsu.edu", username="hanqing", gamename="game2",teamname="hard",url="0.0.0.0",port=9000,teams=list()):
         super(CreateGame, self).__init__()
-        # self.hostname = "http://cs690s2018.dhcp.bsu.edu"
-        self.hostname = "http://0.0.0.0"
-        self.port = "9000"
-        self.gamename = "game2"
-        self.teams = []
-        self.usernames = []
-        self.emails = []
-        self.teamname1 = "hard"
-        self.teamname2 = "easy"
+        self.url = url
+        self.port = port
+        self.gamename = gamename
+        self.teams = teams
 
     def run(self, driver =None):
 
@@ -74,32 +83,26 @@ class CreateGame(threading.Thread):
         time.sleep(2)
         create.click()
 
-
     def newBrowserWindow(self):
         return webdriver.Firefox(firefox_binary=binary)
 
     def openApplication(self,driver=None):
         if(not(driver)):
-            self.driver.get(self.hostname+":"+str(self.port))
+            self.driver.get(self.url+":"+str(self.port))
         else:
-            driver.get(self.hostname+":"+str(self.port))
-
-
+            driver.get(self.url+":"+str(self.port))
 
 class JoinGame(threading.Thread):
-    def __init__(self,useremail="hguo@bsu.edu", username="hanqing", gamename="game2",teamname="hard"):
+    def __init__(self,useremail="hguo@bsu.edu", username="hanqing", gamename="game2",teamname="hard",url="0.0.0.0",port=9000):
         super(JoinGame,self).__init__()
-        # self.hostname = "http://cs690s2018.dhcp.bsu.edu"
-        # self.port = 80
-        self.hostname = "http://0.0.0.0"
-        self.port = "9000"
+        self.url = url
+        self.port = port
         self.useremail = useremail
         self.username = username
         self.gamename = gamename
         self.teamname = teamname
 
     def run(self):
-
         self.joinTeam(self.useremail, self.username, self.gamename, self.teamname)
 
 
@@ -117,11 +120,12 @@ class JoinGame(threading.Thread):
         time.sleep(3)
         submit.click()
 
-        selectedGame = driver.find_element_by_xpath('//md-toolbar[@name="{}"]'.format(gamename))
-        time.sleep(2)
+        selectedGame = driver.find_element_by_xpath('//md-toolbar[@name="{}"]'.format(self.gamename))
         selectedGame.click()
+        time.sleep(3)
 
-        selectedTeam = driver.find_element_by_xpath('//button[@name="{}"]'.format(teamname))
+        selectedTeam = driver.find_element_by_xpath('//button[@name="{}.{}"]'.format(self.gamename,self.teamname))
+        driver.execute_script("arguments[0].scrollIntoView();", selectedTeam)
         time.sleep(2)
         selectedTeam.click()
 
@@ -130,25 +134,51 @@ class JoinGame(threading.Thread):
 
     def openApplication(self,driver=None):
         if(not(driver)):
-            self.driver.get(self.hostname+":"+str(self.port))
+            self.driver.get(self.url+":"+str(self.port))
         else:
-            driver.get(self.hostname+":"+str(self.port))
+            driver.get(self.url+":"+str(self.port))
+import sys
 
 if __name__ == "__main__":
     # threadLock = threading.Lock()
     # threads = []
     #
-    # threadLock.acquire()
-    creator = CreateGame()
-    creator.start()
-    creator.join()
-    #threadLock.release()
+    args = parser.parse_args()
+
+    numPlayers = int(args.number)
+    startIdx=1
+    teams=args.teams.split()
+    print(args)
+
+    if(not(numPlayers % len(teams) == 0) and (not(args.create) and not(numPlayers % len(teams) == 1))):
+        print("Sorry, teams must be balanced.")
+        sys.exit(0)
+
+    # if(args.create):
+    #     creator = CreateGame(useremail="game_creator@bsu.edu", username="game_creator", gamename=args.game,url=args.url,port=args.port,teams=args.teams)
+    #     startIdx = 1
+    #
+    players=list()
+
+    for i in range(startIdx,numPlayers+startIdx):
+        teamname = teams[i % len(teams)]
+        players.append(JoinGame(username="player_{}".format(i),useremail="player_{}@bsu.edu".format(i),gamename=args.game,teamname="{}".format(teamname),url=args.url,port=args.port))
+
+    for player in players:
+        player.start()
 
 
-    client1 = JoinGame()
-    client2 = JoinGame(username="aron",useremail="aron@bsu.edu",teamname="easy")
-    client3 = JoinGame(username="aron2",useremail="aron2@bsu.edu",teamname="easy")
-
-    client1.start()
-    client2.start()
-    client3.start()
+    # # threadLock.acquire()
+    # creator = CreateGame()
+    # creator.start()
+    # creator.join()
+    # #threadLock.release()
+    #
+    #
+    # client1 = JoinGame()
+    # client2 = JoinGame(username="aron",useremail="aron@bsu.edu",teamname="easy")
+    # client3 = JoinGame(username="aron2",useremail="aron2@bsu.edu",teamname="easy")
+    #
+    # client1.start()
+    # client2.start()
+    # client3.start()
